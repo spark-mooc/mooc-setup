@@ -1,2 +1,2 @@
 # mooc-setup
-Information required to setup for the Spark MOOC
+Information for setting up for the Spark MOOC
