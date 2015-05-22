@@ -11,5 +11,9 @@ Vagrant.configure(2) do |config|
     master.vm.network :forwarded_port, host: 4040, guest: 4040, auto_correct: true                 # Spark UI (Driver)
     master.vm.hostname = "sparkvm"
     master.vm.usable_port_range = 4040..4090
+
+    master.vm.provider :virtualbox do |v|
+      v.name = master.vm.hostname.to_s
+    end
   end
 end
