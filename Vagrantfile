@@ -6,7 +6,7 @@ ipythonPort = 8001                 # Ipython port to forward (also set in IPytho
 Vagrant.configure(2) do |config|
   config.ssh.insert_key = true
   config.vm.define "sparkvm" do |master|
-    master.vm.box = "sparkmooc/base"
+    master.vm.box = "sparkmooc/base2"
     master.vm.box_download_insecure = true
     master.vm.boot_timeout = 900
     master.vm.network :forwarded_port, host: ipythonPort, guest: ipythonPort, auto_correct: true   # IPython port (set in notebook config)
@@ -19,3 +19,4 @@ Vagrant.configure(2) do |config|
     end
   end
 end
+
