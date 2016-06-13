@@ -1,8 +1,8 @@
-# Databricks notebook source exported at Mon, 13 Jun 2016 20:56:22 UTC
+# Databricks notebook source exported at Mon, 13 Jun 2016 23:31:31 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Running Your First Notebook**
-# MAGIC This notebook will show you how to install the course libraries, create your first Spark cluster, and test basic notebook funcionality.  To move through the notebook just run each of the cells.  You will not need to solve any problems to complete this lab.  You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.  At the end of the notebook you will publish the notebook and submit it to the autograder.
+# MAGIC This notebook will show you how to install the course libraries, create your first Spark cluster, and test basic notebook funcionality.  To move through the notebook just run each of the cells.  You will not need to solve any problems to complete this lab.  You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
 # MAGIC 
 # MAGIC ** This notebook covers: **
 # MAGIC * *Part 1:* Attach class helper library
@@ -10,7 +10,6 @@
 # MAGIC * *Part 3:* Test class helper library
 # MAGIC * *Part 4:* Check plotting
 # MAGIC * *Part 5:* Check MathJax formulas
-# MAGIC * *Part 6:* Publish your notebook for the autograder
 
 # COMMAND ----------
 
@@ -216,29 +215,9 @@ pass
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### ** Part 6: Publish your notebook for the autograder **
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ** (5a) Publish your notebook **
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC You have completed the lab.  To submit the lab for grading you will need to publish your notebook. To publish your notebook, click on the "Publish" button at the top of your notebook.
+# MAGIC You have completed the lab!
 # MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" />
-# MAGIC 
-# MAGIC When you click on the button, you will see the following popup.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
-# MAGIC 
-# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. __Copy the link and save it.__
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
-# MAGIC 
-# MAGIC Return to the edX website and find the page for registering with the autograder.
+# MAGIC Return to the edX website and proceed with the page for registering with the autograder.
 
 # COMMAND ----------
 
