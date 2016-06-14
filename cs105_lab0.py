@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 13 Jun 2016 23:31:31 UTC
+# Databricks notebook source exported at Tue, 14 Jun 2016 21:14:13 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Running Your First Notebook**
