@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 14 Jun 2016 21:14:13 UTC
+# Databricks notebook source exported at Tue, 14 Jun 2016 23:34:41 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Running Your First Notebook**
@@ -102,6 +102,10 @@ assert shakespeareCount == 122395
 
 # MAGIC %md
 # MAGIC ** (3a) Compare with hash **
+# MAGIC 
+# MAGIC Run the following cell. If you see an **ImportError**, you should verify that you added the spark_mooc_meta library to your cluster and, if necessary, repeat step (1a).
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_LibraryError.png" alt="Drawing"  style="width: 600px;"/>
 
 # COMMAND ----------
 

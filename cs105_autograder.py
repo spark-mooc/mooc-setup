@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 14 Jun 2016 21:13:56 UTC
+# Databricks notebook source exported at Tue, 14 Jun 2016 23:36:59 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -58,6 +58,13 @@ try:
   print "Your username is " + username
 except NameError:
   assert False, "Your username is not set. Please check that you set your username in the previous cell and you exectuted the cell using SHIFT-ENTER."
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Run the following cell. If you see an **ImportError**, you should verify that you added the spark_mooc_meta library to your cluster and, if necessary, repeat step (1a) in **cs105_lab0.**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/autograder_LibraryError.png" alt="Drawing"  style="width: 600px;"/>
 
 # COMMAND ----------
 
