@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 01:55:49 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 03:10:17 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -140,7 +140,7 @@ except NameError:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3c) Verify that your LAB notebook passes all tests. **
+# MAGIC ** (3c) Verify that your LAB notebook passes as many tests as you can. **
 # MAGIC 
 # MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expression of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
 # MAGIC 
