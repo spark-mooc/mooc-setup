@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 16:26:18 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 17:01:17 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -295,15 +295,13 @@ submission_id = <FILL_IN>
 
 import json
 (result,submission_detail) = client.get_submission_detail(submission_id)
-# convert result to a Spark DataFrame
-df_submission_detail = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in submission_detail]))
 print submission_detail['autograder_results']
 print submission_detail['grade']
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (6a) Viewing the raw output from the autograder **
+# MAGIC ** (6b) Viewing the raw output from the autograder **
 # MAGIC 
 # MAGIC You can examine the complete output from the autograder.
 
