@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 01:03:35 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 01:55:49 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -179,17 +179,7 @@ notebook_url = <FILL_IN>
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### ** Part 5: Get your submission ID for submitting on the edX course website **
-# MAGIC 
-# MAGIC To record your score for a lab, you need to submit a submission ID on the edX course website. Use **get_submission_list(lab)** and **get_submission_detail(submission_id)** to check your grading results.
-# MAGIC 
-# MAGIC * Copy the _submission_id_ that you want to submit for a score.
-# MAGIC * On the edX website page for the lab you completing, enter your **username for autograder** and **submission ID for the lab** to receive a score for the assignment on edX.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ** (3f) Re-run the AUTOGRADER notebook **
+# MAGIC ** (3e) Re-run the AUTOGRADER notebook **
 # MAGIC 
 # MAGIC Because you just restarted your cluster, all of the state of this autograder notebook has been lost. To recover it, all you have to do is to click on "Run All" (just as you did for your Lab notebook) and your cluster will run all the cells.
 # MAGIC 
