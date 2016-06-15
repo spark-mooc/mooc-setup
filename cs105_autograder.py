@@ -1,4 +1,9 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 03:10:17 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 16:18:18 UTC
+
+# MAGIC %md
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+
+# COMMAND ----------
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -101,7 +106,6 @@ try:
   print "Your private token is " + private_token
 except NameError:
   assert False, "Your private token is not set. Please check that you: set the private_token in the cell at the beginning of the notebook, removed the comment character (#) before private_token, and you exectuted the cell using SHIFT-ENTER."
-
 
 # COMMAND ----------
 
@@ -242,6 +246,8 @@ client.submit(lab, notebook_url)
 # MAGIC You can re-run the following cell to redisplay the autograder queue status.
 # MAGIC 
 # MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder and you can proceed to Part 5.
+# MAGIC 
+# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/edx_berkeley/summer2016/cs1051x) to contact the TAs for support.
 
 # COMMAND ----------
 
