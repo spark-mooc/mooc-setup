@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 00:46:42 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 01:03:35 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -250,6 +250,8 @@ client.submit(lab, notebook_url)
 # MAGIC To check the status of the autograder queue, you use **get_queue_status()**.
 # MAGIC 
 # MAGIC You can re-run the following cell to redisplay the autograder queue status.
+# MAGIC 
+# MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder and you can proceed to Part 5.
 
 # COMMAND ----------
 
@@ -257,7 +259,7 @@ client.submit(lab, notebook_url)
 import json
 (result,queue) = client.get_queue_status()
 if (queue == []):
-  print "No submisions for %s found in autograder queue" % username
+  print "No submisions for %s found in autograder queue. Proceed to Part 5." % username
 else:
   # convert result to a Spark DataFrame
   df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
