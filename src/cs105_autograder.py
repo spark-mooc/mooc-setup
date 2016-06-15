@@ -1,4 +1,9 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 03:10:17 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 16:18:18 UTC
+# MAGIC %md
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -11,10 +16,10 @@
 # MAGIC 
 # MAGIC ** You must complete _all_ three steps to receive a score for a lab assignment. **
 # MAGIC 
-# MAGIC This notebook will show you how to register for the course autograder, prepare a lab notebook for submission to the course autograder, and submit a notebook for grading by the autograder. 
+# MAGIC This notebook will show you how to register for the course autograder, prepare a lab notebook for submission to the course autograder, and submit a notebook for grading by the autograder.
 # MAGIC 
-# MAGIC You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell. 
-# MAGIC  
+# MAGIC You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
+# MAGIC 
 # MAGIC #### ** Make sure you have completed the Lab 0 notebook before you run this notebook  - this notebook uses libraries that are installed when you complete Lab 0. **
 # MAGIC 
 # MAGIC ** This notebook covers: **
@@ -77,7 +82,7 @@ except NameError:
 
 # COMMAND ----------
 
-# MAGIC %md 
+# MAGIC %md
 # MAGIC #### ** Part 2: Save your private token **
 # MAGIC 
 # MAGIC You will receive an email from the course autograder with a private token. Here is a sample email.
@@ -95,7 +100,6 @@ try:
   print "Your private token is " + private_token
 except NameError:
   assert False, "Your private token is not set. Please check that you: set the private_token in the cell at the beginning of the notebook, removed the comment character (#) before private_token, and you exectuted the cell using SHIFT-ENTER."
-
 
 # COMMAND ----------
 
@@ -121,20 +125,20 @@ except NameError:
 # MAGIC ** (3a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".**
 # MAGIC 
 # MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
-# MAGIC  
+# MAGIC 
 # MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ** (3b) _IN YOUR LAB NOTEBOOK_, click on "Run All" to run all of the cells in your LAB notebook. **
-# MAGIC  
+# MAGIC 
 # MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
-# MAGIC   
+# MAGIC 
 # MAGIC This step will take some time. While the cluster is running all the cells in your lab notebook, you will see the "Stop Execution" button.
-# MAGIC   
+# MAGIC 
 # MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
-# MAGIC   
+# MAGIC 
 # MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
 
 # COMMAND ----------
@@ -175,14 +179,14 @@ notebook_url = <FILL_IN>
 # MAGIC %md
 # MAGIC ** (3e) Re-run the AUTOGRADER notebook **
 # MAGIC 
-# MAGIC Because you just restarted your cluster, all of the state of this autograder notebook has been lost. To recover it, all you have to do is to click on "Run All" (just as you did for your Lab notebook) and your cluster will run all the cells. 
+# MAGIC Because you just restarted your cluster, all of the state of this autograder notebook has been lost. To recover it, all you have to do is to click on "Run All" (just as you did for your Lab notebook) and your cluster will run all the cells.
 # MAGIC 
 # MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
-# MAGIC   
+# MAGIC 
 # MAGIC This step will finish quickly. While the cluster is running all the cells in your autograder notebook, you will see the "Stop Execution" button.
-# MAGIC   
+# MAGIC 
 # MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
-# MAGIC   
+# MAGIC 
 # MAGIC Wait for your cluster to finish running the cells in your autograder notebook before proceeding.
 # MAGIC 
 # MAGIC Note that it will stop on Step (3f), since you have not set the _lab_ variable yet.
@@ -236,6 +240,8 @@ client.submit(lab, notebook_url)
 # MAGIC You can re-run the following cell to redisplay the autograder queue status.
 # MAGIC 
 # MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder and you can proceed to Part 5.
+# MAGIC 
+# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/edx_berkeley/summer2016/cs1051x) to contact the TAs for support.
 
 # COMMAND ----------
 
