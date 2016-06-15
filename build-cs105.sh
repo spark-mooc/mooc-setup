@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
+#
+# Quick and dirty build script for CS105.X
+#
+# NOTE: To run this script, you'll need:
+#
+# 1. The master parse tool, which is in the databricks/training repo.
+#    Depending on where you checked that repo out, you may need to change
+#    the "master_parse" variable, below.
+# 2. The "gendbc" tool, which is in the databricks/training repo, under
+#    devops/gendbc. This tool is written in Scala and must be installed
+#    per the README.md in its source directory. It only requires a JVM
+#    to run, but this script assumes "gendbc" is in your PATH.
 
 dir=$(dirname $0)
 
