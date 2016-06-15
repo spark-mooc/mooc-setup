@@ -1,10 +1,4 @@
 # Databricks notebook source exported at Tue, 14 Jun 2016 23:36:59 UTC
-
-# MAGIC %md
-# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -17,10 +11,10 @@
 # MAGIC 
 # MAGIC ** You must complete _all_ three steps to receive a score for a lab assignment. **
 # MAGIC 
-# MAGIC This notebook will show you how to register for the course autograder, prepare a lab notebook for submission to the course autograder, and submit a notebook for grading by the autograder.
+# MAGIC This notebook will show you how to register for the course autograder, prepare a lab notebook for submission to the course autograder, and submit a notebook for grading by the autograder. 
 # MAGIC 
-# MAGIC You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
-# MAGIC 
+# MAGIC You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell. 
+# MAGIC  
 # MAGIC #### ** Make sure you have completed the Lab 0 notebook before you run this notebook  - this notebook uses libraries that are installed when you complete Lab 0. **
 # MAGIC 
 # MAGIC ** This notebook covers: **
@@ -83,7 +77,7 @@ except NameError:
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md 
 # MAGIC #### ** Part 2: Save your private token **
 # MAGIC 
 # MAGIC You will receive an email from the course autograder with a private token. Here is a sample email.
@@ -123,14 +117,14 @@ except NameError:
 
 # MAGIC %md
 # MAGIC ** (3a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".**
-# MAGIC 
+# MAGIC  
 # MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ** (3b) Click on "Run All" to run all of the cells in your notebook. **
-# MAGIC 
+# MAGIC  
 # MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
 
 # COMMAND ----------
