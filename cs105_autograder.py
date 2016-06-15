@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 14 Jun 2016 23:36:59 UTC
+# Databricks notebook source exported at Wed, 15 Jun 2016 00:46:42 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -115,6 +115,8 @@ except NameError:
 # MAGIC 
 # MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
 # MAGIC 
+# MAGIC To perform the steps in Part 3, open two browser tabs: one with your lab notebook, and one with this autograder notebook.
+# MAGIC 
 # MAGIC ** Note that you can only submit to the course autograder once every ten minutes. **
 # MAGIC 
 # MAGIC ### Every time you submit to the course autograder, you must perform steps (3a), (3b), (3c), and (3d). ##
@@ -124,24 +126,40 @@ except NameError:
 # MAGIC %md
 # MAGIC ** (3a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".**
 # MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
 # MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3b) Click on "Run All" to run all of the cells in your notebook. **
+# MAGIC ** (3b) _IN YOUR LAB NOTEBOOK_, click on "Run All" to run all of the cells in your LAB notebook. **
 # MAGIC 
 # MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
+# MAGIC 
+# MAGIC This step will take some time. While the cluster is running all the cells in your lab notebook, you will see the "Stop Execution" button.
+# MAGIC 
+# MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3c) Verify that your notebook passes all tests. **
+# MAGIC ** (3c) Verify that your LAB notebook passes all tests. **
+# MAGIC 
+# MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expression of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
+# MAGIC 
+# MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/test_passed.png" alt="Drawing" />
+# MAGIC 
+# MAGIC or just execution time otherwise:
+# MAGIC 
+# MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/execution_time.png" alt="Drawing" />
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3d) Publish your notebook by clicking on the "Publish" button at the top of your notebook. **
+# MAGIC ** (3d) Publish your LAB notebook by clicking on the "Publish" button at the top of your LAB notebook. **
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" />
 # MAGIC 
@@ -157,6 +175,33 @@ except NameError:
 
 # Set the published notebook_url (e.g., notebook_url = "https://databricks-prod-cloudfront.cloud.databricks.com/public/....")
 notebook_url = <FILL_IN>
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### ** Part 5: Get your submission ID for submitting on the edX course website **
+# MAGIC 
+# MAGIC To record your score for a lab, you need to submit a submission ID on the edX course website. Use **get_submission_list(lab)** and **get_submission_detail(submission_id)** to check your grading results.
+# MAGIC 
+# MAGIC * Copy the _submission_id_ that you want to submit for a score.
+# MAGIC * On the edX website page for the lab you completing, enter your **username for autograder** and **submission ID for the lab** to receive a score for the assignment on edX.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (3f) Re-run the AUTOGRADER notebook **
+# MAGIC 
+# MAGIC Because you just restarted your cluster, all of the state of this autograder notebook has been lost. To recover it, all you have to do is to click on "Run All" (just as you did for your Lab notebook) and your cluster will run all the cells.
+# MAGIC 
+# MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
+# MAGIC 
+# MAGIC This step will finish quickly. While the cluster is running all the cells in your autograder notebook, you will see the "Stop Execution" button.
+# MAGIC 
+# MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your autograder notebook before proceeding.
+# MAGIC 
+# MAGIC Note that it will stop on Step (3f), since you have not set the _lab_ variable yet.
 
 # COMMAND ----------
 
@@ -177,7 +222,7 @@ except NameError:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3e) Select the Course Autograder queue **
+# MAGIC ** (3f) Select the Course Autograder queue **
 # MAGIC 
 # MAGIC There are three autograder queues, one for each lab assignment in CS105x: **CS105x-lab0** (setup), **CS105x-lab1b**, and **CS105x-lab2**.
 # MAGIC Set the *lab* variable to the assignment you are submitting.
@@ -190,7 +235,7 @@ lab = <FILL_IN>
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3f) Submit your published notebook to the Course Autograder queue **
+# MAGIC ** (3g) Submit your published notebook to the Course Autograder queue **
 
 # COMMAND ----------
 
