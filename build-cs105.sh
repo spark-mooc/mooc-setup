@@ -14,7 +14,12 @@
 
 dir=$(dirname $0)
 
-master_parse=$dir/../training/devops/master_parse/master_parse.py
+if [ -z $MASTER_PARSE_DIR ]
+then
+    echo "Environment variable MASTER_PARSE_DIR is not set." >&2
+    exit 1
+fi
+master_parse=$MASTER_PARSE_DIR/master_parse.py
 
 rm -rf build_mp
 
