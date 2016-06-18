@@ -1,8 +1,13 @@
-# Databricks notebook source exported at Tue, 14 Jun 2016 23:34:41 UTC
+# Databricks notebook source exported at Sat, 18 Jun 2016 14:10:37 UTC
+# MAGIC %md
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Running Your First Notebook**
-# MAGIC This notebook will show you how to install the course libraries, create your first Spark cluster, and test basic notebook funcionality.  To move through the notebook just run each of the cells.  You will not need to solve any problems to complete this lab.  You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
+# MAGIC This notebook will show you how to install the course libraries, create your first Spark cluster, and test basic notebook functionality.  To move through the notebook just run each of the cells.  You will not need to solve any problems to complete this lab.  You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
 # MAGIC 
 # MAGIC ** This notebook covers: **
 # MAGIC * *Part 1:* Attach class helper library
@@ -23,15 +28,14 @@
 # MAGIC - The class helper library "spark_mooc_meta" is published in the [PyPI Python Package repository](https://pypi.python.org/pypi) as [https://pypi.python.org/pypi/spark_mooc_meta](https://pypi.python.org/pypi/spark_mooc_meta)
 # MAGIC - You can install the library into your workspace following the following instructions:
 # MAGIC  - Step 1: Click on "Workspace", then on the dropdown and select "Create" and "Library"
-# MAGIC  
+# MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Library1.png" alt="Drawing" />
 # MAGIC  - Step 2 Enter the name of the library by selecting "Upload Python Egg or PyPI" and entering "spark_mooc_meta" in the "PyPI Name" field
-# MAGIC  
+# MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Library2.png" alt="Drawing" />
 # MAGIC  - Step 3 Make sure the checkbox for auto-attaching the library to your cluster is selected
-# MAGIC  
+# MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Library3.png" alt="Drawing" />
-# MAGIC  
 
 # COMMAND ----------
 
@@ -68,7 +72,6 @@ print fil
 
 # If the Spark job doesn't work properly this will raise an AssertionError
 assert fil == [Row(u'Bill', 4)]
-
 
 # COMMAND ----------
 
@@ -121,32 +124,12 @@ Test.assertEqualsHashed(twelve, '7b52009b64fd0a2a49e6d8a939753077792b0554',
 
 # COMMAND ----------
 
-# PRIVATE_TEST Compare with hash (2a)
-# Check our testing library/package
-# This should print '1 test passed.' on two lines
-from databricks_test_helper import Test
-
-twelve = 12
-Test.assertEquals(twelve, 12, 'twelve should equal 12')
-Test.assertEqualsHashed(twelve, '7b52009b64fd0a2a49e6d8a939753077792b0554',
-                        'twelve, once hashed, should equal the hashed value of 12')
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ** (3b) Compare lists **
 
 # COMMAND ----------
 
 # TEST Compare lists (2b)
-# This should print '1 test passed.'
-unsortedList = [(5, 'b'), (5, 'a'), (4, 'c'), (3, 'a')]
-Test.assertEquals(sorted(unsortedList), [(3, 'a'), (4, 'c'), (5, 'a'), (5, 'b')],
-                  'unsortedList does not sort properly')
-
-# COMMAND ----------
-
-# PRIVATE_TEST Compare lists (2b)
 # This should print '1 test passed.'
 unsortedList = [(5, 'b'), (5, 'a'), (4, 'c'), (3, 'a')]
 Test.assertEquals(sorted(unsortedList), [(3, 'a'), (4, 'c'), (5, 'a'), (5, 'b')],
@@ -191,9 +174,8 @@ y = [log(x1 ** 2) for x1 in x]
 fig, ax = preparePlot(range(5, 60, 10), range(0, 12, 1))
 plt.scatter(x, y, s=14**2, c='#d6ebf2', edgecolors='#8cbfd0', alpha=0.75)
 ax.set_xlabel(r'$range(1, 50)$'), ax.set_ylabel(r'$\log_e(x^2)$')
-display(fig) # REMOVE LINE IPYTHON
+display(fig) 
 pass
-
 
 # COMMAND ----------
 
@@ -206,7 +188,7 @@ pass
 # MAGIC ** (5a) Gradient descent formula **
 # MAGIC 
 # MAGIC You should see a formula on the line below this one: \\[ \scriptsize \mathbf{w}_{i+1} = \mathbf{w}_i - \alpha_i \sum_j (\mathbf{w}_i^\top\mathbf{x}_j  - y_j) \mathbf{x}_j \,.\\]
-# MAGIC  
+# MAGIC 
 # MAGIC This formula is included inline with the text and is \\( \scriptsize (\mathbf{w}^\top \mathbf{x} - y) \mathbf{x} \\).
 
 # COMMAND ----------

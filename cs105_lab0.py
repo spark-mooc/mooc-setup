@@ -1,4 +1,9 @@
-# Databricks notebook source exported at Tue, 14 Jun 2016 23:34:41 UTC
+# Databricks notebook source exported at Sat, 18 Jun 2016 14:10:37 UTC
+
+# MAGIC %md
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+
+# COMMAND ----------
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -8,7 +13,7 @@
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Running Your First Notebook**
-# MAGIC This notebook will show you how to install the course libraries, create your first Spark cluster, and test basic notebook funcionality.  To move through the notebook just run each of the cells.  You will not need to solve any problems to complete this lab.  You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
+# MAGIC This notebook will show you how to install the course libraries, create your first Spark cluster, and test basic notebook functionality.  To move through the notebook just run each of the cells.  You will not need to solve any problems to complete this lab.  You can run a cell by pressing "shift-enter", which will compute the current cell and advance to the next cell, or by clicking in a cell and pressing "control-enter", which will compute the current cell and remain in that cell.
 # MAGIC 
 # MAGIC ** This notebook covers: **
 # MAGIC * *Part 1:* Attach class helper library
@@ -37,7 +42,6 @@
 # MAGIC  - Step 3 Make sure the checkbox for auto-attaching the library to your cluster is selected
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Library3.png" alt="Drawing" />
-# MAGIC 
 
 # COMMAND ----------
 
@@ -74,7 +78,6 @@ print fil
 
 # If the Spark job doesn't work properly this will raise an AssertionError
 assert fil == [Row(u'Bill', 4)]
-
 
 # COMMAND ----------
 
@@ -177,9 +180,8 @@ y = [log(x1 ** 2) for x1 in x]
 fig, ax = preparePlot(range(5, 60, 10), range(0, 12, 1))
 plt.scatter(x, y, s=14**2, c='#d6ebf2', edgecolors='#8cbfd0', alpha=0.75)
 ax.set_xlabel(r'$range(1, 50)$'), ax.set_ylabel(r'$\log_e(x^2)$')
-display(fig) 
+display(fig)
 pass
-
 
 # COMMAND ----------
 
