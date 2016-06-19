@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 19 Jun 2016 17:48:42 UTC
+# Databricks notebook source exported at Sun, 19 Jun 2016 19:22:55 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Spark Tutorial: Learning Apache Spark**
@@ -27,8 +27,7 @@
 # MAGIC Also covered:
 # MAGIC * `cache()`, `unpersist()`
 # MAGIC 
-# MAGIC > Note that, for reference, you can look up the details of these methods in:
-# MAGIC > * [Spark's PySpark SQL API](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark-sql-module)
+# MAGIC Note that, for reference, you can look up the details of these methods in the [Spark's PySpark SQL API](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark-sql-module)
 
 # COMMAND ----------
 
@@ -129,6 +128,12 @@ type(sqlContext)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Note that the type is `HiveContext`. This means we're working with a version of Spark that has Hive support. Compiling Spark with Hive support is a good idea, even if you don't have a Hive metastore. As the 
+# MAGIC [Spark Programming Guide](http://spark.apache.org/docs/latest/sql-programming-guide.html#starting-point-sqlcontext) states, a `HiveContext` "provides a superset of the functionality provided by the basic `SQLContext`. Additional features include the ability to write queries using the more complete HiveQL parser, access to Hive UDFs [user-defined functions], and the ability to read data from Hive tables. To use a `HiveContext`, you do not need to have an existing Hive setup, and all of the data sources available to a `SQLContext` are still available."
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC **(2b) `SparkContext` attributes**
 # MAGIC 
 # MAGIC You can use Python's [dir()](https://docs.python.org/2/library/functions.html?highlight=dir#dir) function to get a list of all the attributes (including methods) accessible through the `sqlContext` object.
@@ -153,7 +158,11 @@ help(sqlContext)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Outside of `pyspark` or a notebook, `SQLContext` is created from the lower-level `SparkContext`, which is usually used to create Resilient Distributed Datasets (RDDs). In this course, we'll be using DataFrames, so we won't be interacting directly with the Spark Context object very much. However, it's worth knowing that inside `pyspark` or a notebook, you already have an existing `SparkContext` in the `sc` variable. One simple thing we can do with `sc` is check the version of Spark we're using:
+# MAGIC Outside of `pyspark` or a notebook, `SQLContext` is created from the lower-level `SparkContext`, which is usually used to create Resilient Distributed Datasets (RDDs). An RDD is the way Spark actually represents data internally; DataFrames are actually implemented in terms of RDDs. 
+# MAGIC 
+# MAGIC While you can interact directly with RDDs, DataFrames are preferred. They're generally faster, and they perform the same no matter what language (Python, R, Scala or Java) you use with Spark.
+# MAGIC 
+# MAGIC In this course, we'll be using DataFrames, so we won't be interacting directly with the Spark Context object very much. However, it's worth knowing that inside `pyspark` or a notebook, you already have an existing `SparkContext` in the `sc` variable. One simple thing we can do with `sc` is check the version of Spark we're using:
 
 # COMMAND ----------
 
@@ -188,22 +197,33 @@ help(map)
 # MAGIC * Apply transformation `filter` and view results with `collect`
 # MAGIC * Learn about lambda functions
 # MAGIC * Explore how lazy evaluation works and the debugging challenges that it introduces
+# MAGIC 
+# MAGIC A DataFrame consists of a series of `Row` objects; each `Row` object has a set of named columns. You can think of a DataFrame as modeling a table, though the data source being processed does not have to be a table.
+# MAGIC 
+# MAGIC More formally, a DataFrame must have a _schema_, which means it must consist of columns, each of which has a _name_ and a _type_. Some data sources have schemas built into them. Examples include RDBMS databases, Parquet files, and NoSQL databases like Cassandra. Other data sources don't have computer-readable schemas, but you can often apply a schema programmatically.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(3a) Create a Python collection of integers in the range of 1 .. 10000**
+# MAGIC **(3a) Create a Python collection of 10,000 people***
 # MAGIC 
 # MAGIC We will use a third-party Python testing library called [fake-factory](https://pypi.python.org/pypi/fake-factory/0.5.3) to create a collection of fake person records. 
 # MAGIC 
-# MAGIC **NOTE**: You'll need to add the `fake-factory` package as a library with your Databricks Community Edition workspace.
+# MAGIC **NOTE**: You _may_ need to add the `fake-factory` package as a library with your Databricks Community Edition workspace.
 
 # COMMAND ----------
 
 from faker import Factory
 fake = Factory.create()
 fake.seed(4321)
-#fake.get_providers()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC We're going to use this factory to create a collection of randomly generated people records. In the next section, we'll turn that collection into a DataFrame. We'll use the Spark `Row` class,
+# MAGIC because that will help us define the Spark DataFrame schema. There are other ways to define schemas, though; see 
+# MAGIC the Spark Programming Guide's discussion of [schema inference](http://spark.apache.org/docs/latest/sql-programming-guide.html#inferring-the-schema-using-reflection) for more information. (For instance,
+# MAGIC we could also use a Python `namedtuple`.)
 
 # COMMAND ----------
 
@@ -226,8 +246,7 @@ data = list(repeat(10000, fake_entry))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC `data` is just a normal Python list, containing Spark SQL `Row` objects. Let's look at the first item in the list:
+# MAGIC %md `data` is just a normal Python list, containing Spark SQL `Row` objects. Let's look at the first item in the list:
 
 # COMMAND ----------
 
@@ -235,8 +254,7 @@ data[0][0], data[0][1], data[0][2], data[0][3], data[0][4]
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC We can check the size of the list using the Python `len()` function.
+# MAGIC %md We can check the size of the list using the Python `len()` function.
 
 # COMMAND ----------
 
@@ -259,8 +277,7 @@ len(data)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Let's view the help for `createDataFrame()`.
+# MAGIC %md Let's view the help for `createDataFrame()`.
 
 # COMMAND ----------
 
@@ -272,8 +289,7 @@ dataDF = sqlContext.createDataFrame(data, ('last_name', 'first_name', 'ssn', 'oc
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Let's see what type `sqlContext.createDataFrame()` returned.
+# MAGIC %md Let's see what type `sqlContext.createDataFrame()` returned.
 
 # COMMAND ----------
 
@@ -281,8 +297,7 @@ print 'type of dataDF: {0}'.format(type(dataDF))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Let's take a look at the DataFrame's schema and some of its rows.
+# MAGIC %md Let's take a look at the DataFrame's schema and some of its rows.
 
 # COMMAND ----------
 
@@ -290,8 +305,7 @@ dataDF.printSchema()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC We can register the newly created DataFrame as a nemd table, using the `registerDataFrameAsTable()` method.
+# MAGIC %md We can register the newly created DataFrame as a named table, using the `registerDataFrameAsTable()` method.
 
 # COMMAND ----------
 
@@ -299,8 +313,7 @@ sqlContext.registerDataFrameAsTable(dataDF, 'dataframe')
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Let's view the logical and physical plans of a set of transformations on the DataFrame, using the `explain()` function.
+# MAGIC %md Let's view the logical and physical plans of a set of transformations on the DataFrame, using the `explain()` function.
 
 # COMMAND ----------
 
@@ -308,8 +321,7 @@ dataDF.distinct().select('*').explain(True)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC What methods can we call on this DataFrame?
+# MAGIC %md What methods can we call on this DataFrame?
 
 # COMMAND ----------
 
@@ -317,8 +329,7 @@ help(dataDF)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC How many partitions will the DataFrame be split into?
+# MAGIC %md How many partitions will the DataFrame be split into?
 
 # COMMAND ----------
 
@@ -344,8 +355,7 @@ subDF = dataDF.select('last_name', 'first_name', 'ssn', 'occupation', (dataDF.ag
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Let's take a look at the query plan.
+# MAGIC %md Let's take a look at the query plan.
 
 # COMMAND ----------
 
@@ -374,8 +384,7 @@ print results
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC A better way to visualize the data is to use the `show()` method. If you don't tell `show()` how many rows to display, it displays 20 rows.
+# MAGIC %md A better way to visualize the data is to use the `show()` method. If you don't tell `show()` how many rows to display, it displays 20 rows.
 
 # COMMAND ----------
 
@@ -383,8 +392,7 @@ subDF.show()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC If you'd prefer that `show()` not truncate the data, you can tell it not to:
+# MAGIC %md If you'd prefer that `show()` not truncate the data, you can tell it not to:
 
 # COMMAND ----------
 
@@ -392,8 +400,7 @@ subDF.show(n=30, truncate=False)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC In Databricks, there's an even nicer way to look at the values in a DataFrame: The `display()` helper function.
+# MAGIC %md In Databricks, there's an even nicer way to look at the values in a DataFrame: The `display()` helper function.
 
 # COMMAND ----------
 
@@ -438,13 +445,11 @@ filteredDF.count()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC (These are some _seriously_ precocious children...)
+# MAGIC %md (These are some _seriously_ precocious children...)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC #### Part 4: Python Lambda functions and User Defined Functions
+# MAGIC %md #### Part 4: Python Lambda functions and User Defined Functions
 
 # COMMAND ----------
 
@@ -455,7 +460,7 @@ filteredDF.count()
 # MAGIC 
 # MAGIC `lambda` functions, borrowed from LISP, can be used wherever function objects are required. They are syntactically restricted to a single expression. Remember that `lambda` functions are a matter of style and using them is never required - semantically, they are just syntactic sugar for a normal function definition. You can always define a separate normal function instead, but using a `lambda` function is an equivalent and more compact form of coding. Ideally you should consider using `lambda` functions where you want to encapsulate non-reusable code without littering your code with one-line functions.
 # MAGIC 
-# MAGIC Here, instead of defining a separate function for the `filter()` transformation, we will use an inline `lambda()` function.
+# MAGIC Here, instead of defining a separate function for the `filter()` transformation, we will use an inline `lambda()` function and we will register that lambda as a Spark _User Defined Function_ (UDF). A UDF is a special wrapper around a function, allowing the function to be used in a DataFrame query.
 
 # COMMAND ----------
 
@@ -495,8 +500,7 @@ print "Four of them: {0}\n".format(filteredDF.take(4))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC This looks better:
+# MAGIC %md This looks better:
 
 # COMMAND ----------
 
@@ -509,8 +513,7 @@ display(filteredDF.take(4))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ##### (6a) `orderBy()`
+# MAGIC %md ##### (6a) `orderBy()`
 # MAGIC 
 # MAGIC [`orderBy()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.distinct) allows you to sort a DataFrame by one or more columns, producing a new DataFrame.
 # MAGIC 
@@ -535,8 +538,7 @@ display(dataDF.orderBy(dataDF.age.desc()).take(5))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Let's reverse the sort order. Since ascending sort is the default, we can actually use a `Column` object expression or a simple string, in this case. The `desc()` and `asc()` methods are only defined on `Column`. Something like `orderBy('age'.desc())` would not work, because there's no `desc()` method on Python string objects. That's why we needed the column expression. But if we're just using the defaults, we can pass a string column name into `orderBy()`. This is sometimes easier to read.
+# MAGIC %md Let's reverse the sort order. Since ascending sort is the default, we can actually use a `Column` object expression or a simple string, in this case. The `desc()` and `asc()` methods are only defined on `Column`. Something like `orderBy('age'.desc())` would not work, because there's no `desc()` method on Python string objects. That's why we needed the column expression. But if we're just using the defaults, we can pass a string column name into `orderBy()`. This is sometimes easier to read.
 
 # COMMAND ----------
 
@@ -544,8 +546,7 @@ display(dataDF.orderBy('age').take(5))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ##### (6b) `distinct()` and `dropDuplicates()`
+# MAGIC %md ##### (6b) `distinct()` and `dropDuplicates()`
 # MAGIC 
 # MAGIC [`distinct()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.distinct) filters out duplicate rows, and it considers all columns. Since our data is completely randomly generated (by `fake-factory`), it's extremely unlikely that there are any duplicate rows:
 
@@ -556,8 +557,7 @@ print dataDF.distinct().count()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC To demonstrate `distinct()`, let's create a quick throwaway dataset.
+# MAGIC %md To demonstrate `distinct()`, let's create a quick throwaway dataset.
 
 # COMMAND ----------
 
@@ -573,13 +573,11 @@ tempDF.distinct().show()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Note that one of the ("Joe", 1) rows was deleted, but both rows with name "Anna" were kept, because all columns in a row must match another row for it to be considered a duplicate.
+# MAGIC %md Note that one of the ("Joe", 1) rows was deleted, but both rows with name "Anna" were kept, because all columns in a row must match another row for it to be considered a duplicate.
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC [`dropDuplicates()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dropDuplicates) is like `distinct()`, except that it allows us to specify the columns to compare. For instance, we can use it to drop all rows where the first name and last name duplicates (ignoring the occupation and age columns).
+# MAGIC %md [`dropDuplicates()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dropDuplicates) is like `distinct()`, except that it allows us to specify the columns to compare. For instance, we can use it to drop all rows where the first name and last name duplicates (ignoring the occupation and age columns).
 
 # COMMAND ----------
 
@@ -588,8 +586,7 @@ print dataDF.dropDuplicates(['first_name', 'last_name']).count()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ##### (6c) `drop()`
+# MAGIC %md ##### (6c) `drop()`
 # MAGIC 
 # MAGIC [`drop()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.drop) is like the opposite of `select()`: Instead of selecting specific columns from a DataFrame, it drops a specifed column from a DataFrame. 
 # MAGIC 
@@ -601,8 +598,7 @@ dataDF.drop('occupation').drop('age').show()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ##### (6d) `groupBy()`
+# MAGIC %md ##### (6d) `groupBy()`
 # MAGIC 
 # MAGIC [`groupBy()`]((http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.groupBy) is one of the most powerful transformations. It allows you to perform aggregations on a DataFrame.
 # MAGIC 
@@ -624,11 +620,12 @@ dataDF.groupBy().avg('age').show(truncate=False)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Here's a complicated (and pointless and inefficient) way to use `groupBy()` to reimplement `count()`:
+# MAGIC We can also use `groupBy()` to do aother useful aggregations:
 
 # COMMAND ----------
 
-dataDF.groupBy('occupation').count().groupBy().sum('count').show()
+print "Maximum age: {0}".format(dataDF.groupBy().max('age').first()[0])
+print "Minimum age: {0}".format(dataDF.groupBy().min('age').first()[0])
 
 # COMMAND ----------
 
