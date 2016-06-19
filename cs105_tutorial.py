@@ -1,4 +1,9 @@
-# Databricks notebook source exported at Sat, 18 Jun 2016 21:45:40 UTC
+# Databricks notebook source exported at Sun, 19 Jun 2016 17:48:42 UTC
+
+# MAGIC %md
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+
+# COMMAND ----------
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -108,7 +113,7 @@ print 'This was last run on: {0}'.format(datetime.datetime.now())
 # MAGIC 
 # MAGIC In part 1, we saw that normal Python code can be executed via cells. When using Databricks this code gets executed in the Spark driver's Java Virtual Machine (JVM) and not in an executor's JVM, and when using an IPython notebook it is executed within the kernel associated with the notebook. Since no Spark functionality is actually being used, no tasks are launched on the executors.
 # MAGIC 
-# MAGIC In order to use Spark and its DataFrame API we will need to use a `SQLContext`.  When running Spark, you start a new Spark application by creating a [SparkContext](http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.SparkContext). You can then create a [SQLContext](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.SQLContext) from the `SparkContexst`. When the `SparkContext` is created, it asks the master for some cores to use to do work.  The master sets these cores aside just for you; they won't be used for other applications. When using Databricks or the virtual machine provisioned for this class, both a `SparkContext` and a `SQLContext` are created for you automatically. `sc` is your `SparkContext`, and `sqlContext` is your `SQLContext`.
+# MAGIC In order to use Spark and its DataFrame API we will need to use a `SQLContext`.  When running Spark, you start a new Spark application by creating a [SparkContext](http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.SparkContext). You can then create a [SQLContext](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.SQLContext) from the `SparkContext`. When the `SparkContext` is created, it asks the master for some cores to use to do work.  The master sets these cores aside just for you; they won't be used for other applications. When using Databricks, both a `SparkContext` and a `SQLContext` are created for you automatically. `sc` is your `SparkContext`, and `sqlContext` is your `SQLContext`.
 
 # COMMAND ----------
 
@@ -120,16 +125,16 @@ print 'This was last run on: {0}'.format(datetime.datetime.now())
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/cs105x/diagram-2a.png" style="height: 800px;float: right"/>
 # MAGIC 
-# MAGIC You can view the details of your Spark application in the Spark web UI.  The web UI is accessible in Databricks by going to "Clusters" and then clicking on the "View Spark UI" link for your cluster.  When running locally you'll find it at [localhost:4040](http://localhost:4040) (if localhost doesn't work, try [this](http://127.0.0.1:4040/)).  In the web UI, under the "Jobs" tab, you can see a list of jobs that have been scheduled or run.  It's likely there isn't any thing interesting here yet because we haven't run any jobs, but we'll return to this page later.
+# MAGIC You can view the details of your Spark application in the Spark web UI.  The web UI is accessible in Databricks by going to "Clusters" and then clicking on the "Spark UI" link for your cluster.  In the web UI, under the "Jobs" tab, you can see a list of jobs that have been scheduled or run.  It's likely there isn't any thing interesting here yet because we haven't run any jobs, but we'll return to this page later.
 # MAGIC 
 # MAGIC At a high level, every Spark application consists of a driver program that launches various parallel operations on executor Java Virtual Machines (JVMs) running either in a cluster or locally on the same machine. In Databricks, "Databricks Shell" is the driver program.  When running locally, `pyspark` is the driver program. In all cases, this driver program contains the main loop for the program and creates distributed datasets on the cluster, then applies operations (transformations & actions) to those datasets.
-# MAGIC Driver programs access Spark through a SparkContext object, which represents a connection to a computing cluster. A Spark SQL context object (`sqlContext`) is the main entry point for Spark DataFrame and SQL functionality. A `SQLContext` can be used to create DataFrames, which allow you to direct the operations on your data.
+# MAGIC Driver programs access Spark through a SparkContext object, which represents a connection to a computing cluster. A Spark SQL context object (`sqlContext`) is the main entry point for Spark DataFrame and SQL functionality. A `SQLContext` can be used to create DataFrames, which allows you to direct the operations on your data.
 # MAGIC 
-# MAGIC Try printing out `sqContext` to see its type.
+# MAGIC Try printing out `sqlContext` to see its type.
 
 # COMMAND ----------
 
-# Display the type of the Spark Context sc
+# Display the type of the Spark sqlContext
 type(sqlContext)
 
 # COMMAND ----------
@@ -137,11 +142,11 @@ type(sqlContext)
 # MAGIC %md
 # MAGIC **(2b) `SparkContext` attributes**
 # MAGIC 
-# MAGIC You can use Python's [dir()](https://docs.python.org/2/library/functions.html?highlight=dir#dir) function to get a list of all the attributes (including methods) accessible through the `sc` object.
+# MAGIC You can use Python's [dir()](https://docs.python.org/2/library/functions.html?highlight=dir#dir) function to get a list of all the attributes (including methods) accessible through the `sqlContext` object.
 
 # COMMAND ----------
 
-# List sc's attributes
+# List sqlContext's attributes
 dir(sqlContext)
 
 # COMMAND ----------
@@ -149,7 +154,7 @@ dir(sqlContext)
 # MAGIC %md
 # MAGIC **(2c) Getting help**
 # MAGIC 
-# MAGIC Alternatively, you can use Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) function to get an easier to read list of all the attributes, including examples, that the `sc` object has.
+# MAGIC Alternatively, you can use Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) function to get an easier to read list of all the attributes, including examples, that the `sqlContext` object has.
 
 # COMMAND ----------
 
@@ -159,6 +164,7 @@ help(sqlContext)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Outside of `pyspark` or a notebook, `SQLContext` is created from the lower-level `SparkContext`, which is usually used to create Resilient Distributed Datasets (RDDs). In this course, we'll be using DataFrames, so we won't be interacting directly with the Spark Context object very much. However, it's worth knowing that inside `pyspark` or a notebook, you already have an existing `SparkContext` in the `sc` variable. One simple thing we can do with `sc` is check the version of Spark we're using:
 
 # COMMAND ----------
 
@@ -184,7 +190,7 @@ help(map)
 # MAGIC 
 # MAGIC > Note that Spark uses lazy evaluation, so transformations are not actually executed until an action occurs.
 # MAGIC 
-# MAGIC We will perform several exercises to obtain a better understanding of RDDs:
+# MAGIC We will perform several exercises to obtain a better understanding of DataFrames:
 # MAGIC * Create a Python collection of 10,000 integers
 # MAGIC * Create a Spark DataFrame from that collection
 # MAGIC * Subtract one from each value using `map`
@@ -232,6 +238,7 @@ data = list(repeat(10000, fake_entry))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC `data` is just a normal Python list, containing Spark SQL `Row` objects. Let's look at the first item in the list:
 
 # COMMAND ----------
 
@@ -240,6 +247,7 @@ data[0][0], data[0][1], data[0][2], data[0][3], data[0][4]
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC We can check the size of the list using the Python `len()` function.
 
 # COMMAND ----------
 
@@ -248,9 +256,9 @@ len(data)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(3b) Distributed data and using a collection to create an DataFrame**
+# MAGIC **(3b) Distributed data and using a collection to create a DataFrame**
 # MAGIC 
-# MAGIC In Spark, datasets are represented as a list of entries, where the list is broken up into many different partitions that are each stored on a different machine.  Each partition holds a unique subset of the entries in the list.  Spark calls datasets that it stores "Resilient Distributed Datasets" (RDDs). Even DataFrames are ultimately represented as RDDs.
+# MAGIC In Spark, datasets are represented as a list of entries, where the list is broken up into many different partitions that are each stored on a different machine.  Each partition holds a unique subset of the entries in the list.  Spark calls datasets that it stores "Resilient Distributed Datasets" (RDDs). Even DataFrames are ultimately represented as RDDs, with additional meta-data.
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/cs105x/diagram-3b.png" style="width: 900px; float: right; margin: 5px"/>
 # MAGIC 
@@ -258,7 +266,16 @@ len(data)
 # MAGIC The figure to the right illustrates how Spark breaks a list of data entries into partitions that are each stored in memory on a worker.
 # MAGIC 
 # MAGIC 
-# MAGIC To create the DataFrame, we'll use `sqlContext.createDataFrame()`, and we'll pass our array of data in as an argument to that function. Spark will create a new set of input data based on data that is passed in.  A DataFrame requires a _schema_, which is a list of columns, where each column has a name and a type. Our list of data has elements with types (mostly strings, but one integer). We'll supply the rest of the schema, the column names, as the second argument to `createDataFrame()`.
+# MAGIC To create the DataFrame, we'll use `sqlContext.createDataFrame()`, and we'll pass our array of data in as an argument to that function. Spark will create a new set of input data based on data that is passed in.  A DataFrame requires a _schema_, which is a list of columns, where each column has a name and a type. Our list of data has elements with types (mostly strings, but one integer). We'll supply the rest of the schema and the column names as the second argument to `createDataFrame()`.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Let's view the help for `createDataFrame()`.
+
+# COMMAND ----------
+
+help(sqlContext.createDataFrame)
 
 # COMMAND ----------
 
@@ -267,23 +284,16 @@ dataDF = sqlContext.createDataFrame(data, ('last_name', 'first_name', 'ssn', 'oc
 # COMMAND ----------
 
 # MAGIC %md
-
-# COMMAND ----------
-
-help(sqlContext.createDataFrame)
-
-# COMMAND ----------
-
-# MAGIC %md
+# MAGIC Let's see what type `sqlContext.createDataFrame()` returned.
 
 # COMMAND ----------
 
 print 'type of dataDF: {0}'.format(type(dataDF))
 
-
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Let's take a look at the DataFrame's schema and some of its rows.
 
 # COMMAND ----------
 
@@ -292,6 +302,7 @@ dataDF.printSchema()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC We can register the newly created DataFrame as a nemd table, using the `registerDataFrameAsTable()` method.
 
 # COMMAND ----------
 
@@ -300,6 +311,7 @@ sqlContext.registerDataFrameAsTable(dataDF, 'dataframe')
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Let's view the logical and physical plans of a set of transformations on the DataFrame, using the `explain()` function.
 
 # COMMAND ----------
 
@@ -308,6 +320,7 @@ dataDF.distinct().select('*').explain(True)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC What methods can we call on this DataFrame?
 
 # COMMAND ----------
 
@@ -316,6 +329,7 @@ help(dataDF)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC How many partitions will the DataFrame be split into?
 
 # COMMAND ----------
 
@@ -342,6 +356,7 @@ subDF = dataDF.select('last_name', 'first_name', 'ssn', 'occupation', (dataDF.ag
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Let's take a look at the query plan.
 
 # COMMAND ----------
 
@@ -368,10 +383,10 @@ subDF.explain(True)
 results = subDF.collect()
 print results
 
-
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC A better way to visualize the data is to use the `show()` method. If you don't tell `show()` how many rows to display, it displays 20 rows.
 
 # COMMAND ----------
 
@@ -380,6 +395,7 @@ subDF.show()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC If you'd prefer that `show()` not truncate the data, you can tell it not to:
 
 # COMMAND ----------
 
@@ -388,6 +404,7 @@ subDF.show(n=30, truncate=False)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC In Databricks, there's an even nicer way to look at the values in a DataFrame: The `display()` helper function.
 
 # COMMAND ----------
 
@@ -404,7 +421,7 @@ display(subDF)
 # MAGIC 
 # MAGIC Note that because `count()` is an action operation, if we had not already performed an action with `collect()`, then Spark would now perform the transformation operations when we executed `count()`.
 # MAGIC 
-# MAGIC Each task counts the entries in its partition and sends the result to your SparkContext, which adds up all of the counts. The figure below shows what would happen if we ran `count()` on a small example dataset with just four partitions.
+# MAGIC Each task counts the entries in its partition and sends the result to your SparkContext, which adds up all of the counts. The figure on the right shows what would happen if we ran `count()` on a small example dataset with just four partitions.
 
 # COMMAND ----------
 
@@ -416,13 +433,13 @@ print subDF.count()
 # MAGIC %md
 # MAGIC ** (3f) Apply transformation `filter` and view results with `collect` **
 # MAGIC 
-# MAGIC Next, we'll create a new DataFrame that only contains the people whose ages are less than 10. To do this, we'll use the `filter()` transformation (which you can also call as `where()`, if you prefer something more SQL-like). The `filter()` method is a transformation operation that creates a new DataFrame from the input DataFrame, keeping only values that match the filter expression.
+# MAGIC Next, we'll create a new DataFrame that only contains the people whose ages are less than 10. To do this, we'll use the `filter()` transformation. (You can also use `where()`, an alias for `filter()`, if you prefer something more SQL-like). The `filter()` method is a transformation operation that creates a new DataFrame from the input DataFrame, keeping only values that match the filter expression.
 # MAGIC 
 # MAGIC The figure shows how this might work on the small four-partition dataset.
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/cs105x/diagram-3f.png" style="height:700px;float:right"/>
 # MAGIC 
-# MAGIC To view the filtered list of elements less than 10, we need to create a new list on the driver from the distributed data on the executor nodes.  We use the `collect()` method to return a list that contains all of the elements in this filtered RDD to the driver program.
+# MAGIC To view the filtered list of elements less than 10, we need to create a new list on the driver from the distributed data on the executor nodes.  We use the `collect()` method to return a list that contains all of the elements in this filtered DataFrame to the driver program.
 
 # COMMAND ----------
 
@@ -433,10 +450,12 @@ filteredDF.count()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC (These are some _seriously_ precocious children...)
 
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC #### Part 4: Python Lambda functions and User Defined Functions
 
 # COMMAND ----------
 
@@ -477,7 +496,7 @@ evenDF.count()
 # MAGIC 
 # MAGIC One useful thing to do when we have a new dataset is to look at the first few entries to obtain a rough idea of what information is available.  In Spark, we can do that using actions like `first()`, `take()`, and `show()`. Note that for the `first()` and `take()` actions, the elements that are returned depend on how the DataFrame is *partitioned*.
 # MAGIC 
-# MAGIC Instead of using the `collect()` action, we can use the `take(n)` action to return the first _n_ elements of the RDD. The `first()` action returns the first element of a DataFrame, and is equivalent to `take(1)`.
+# MAGIC Instead of using the `collect()` action, we can use the `take(n)` action to return the first _n_ elements of the DataFrame. The `first()` action returns the first element of a DataFrame, and is equivalent to `take(1)[0]`.
 
 # COMMAND ----------
 
@@ -488,6 +507,7 @@ print "Four of them: {0}\n".format(filteredDF.take(4))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC This looks better:
 
 # COMMAND ----------
 
@@ -501,6 +521,7 @@ display(filteredDF.take(4))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##### (6a) `orderBy()`
 # MAGIC 
 # MAGIC [`orderBy()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.distinct) allows you to sort a DataFrame by one or more columns, producing a new DataFrame.
 # MAGIC 
@@ -526,6 +547,7 @@ display(dataDF.orderBy(dataDF.age.desc()).take(5))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Let's reverse the sort order. Since ascending sort is the default, we can actually use a `Column` object expression or a simple string, in this case. The `desc()` and `asc()` methods are only defined on `Column`. Something like `orderBy('age'.desc())` would not work, because there's no `desc()` method on Python string objects. That's why we needed the column expression. But if we're just using the defaults, we can pass a string column name into `orderBy()`. This is sometimes easier to read.
 
 # COMMAND ----------
 
@@ -534,6 +556,7 @@ display(dataDF.orderBy('age').take(5))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##### (6b) `distinct()` and `dropDuplicates()`
 # MAGIC 
 # MAGIC [`distinct()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.distinct) filters out duplicate rows, and it considers all columns. Since our data is completely randomly generated (by `fake-factory`), it's extremely unlikely that there are any duplicate rows:
 
@@ -545,6 +568,7 @@ print dataDF.distinct().count()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC To demonstrate `distinct()`, let's create a quick throwaway dataset.
 
 # COMMAND ----------
 
@@ -561,10 +585,12 @@ tempDF.distinct().show()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Note that one of the ("Joe", 1) rows was deleted, but both rows with name "Anna" were kept, because all columns in a row must match another row for it to be considered a duplicate.
 
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC [`dropDuplicates()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dropDuplicates) is like `distinct()`, except that it allows us to specify the columns to compare. For instance, we can use it to drop all rows where the first name and last name duplicates (ignoring the occupation and age columns).
 
 # COMMAND ----------
 
@@ -574,6 +600,7 @@ print dataDF.dropDuplicates(['first_name', 'last_name']).count()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##### (6c) `drop()`
 # MAGIC 
 # MAGIC [`drop()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.drop) is like the opposite of `select()`: Instead of selecting specific columns from a DataFrame, it drops a specifed column from a DataFrame.
 # MAGIC 
@@ -586,6 +613,7 @@ dataDF.drop('occupation').drop('age').show()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##### (6d) `groupBy()`
 # MAGIC 
 # MAGIC [`groupBy()`]((http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.groupBy) is one of the most powerful transformations. It allows you to perform aggregations on a DataFrame.
 # MAGIC 
@@ -607,6 +635,7 @@ dataDF.groupBy().avg('age').show(truncate=False)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Here's a complicated (and pointless and inefficient) way to use `groupBy()` to reimplement `count()`:
 
 # COMMAND ----------
 
@@ -615,9 +644,9 @@ dataDF.groupBy('occupation').count().groupBy().sum('count').show()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##### 6(e) `sample()` (optional)
+# MAGIC ##### (6e) `sample()` (optional)
 # MAGIC 
-# MAGIC When analyzing data, the [`sample()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.sample) transformation is often quite useful. It returns a new DataFrame with a random sample of elements from the dataset.  It takes in a `withReplacement` argument, which specifies whether it is okay to randomly pick the same item multiple times from the parent RDD (so when `withReplacement=True`, you can get the same item back multiple times). It takes in a `fraction` parameter, which specifies the fraction elements in the dataset you want to return. (So a `fraction` value of `0.20` returns 20% of the elements in the DataFrame.) It also takes an optional `seed` parameter that allows you to specify a seed value for the random number generator, so that reproducible results can be obtained.
+# MAGIC When analyzing data, the [`sample()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.sample) transformation is often quite useful. It returns a new DataFrame with a random sample of elements from the dataset.  It takes in a `withReplacement` argument, which specifies whether it is okay to randomly pick the same item multiple times from the parent DataFrame (so when `withReplacement=True`, you can get the same item back multiple times). It takes in a `fraction` parameter, which specifies the fraction elements in the dataset you want to return. (So a `fraction` value of `0.20` returns 20% of the elements in the DataFrame.) It also takes an optional `seed` parameter that allows you to specify a seed value for the random number generator, so that reproducible results can be obtained.
 
 # COMMAND ----------
 
@@ -632,14 +661,14 @@ print dataDF.sample(withReplacement=False, fraction=0.05).count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### Part 7: Caching DataFramess and storage options
+# MAGIC #### Part 7: Caching DataFrames and storage options
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ** (7a) Caching DataFrames **
 # MAGIC 
-# MAGIC For efficiency Spark keeps your DataFrames in memory. (More formally, it keeps the _RDDs_ that implement your DataFrames in memory.) By keeping the contents in memory, Spark can quickly access the data. However, memory is limited, so if you try to keep too many partitions in memory, Spark will automatically delete partitions from memory to make space for new ones. If you later refer to one of the delted partitions, Spark will automatically recreate it for you, but that takes time.
+# MAGIC For efficiency Spark keeps your DataFrames in memory. (More formally, it keeps the _RDDs_ that implement your DataFrames in memory.) By keeping the contents in memory, Spark can quickly access the data. However, memory is limited, so if you try to keep too many partitions in memory, Spark will automatically delete partitions from memory to make space for new ones. If you later refer to one of the deleted partitions, Spark will automatically recreate it for you, but that takes time.
 # MAGIC 
 # MAGIC So, if you plan to use a DataFrame more than once, then you should tell Spark to cache it. You can use the `cache()` operation to keep the DataFrame in memory. However, you must still trigger an action on the DataFrame, such as `collect()` or `count()` before the caching will occur. In other words, `cache()` is lazy: It merely tells Spark that the DataFrame should be cached _when the data is materialized_. You have to run an action to materialize the data; the DataFrame will be cached as a side effect. The next time you use the DataFrame, Spark will use the cached data, rather than recomputing the DataFrame from the original data.
 # MAGIC 
@@ -650,8 +679,9 @@ print dataDF.sample(withReplacement=False, fraction=0.05).count()
 # Cache the DataFrame
 filteredDF.cache()
 # Trigger an action
-filteredDF.count()
-
+print filteredDF.count()
+# Check if it is cached
+print filteredDF.is_cached
 
 # COMMAND ----------
 
@@ -666,6 +696,8 @@ filteredDF.count()
 
 # If we are done with the DataFrame we can unpersist it so that its memory can be reclaimed
 filteredDF.unpersist()
+# Check if it is cached
+print filteredDF.is_cached
 
 # COMMAND ----------
 
@@ -689,7 +721,7 @@ filteredDF.unpersist()
 # MAGIC Spark's use of lazy evaluation can make debugging more difficult because code is not always executed immediately. To see an example of how this can happen, let's first define a broken filter function.
 # MAGIC Next we perform a `filter()` operation using the broken filtering function.  No error will occur at this point due to Spark's use of lazy evaluation.
 # MAGIC 
-# MAGIC The `filter()` method will not be executed *until* an action operation is invoked on the RDD.  We will perform an action by using the `collect()` method to return a list that contains all of the elements in this RDD.
+# MAGIC The `filter()` method will not be executed *until* an action operation is invoked on the DataFrame.  We will perform an action by using the `collect()` method to return a list that contains all of the elements in this DataFrame.
 
 # COMMAND ----------
 
@@ -720,6 +752,7 @@ brokenDF = subDF.filter(btUDF(subDF.age) == True)
 # COMMAND ----------
 
 # Now we'll see the error
+# Click on the `+` button to expand the error and scroll through the message.
 brokenDF.count()
 
 # COMMAND ----------
