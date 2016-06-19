@@ -1,15 +1,9 @@
 # Databricks notebook source exported at Sun, 19 Jun 2016 17:48:42 UTC
-
-# MAGIC %md
-# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Spark Tutorial: Learning Apache Spark**
 # MAGIC 
-# MAGIC This tutorial will teach you how to use [Apache Spark](http://spark.apache.org/), a framework for large-scale data processing, within a notebook. Many traditional frameworks were designed to be run on a single computer.  However, many datasets today are too large to be stored on a single computer, and even when a dataset can be stored on one computer (such as the datasets in this tutorial), the dataset can often be processed much more quickly using multiple computers.
+# MAGIC This tutorial will teach you how to use [Apache Spark](http://spark.apache.org/), a framework for large-scale data processing, within a notebook. Many traditional frameworks were designed to be run on a single computer.  However, many datasets today are too large to be stored on a single computer, and even when a dataset can be stored on one computer (such as the datasets in this tutorial), the dataset can often be processed much more quickly using multiple computers.  
 # MAGIC 
 # MAGIC Spark has efficient implementations of a number of transformations and actions that can be composed together to perform data processing and analysis.  Spark excels at distributing these operations across a cluster while abstracting away many of the underlying implementation details.  Spark has been designed with a focus on scalability and efficiency.  With Spark you can begin developing your solution on your laptop, using a small dataset, and then use that same code to process terabytes or even petabytes across a distributed cluster.
 # MAGIC 
@@ -181,7 +175,7 @@ help(map)
 # MAGIC %md
 # MAGIC **Working with your first DataFrames**
 # MAGIC 
-# MAGIC In Spark, we first create a base [DataFrame](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame). We can then apply one or more transformations to that base DataFrame. *A DataFrame is immutable, so once it is created, it cannot be changed.* As a result, each transformation creates a new DataFrame. Finally, we can apply one or more actions to the DataFrames.
+# MAGIC In Spark, we first create a base [DataFrame](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame). We can then apply one or more transformations to that base DataFrame. *A DataFrame is immutable, so once it is created, it cannot be changed.* As a result, each transformation creates a new DataFrame. Finally, we can apply one or more actions to the DataFrames.  
 # MAGIC 
 # MAGIC > Note that Spark uses lazy evaluation, so transformations are not actually executed until an action occurs.
 # MAGIC 
@@ -200,7 +194,7 @@ help(map)
 # MAGIC %md
 # MAGIC **(3a) Create a Python collection of integers in the range of 1 .. 10000**
 # MAGIC 
-# MAGIC We will use a third-party Python testing library called [fake-factory](https://pypi.python.org/pypi/fake-factory/0.5.3) to create a collection of fake person records.
+# MAGIC We will use a third-party Python testing library called [fake-factory](https://pypi.python.org/pypi/fake-factory/0.5.3) to create a collection of fake person records. 
 # MAGIC 
 # MAGIC **NOTE**: You'll need to add the `fake-factory` package as a library with your Databricks Community Edition workspace.
 
@@ -456,7 +450,7 @@ filteredDF.count()
 
 # MAGIC %md
 # MAGIC ** (4a) Using Python `lambda()` functions**
-# MAGIC 
+# MAGIC  
 # MAGIC Python supports the use of small one-line anonymous functions that are not bound to a name at runtime.
 # MAGIC 
 # MAGIC `lambda` functions, borrowed from LISP, can be used wherever function objects are required. They are syntactically restricted to a single expression. Remember that `lambda` functions are a matter of style and using them is never required - semantically, they are just syntactic sugar for a normal function definition. You can always define a separate normal function instead, but using a `lambda` function is an equivalent and more compact form of coding. Ideally you should consider using `lambda` functions where you want to encapsulate non-reusable code without littering your code with one-line functions.
@@ -484,7 +478,7 @@ evenDF.count()
 # MAGIC %md
 # MAGIC #### ** Part 5: Additional DataFrame actions **
 # MAGIC 
-# MAGIC Let's investigate some additional actions:
+# MAGIC Let's investigate some additional actions: 
 # MAGIC 
 # MAGIC * [first()](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.first)
 # MAGIC * [take()](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.take)
@@ -597,7 +591,7 @@ print dataDF.dropDuplicates(['first_name', 'last_name']).count()
 # MAGIC %md
 # MAGIC ##### (6c) `drop()`
 # MAGIC 
-# MAGIC [`drop()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.drop) is like the opposite of `select()`: Instead of selecting specific columns from a DataFrame, it drops a specifed column from a DataFrame.
+# MAGIC [`drop()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.drop) is like the opposite of `select()`: Instead of selecting specific columns from a DataFrame, it drops a specifed column from a DataFrame. 
 # MAGIC 
 # MAGIC Here's a simple use case: Suppose you're reading from a 1,000-column CSV file, and you have to get rid of five of the columns. Instead of selecting 995 of the columns, it's easier just to drop the five you don't want.
 
@@ -685,7 +679,7 @@ print filteredDF.is_cached
 # MAGIC 
 # MAGIC Spark automatically manages the partitions cached in memory. If it has more partitions than available memory, by default, it will evict older partitions to make room for new ones. For efficiency, once you are finished using cached DataFrame, you can optionally tell Spark to stop caching it in memory by using the DataFrame's `unpersist()` method to inform Spark that you no longer need the cached data.
 # MAGIC 
-# MAGIC ** Advanced: ** Spark provides many more options for managing how DataFrames cached. For instance, you can tell Spark to spill cached partitions to disk when it runs out of memory, instead of simply throwing old ones away. You can explore the API for DataFrame's [persist()](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.persist) operation using Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) command.  The `persist()` operation, optionally, takes a pySpark [StorageLevel](http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.StorageLevel) object.
+# MAGIC ** Advanced: ** Spark provides many more options for managing how DataFrames cached. For instance, you can tell Spark to spill cached partitions to disk when it runs out of memory, instead of simply throwing old ones away. You can explore the API for DataFrame's [persist()](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.persist) operation using Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) command.  The `persist()` operation, optionally, takes a pySpark [StorageLevel](http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.StorageLevel) object. 
 
 # COMMAND ----------
 
@@ -760,7 +754,7 @@ brokenDF.count()
 # MAGIC Scroll through the output "Py4JJavaError     Traceback (most recent call last)" part of the cell and first you will see that the line that generated the error is the `collect()` method line. There is *nothing wrong with this line*. However, it is an action and that caused other methods to be executed. Continue scrolling through the Traceback and you will see the following error line:
 # MAGIC 
 # MAGIC `NameError: global name 'val' is not defined`
-# MAGIC 
+# MAGIC     
 # MAGIC Looking at this error line, we can see that we used the wrong variable name in our filtering function `brokenTen()`.
 
 # COMMAND ----------
@@ -769,7 +763,7 @@ brokenDF.count()
 # MAGIC ** (8c) Moving toward expert style **
 # MAGIC 
 # MAGIC As you are learning Spark, I recommend that you write your code in the form:
-# MAGIC ```
+# MAGIC ``` 
 # MAGIC     df2 = df1.transformation1()
 # MAGIC     df2.action1()
 # MAGIC     df3 = df2.transformation2()
