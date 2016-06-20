@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 19 Jun 2016 19:22:55 UTC
+# Databricks notebook source exported at Mon, 20 Jun 2016 01:55:37 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Spark Tutorial: Learning Apache Spark**
@@ -58,7 +58,7 @@ if x > 40:
 # MAGIC %md
 # MAGIC **(1b) Notebook state**
 # MAGIC 
-# MAGIC As you work through a notebook it is important that you run all of the code cells.  The notebook is stateful, which means that variables and their values are retained until the notebook is detached (in Databricks) or the kernel is restarted (in IPython notebooks).  If you do not run all of the code cells as you proceed through the notebook, your variables will not be properly initialized and later code might fail.  You will also need to rerun any cells that you have modified in order for the changes to be available to other cells.
+# MAGIC As you work through a notebook it is important that you run all of the code cells.  The notebook is stateful, which means that variables and their values are retained until the notebook is detached (in Databricks) or the kernel is restarted (in Jupyter notebooks).  If you do not run all of the code cells as you proceed through the notebook, your variables will not be properly initialized and later code might fail.  You will also need to rerun any cells that you have modified in order for the changes to be available to other cells.
 
 # COMMAND ----------
 
@@ -99,7 +99,7 @@ print 'This was last run on: {0}'.format(datetime.datetime.now())
 # MAGIC 
 # MAGIC In Spark, communication occurs between a driver and executors.  The driver has Spark jobs that it needs to run and these jobs are split into tasks that are submitted to the executors for completion.  The results from these tasks are delivered back to the driver.
 # MAGIC 
-# MAGIC In part 1, we saw that normal Python code can be executed via cells. When using Databricks this code gets executed in the Spark driver's Java Virtual Machine (JVM) and not in an executor's JVM, and when using an IPython notebook it is executed within the kernel associated with the notebook. Since no Spark functionality is actually being used, no tasks are launched on the executors.
+# MAGIC In part 1, we saw that normal Python code can be executed via cells. When using Databricks this code gets executed in the Spark driver's Java Virtual Machine (JVM) and not in an executor's JVM, and when using an Jupyter notebook it is executed within the kernel associated with the notebook. Since no Spark functionality is actually being used, no tasks are launched on the executors.
 # MAGIC 
 # MAGIC In order to use Spark and its DataFrame API we will need to use a `SQLContext`.  When running Spark, you start a new Spark application by creating a [SparkContext](http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.SparkContext). You can then create a [SQLContext](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.SQLContext) from the `SparkContext`. When the `SparkContext` is created, it asks the master for some cores to use to do work.  The master sets these cores aside just for you; they won't be used for other applications. When using Databricks, both a `SparkContext` and a `SQLContext` are created for you automatically. `sc` is your `SparkContext`, and `sqlContext` is your `SQLContext`.
 
@@ -208,8 +208,6 @@ help(map)
 # MAGIC **(3a) Create a Python collection of 10,000 people***
 # MAGIC 
 # MAGIC We will use a third-party Python testing library called [fake-factory](https://pypi.python.org/pypi/fake-factory/0.5.3) to create a collection of fake person records. 
-# MAGIC 
-# MAGIC **NOTE**: You _may_ need to add the `fake-factory` package as a library with your Databricks Community Edition workspace.
 
 # COMMAND ----------
 
