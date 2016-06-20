@@ -76,7 +76,7 @@ pluralDF.show()
 # Load in the testing code and check to see if your answer is correct
 # If incorrect it will report back '1 test failed' for each failed test
 # Make sure to rerun any cell you change before trying the test again
-from test_helper import Test
+from databricks_test_helper import Test
 # TEST Using DataFrame functions to add an 's' (1b)
 Test.assertEquals(pluralDF.first()[0], 'cats', 'incorrect result: you need to add an s')
 Test.assertEquals(pluralDF.columns, ['word'], "there should be one column named 'word'")
