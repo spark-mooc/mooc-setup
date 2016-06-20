@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 20 Jun 2016 02:19:31 UTC
+# Databricks notebook source exported at Mon, 20 Jun 2016 02:33:10 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Spark Tutorial: Learning Apache Spark**
@@ -346,6 +346,8 @@ dataDF.rdd.getNumPartitions()
 # MAGIC 4. Finally, once the physical RDD execution plan is established, Spark actually executes the job.
 # MAGIC 
 # MAGIC You can examine the query plan using the `explain()` function on a DataFrame. By default, `explain()` only shows you the final physical plan; however, if you pass it an argument of `True`, it will show you all phases.
+# MAGIC 
+# MAGIC (If you want to take a deeper dive into how Catalyst optimizes DataFrame queries, this blog post, while a little old, is an excellent overview: [Deep Dive into Spark SQL's Catalyst Optimizer](https://databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html).)
 # MAGIC 
 # MAGIC Let's add a couple transformations to our DataFrame and look at the query plan on the resulting transformed DataFrame. Don't be too concerned if it looks like gibberish. As you gain more experience with Apache Spark, you'll begin to be able to use `explain()` to help you understand more about your DataFrame operations.
 
