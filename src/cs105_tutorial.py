@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 20 Jun 2016 01:55:37 UTC
+# Databricks notebook source exported at Mon, 20 Jun 2016 02:19:31 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Spark Tutorial: Learning Apache Spark**
@@ -318,15 +318,6 @@ sqlContext.registerDataFrameAsTable(dataDF, 'dataframe')
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Let's view the logical and physical plans of a set of transformations on the DataFrame, using the `explain()` function.
-
-# COMMAND ----------
-
-dataDF.distinct().select('*').explain(True)
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC What methods can we call on this DataFrame?
 
 # COMMAND ----------
@@ -341,6 +332,27 @@ help(dataDF)
 # COMMAND ----------
 
 dataDF.rdd.getNumPartitions()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### A note about DataFrames and queries
+# MAGIC 
+# MAGIC When you use DataFrames or Spark SQL, you are building up a _query plan_. Each transformation you apply to a DataFrame adds some information to the query plan. When you finally call an action, which triggers execution of your Spark job, several things happen:
+# MAGIC 
+# MAGIC 1. Spark's Catalyst optimizer analyzes the query plan (called an _unoptimized logical query plan_) and attempts to optimize it. Optimizations include (but aren't limited to) rearranging and combining `filter()` operations for efficiency, converting `Decimal` operations to more efficient long integer operations, and pushing some operations down into the data source (e.g., a `filter()` operation might be translated to a SQL `WHERE` clause, if the data source is a traditional SQL RDBMS). The result of this optimization phase is an _optimized logical plan_.
+# MAGIC 2. Once Catalyst has an optimized logical plan, it then constructs multiple _physical_ plans from it. Specifically, it implements the query in terms of lower level Spark RDD operations.
+# MAGIC 3. Catalyst chooses which physical plan to use via _cost optimization_. That is, it determines which physical plan is the most efficient (or least expensive), and uses that one.
+# MAGIC 4. Finally, once the physical RDD execution plan is established, Spark actually executes the job.
+# MAGIC 
+# MAGIC You can examine the query plan using the `explain()` function on a DataFrame. By default, `explain()` only shows you the final physical plan; however, if you pass it an argument of `True`, it will show you all phases.
+# MAGIC 
+# MAGIC Let's add a couple transformations to our DataFrame and look at the query plan on the resulting transformed DataFrame. Don't be too concerned if it looks like gibberish. As you gain more experience with Apache Spark, you'll begin to be able to use `explain()` to help you understand more about your DataFrame operations.
+
+# COMMAND ----------
+
+newDF = dataDF.distinct().select('*')
+newDF.explain(True)
 
 # COMMAND ----------
 
