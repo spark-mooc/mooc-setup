@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 20 Jun 2016 02:33:10 UTC
+# Databricks notebook source exported at Mon, 20 Jun 2016 17:05:06 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Spark Tutorial: Learning Apache Spark**
@@ -32,12 +32,12 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### **Part 1: Basic notebook usage and [Python](https://docs.python.org/2/) integration **
+# MAGIC ## **Part 1: Basic notebook usage and [Python](https://docs.python.org/2/) integration **
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(1a) Notebook usage**
+# MAGIC ### (1a) Notebook usage
 # MAGIC 
 # MAGIC A notebook is comprised of a linear sequence of cells.  These cells can contain either markdown or code, but we won't mix both in one cell.  When a markdown cell is executed it renders formatted text, images, and links just like HTML in a normal webpage.  The text you are reading right now is part of a markdown cell.  Python code cells allow you to execute arbitrary Python commands just like in any Python shell. Place your cursor inside the cell below, and press "Shift" + "Enter" to execute the code and advance to the next cell.  You can also press "Ctrl" + "Enter" to execute the code and remain in the cell.  These commands work the same in both markdown and code cells.
 
@@ -56,7 +56,7 @@ if x > 40:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(1b) Notebook state**
+# MAGIC ### (1b) Notebook state
 # MAGIC 
 # MAGIC As you work through a notebook it is important that you run all of the code cells.  The notebook is stateful, which means that variables and their values are retained until the notebook is detached (in Databricks) or the kernel is restarted (in Jupyter notebooks).  If you do not run all of the code cells as you proceed through the notebook, your variables will not be properly initialized and later code might fail.  You will also need to rerun any cells that you have modified in order for the changes to be available to other cells.
 
@@ -69,7 +69,7 @@ print x * 2
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(1c) Library imports**
+# MAGIC ### (1c) Library imports
 # MAGIC 
 # MAGIC We can import standard Python libraries ([modules](https://docs.python.org/2/tutorial/modules.html)) the usual way.  An `import` statement will import the specified module.  In this tutorial and future labs, we will provide any imports that are necessary.
 
@@ -90,12 +90,12 @@ print 'This was last run on: {0}'.format(datetime.datetime.now())
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ####  **Part 2: An introduction to using [Apache Spark](https://spark.apache.org/) with the [PySpark SQL API](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark-sql-module) running in a notebook**
+# MAGIC ##  **Part 2: An introduction to using [Apache Spark](https://spark.apache.org/) with the [PySpark SQL API](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark-sql-module) running in a notebook**
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Spark Context**
+# MAGIC ### Spark Context
 # MAGIC 
 # MAGIC In Spark, communication occurs between a driver and executors.  The driver has Spark jobs that it needs to run and these jobs are split into tasks that are submitted to the executors for completion.  The results from these tasks are delivered back to the driver.
 # MAGIC 
@@ -106,7 +106,7 @@ print 'This was last run on: {0}'.format(datetime.datetime.now())
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(2a) Example Cluster**
+# MAGIC ### (2a) Example Cluster
 # MAGIC The diagram shows an example cluster, where the slots allocated for an application are outlined in purple. (Note: We're using the term _slots_ here to indicate threads available to perform parallel work for Spark.
 # MAGIC Spark documentation often refers to these threads as _cores_, which is a confusing term, as the number of slots available on a particular machine does not necessarily have any relationship to the number of physical CPU
 # MAGIC cores on that machine.)
@@ -134,7 +134,7 @@ type(sqlContext)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(2b) `SparkContext` attributes**
+# MAGIC ### (2b) SparkContext attributes
 # MAGIC 
 # MAGIC You can use Python's [dir()](https://docs.python.org/2/library/functions.html?highlight=dir#dir) function to get a list of all the attributes (including methods) accessible through the `sqlContext` object.
 
@@ -146,7 +146,7 @@ dir(sqlContext)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(2c) Getting help**
+# MAGIC ### (2c) Getting help
 # MAGIC 
 # MAGIC Alternatively, you can use Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) function to get an easier to read list of all the attributes, including examples, that the `sqlContext` object has.
 
@@ -177,12 +177,12 @@ help(map)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### **Part 3: Using DataFrames and chaining together transformations and actions**
+# MAGIC ## **Part 3: Using DataFrames and chaining together transformations and actions**
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Working with your first DataFrames**
+# MAGIC ### Working with your first DataFrames
 # MAGIC 
 # MAGIC In Spark, we first create a base [DataFrame](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame). We can then apply one or more transformations to that base DataFrame. *A DataFrame is immutable, so once it is created, it cannot be changed.* As a result, each transformation creates a new DataFrame. Finally, we can apply one or more actions to the DataFrames.  
 # MAGIC 
@@ -205,7 +205,7 @@ help(map)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(3a) Create a Python collection of 10,000 people***
+# MAGIC ### (3a) Create a Python collection of 10,000 people
 # MAGIC 
 # MAGIC We will use a third-party Python testing library called [fake-factory](https://pypi.python.org/pypi/fake-factory/0.5.3) to create a collection of fake person records. 
 
@@ -263,7 +263,7 @@ len(data)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(3b) Distributed data and using a collection to create a DataFrame**
+# MAGIC ### (3b) Distributed data and using a collection to create a DataFrame
 # MAGIC 
 # MAGIC In Spark, datasets are represented as a list of entries, where the list is broken up into many different partitions that are each stored on a different machine.  Each partition holds a unique subset of the entries in the list.  Spark calls datasets that it stores "Resilient Distributed Datasets" (RDDs). Even DataFrames are ultimately represented as RDDs, with additional meta-data.
 # MAGIC 
@@ -336,7 +336,7 @@ dataDF.rdd.getNumPartitions()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### A note about DataFrames and queries
+# MAGIC ###### A note about DataFrames and queries
 # MAGIC 
 # MAGIC When you use DataFrames or Spark SQL, you are building up a _query plan_. Each transformation you apply to a DataFrame adds some information to the query plan. When you finally call an action, which triggers execution of your Spark job, several things happen:
 # MAGIC 
@@ -359,7 +359,7 @@ newDF.explain(True)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(3c): Subtract one from each value using `select`**
+# MAGIC ### (3c): Subtract one from each value using _select_
 # MAGIC 
 # MAGIC So far, we've created a distributed DataFrame that is split into many partitions, where each partition is stored on a single machine in our cluster.  Let's look at what happens when we do a basic operation on the dataset.  Many useful data analysis operations can be specified as "do something to each item in the dataset".  These data-parallel operations are convenient because each item in the dataset can be processed individually: the operation on one entry doesn't effect the operations on any of the other entries.  Therefore, Spark can parallelize the operation.
 # MAGIC 
@@ -386,7 +386,7 @@ subDF.explain(True)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3d) Perform action `collect` to view results **
+# MAGIC ### (3d) Use _collect_ to view results
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/cs105x/diagram-3d.png" style="height:700px;float:right"/>
 # MAGIC 
@@ -434,7 +434,7 @@ display(subDF)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3e) Perform action `count` to view counts **
+# MAGIC ### (3e) Use _count_ to get total
 # MAGIC 
 # MAGIC One of the most basic jobs that we can run is the `count()` job which will count the number of elements in a DataFrame, using the `count()` action. Since `select()` creates a new DataFrame with the same number of elements as the starting DataFrame, we expect that applying `count()` to each DataFrame will return the same result.
 # MAGIC 
@@ -452,7 +452,7 @@ print subDF.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3f) Apply transformation `filter` and view results with `collect` **
+# MAGIC ### (3f) Apply transformation _filter_ and view results with _collect_
 # MAGIC 
 # MAGIC Next, we'll create a new DataFrame that only contains the people whose ages are less than 10. To do this, we'll use the `filter()` transformation. (You can also use `where()`, an alias for `filter()`, if you prefer something more SQL-like). The `filter()` method is a transformation operation that creates a new DataFrame from the input DataFrame, keeping only values that match the filter expression.
 # MAGIC 
@@ -476,13 +476,8 @@ filteredDF.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### Part 4: Python Lambda functions and User Defined Functions
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ** (4a) Using Python `lambda()` functions**
-# MAGIC  
+# MAGIC ## Part 4: Python Lambda functions and User Defined Functions
+# MAGIC 
 # MAGIC Python supports the use of small one-line anonymous functions that are not bound to a name at runtime.
 # MAGIC 
 # MAGIC `lambda` functions, borrowed from LISP, can be used wherever function objects are required. They are syntactically restricted to a single expression. Remember that `lambda` functions are a matter of style and using them is never required - semantically, they are just syntactic sugar for a normal function definition. You can always define a separate normal function instead, but using a `lambda` function is an equivalent and more compact form of coding. Ideally you should consider using `lambda` functions where you want to encapsulate non-reusable code without littering your code with one-line functions.
@@ -508,7 +503,7 @@ evenDF.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### ** Part 5: Additional DataFrame actions **
+# MAGIC ## Part 5: Additional DataFrame actions
 # MAGIC 
 # MAGIC Let's investigate some additional actions: 
 # MAGIC 
@@ -537,12 +532,12 @@ display(filteredDF.take(4))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### ** Part 6: Additional DataFrame transformations **
+# MAGIC ## Part 6: Additional DataFrame transformations
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##### (6a) `orderBy()`
+# MAGIC ### (6a) _orderBy_
 # MAGIC 
 # MAGIC [`orderBy()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.distinct) allows you to sort a DataFrame by one or more columns, producing a new DataFrame.
 # MAGIC 
@@ -577,7 +572,7 @@ display(dataDF.orderBy('age').take(5))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##### (6b) `distinct()` and `dropDuplicates()`
+# MAGIC ### (6b) _distinct_ and _dropDuplicates_
 # MAGIC 
 # MAGIC [`distinct()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.distinct) filters out duplicate rows, and it considers all columns. Since our data is completely randomly generated (by `fake-factory`), it's extremely unlikely that there are any duplicate rows:
 
@@ -621,7 +616,7 @@ print dataDF.dropDuplicates(['first_name', 'last_name']).count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##### (6c) `drop()`
+# MAGIC ### (6c) _drop_
 # MAGIC 
 # MAGIC [`drop()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.drop) is like the opposite of `select()`: Instead of selecting specific columns from a DataFrame, it drops a specifed column from a DataFrame. 
 # MAGIC 
@@ -634,7 +629,7 @@ dataDF.drop('occupation').drop('age').show()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##### (6d) `groupBy()`
+# MAGIC ### (6d) _groupBy_
 # MAGIC 
 # MAGIC [`groupBy()`]((http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.groupBy) is one of the most powerful transformations. It allows you to perform aggregations on a DataFrame.
 # MAGIC 
@@ -666,7 +661,7 @@ print "Minimum age: {0}".format(dataDF.groupBy().min('age').first()[0])
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##### (6e) `sample()` (optional)
+# MAGIC ### (6e) _sample_ (optional)
 # MAGIC 
 # MAGIC When analyzing data, the [`sample()`](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.sample) transformation is often quite useful. It returns a new DataFrame with a random sample of elements from the dataset.  It takes in a `withReplacement` argument, which specifies whether it is okay to randomly pick the same item multiple times from the parent DataFrame (so when `withReplacement=True`, you can get the same item back multiple times). It takes in a `fraction` parameter, which specifies the fraction elements in the dataset you want to return. (So a `fraction` value of `0.20` returns 20% of the elements in the DataFrame.) It also takes an optional `seed` parameter that allows you to specify a seed value for the random number generator, so that reproducible results can be obtained.
 
@@ -683,12 +678,12 @@ print dataDF.sample(withReplacement=False, fraction=0.05).count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### Part 7: Caching DataFrames and storage options
+# MAGIC ## Part 7: Caching DataFrames and storage options
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (7a) Caching DataFrames **
+# MAGIC ### (7a) Caching DataFrames
 # MAGIC 
 # MAGIC For efficiency Spark keeps your DataFrames in memory. (More formally, it keeps the _RDDs_ that implement your DataFrames in memory.) By keeping the contents in memory, Spark can quickly access the data. However, memory is limited, so if you try to keep too many partitions in memory, Spark will automatically delete partitions from memory to make space for new ones. If you later refer to one of the deleted partitions, Spark will automatically recreate it for you, but that takes time.
 # MAGIC 
@@ -708,7 +703,7 @@ print filteredDF.is_cached
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (7b) Unpersist and storage options **
+# MAGIC ### (7b) Unpersist and storage options
 # MAGIC 
 # MAGIC Spark automatically manages the partitions cached in memory. If it has more partitions than available memory, by default, it will evict older partitions to make room for new ones. For efficiency, once you are finished using cached DataFrame, you can optionally tell Spark to stop caching it in memory by using the DataFrame's `unpersist()` method to inform Spark that you no longer need the cached data.
 # MAGIC 
@@ -724,12 +719,12 @@ print filteredDF.is_cached
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### ** Part 8: Debugging Spark applications and lazy evaluation **
+# MAGIC ## ** Part 8: Debugging Spark applications and lazy evaluation **
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** How Python is Executed in Spark **
+# MAGIC ### How Python is Executed in Spark
 # MAGIC 
 # MAGIC Internally, Spark executes using a Java Virtual Machine (JVM). pySpark runs Python code in a JVM using [Py4J](http://py4j.sourceforge.net). Py4J enables Python programs running in a Python interpreter to dynamically access Java objects in a Java Virtual Machine. Methods are called as if the Java objects resided in the Python interpreter and Java collections can be accessed through standard Python collection methods. Py4J also enables Java programs to call back Python objects.
 # MAGIC 
@@ -738,7 +733,7 @@ print filteredDF.is_cached
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (8a) Challenges with lazy evaluation using transformations and actions **
+# MAGIC ### (8a) Challenges with lazy evaluation using transformations and actions
 # MAGIC 
 # MAGIC Spark's use of lazy evaluation can make debugging more difficult because code is not always executed immediately. To see an example of how this can happen, let's first define a broken filter function.
 # MAGIC Next we perform a `filter()` operation using the broken filtering function.  No error will occur at this point due to Spark's use of lazy evaluation.
@@ -780,7 +775,7 @@ brokenDF.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (8b) Finding the bug **
+# MAGIC ### (8b) Finding the bug
 # MAGIC 
 # MAGIC When the `filter()` method is executed, Spark calls the UDF. Since our UDF has an error in the underlying filtering function `brokenTen()`, an error occurs.
 # MAGIC 
@@ -793,7 +788,7 @@ brokenDF.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (8c) Moving toward expert style **
+# MAGIC ### (8c) Moving toward expert style
 # MAGIC 
 # MAGIC As you are learning Spark, I recommend that you write your code in the form:
 # MAGIC ``` 
@@ -817,7 +812,7 @@ subDF.filter(myUDF(subDF.age) == True)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (8d) Readability and code style **
+# MAGIC ### (8d) Readability and code style
 # MAGIC 
 # MAGIC To make the expert coding style more readable, enclose the statement in parentheses and put each method, transformation, or action on a separate line.
 
