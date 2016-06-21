@@ -185,7 +185,7 @@ Test.assertEquals(wordCountsDF.collect(), [('cat', 2), ('rat', 2), ('elephant', 
 
 # COMMAND ----------
 
-from spark_mooc.utils import printDataFrames
+from spark_notebook_helpers import printDataFrames
 
 #This function returns all the DataFrames in the notebook and their corresponding column names.
 printDataFrames(True)
