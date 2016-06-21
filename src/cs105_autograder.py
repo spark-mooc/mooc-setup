@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 15 Jun 2016 17:01:17 UTC
+# Databricks notebook source exported at Tue, 21 Jun 2016 17:18:30 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -117,7 +117,7 @@ except NameError:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".**
+# MAGIC ** (3a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster" in your LAB notebook(Not this notebook).**
 # MAGIC 
 # MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
 # MAGIC 
@@ -126,7 +126,7 @@ except NameError:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3b) _IN YOUR LAB NOTEBOOK_, click on "Run All" to run all of the cells in your LAB notebook. **
+# MAGIC ** (3b) _IN YOUR LAB NOTEBOOK_, click on "Run All" to run all of the cells in your LAB notebook(Not this notebook). **
 # MAGIC 
 # MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
 # MAGIC 
@@ -139,7 +139,7 @@ except NameError:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3c) Verify that your LAB notebook passes as many tests as you can. **
+# MAGIC ** (3c) Verify that your LAB notebook(Not this notebook) passes as many tests as you can. **
 # MAGIC 
 # MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expression of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
 # MAGIC 
@@ -152,7 +152,7 @@ except NameError:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3d) Publish your LAB notebook by clicking on the "Publish" button at the top of your LAB notebook. **
+# MAGIC ** (3d) Publish your LAB notebook(Not this notebook) by clicking on the "Publish" button at the top of your LAB notebook. **
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" />
 # MAGIC 
@@ -172,7 +172,7 @@ notebook_url = <FILL_IN>
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (3e) Re-run the AUTOGRADER notebook **
+# MAGIC ** (3e) Re-run the AUTOGRADER notebook(This notebook) **
 # MAGIC 
 # MAGIC Because you just restarted your cluster, all of the state of this autograder notebook has been lost. To recover it, all you have to do is to click on "Run All" (just as you did for your Lab notebook) and your cluster will run all the cells.
 # MAGIC 
@@ -243,6 +243,7 @@ client.submit(lab, notebook_url)
 # Re-run this cell to see the autograder queue status
 import json
 (result,queue) = client.get_queue_status()
+print("Result for get_queue_status(): %s" % result)
 if (queue == []):
   print "No submisions for %s found in autograder queue. Proceed to Part 5." % username
 else:
@@ -264,12 +265,13 @@ else:
 
 import json
 (result,submission_list) = client.get_submission_list(lab)
+print("Result for get_submission_list(): %s" % result)
 if (submission_list == []):
   print "No submisions for %s found in autograder queue for lab %s" % (username, lab)
 else:
   # convert result to a Spark DataFrame
   df_submission_list = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in submission_list]))
-  display(df_submission_list['submission_timestamp','grade','submission_id','lab','username'])
+  display(df_submission_list['submission_timestamp','grade','submission_id','lab','autograder_results','username'])
 
 # COMMAND ----------
 
@@ -295,6 +297,7 @@ submission_id = <FILL_IN>
 
 import json
 (result,submission_detail) = client.get_submission_detail(submission_id)
+print("Result for get_submission_detail(): %s" % result)
 print submission_detail['autograder_results']
 print submission_detail['grade']
 

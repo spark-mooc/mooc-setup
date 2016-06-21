@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 21 Jun 2016 01:35:40 UTC
+# Databricks notebook source exported at Tue, 21 Jun 2016 17:08:38 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Word Count Lab: Building a word count application**
@@ -514,3 +514,58 @@ Test.assertEquals(topWordsAndCountsDF.take(15),
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC #### ** Prepare to the course autograder **
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC <img src="https://d37djvu3ytnwxt.cloudfront.net/asset-v1:BerkeleyX+CS105x+1T2016+type@asset+block/url-process.png" alt="Drawing" />
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".**
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (b) _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells. **
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
+# MAGIC 
+# MAGIC This step will take some time. While the cluster is running all the cells in your lab notebook, you will see the "Stop Execution" button.
+# MAGIC  
+# MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (c) Verify that your LAB notebook passes as many tests as you can. **
+# MAGIC 
+# MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expression of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/test_passed.png" alt="Drawing" />
+# MAGIC 
+# MAGIC or just execution time otherwise:
+# MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/execution_time.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (d) Publish your LAB notebook(this notebook) by clicking on the "Publish" button at the top of your LAB notebook. **
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. __Copy the link and set the notebook_URL variable in the AUTOGRADER notebook(not this notebook).__
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
