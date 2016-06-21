@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 25 Feb 2016 23:46:14 UTC
+# Databricks notebook source exported at Tue, 21 Jun 2016 01:35:40 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -174,8 +174,6 @@ Test.assertEquals(uniqueWordsCount, 3, 'incorrect count of unique words')
 # MAGIC Find the mean number of occurrences of words in `wordCountsDF`.
 # MAGIC 
 # MAGIC You should use the [`mean` GroupedData method](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.GroupedData.mean) to accomplish this.  Note that when you use `groupBy` you don't need to pass in any columns.  A call without columns just prepares the DataFrame so that aggregation functions like `mean` can be applied.
-# MAGIC 
-# MAGIC > Make sure that you set `averageCount` equal to a `float`.
 
 # COMMAND ----------
 
@@ -290,6 +288,7 @@ Test.assertEquals(testPunctDF.select(removePunctuation(col('_1'))).first()[0],
 # MAGIC For the next part of this lab, we will use the [Complete Works of William Shakespeare](http://www.gutenberg.org/ebooks/100) from [Project Gutenberg](http://www.gutenberg.org/wiki/Main_Page). To convert a text file into a DataFrame, we use the `sqlContext.read.text()` method. We also apply the recently defined `removePunctuation()` function using a `select()` transformation to strip out the punctuation and change all text to lower case.  Since the file is large we use `show(15)`, so that we only print 15 lines.
 
 # COMMAND ----------
+
 fileName = "dbfs:/databricks-datasets/cs100/lab1/data-001/shakespeare.txt"
 
 shakespeareDF = sqlContext.read.text(fileName).select(removePunctuation(col('value')))
