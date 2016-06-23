@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 20 Jun 2016 17:05:06 UTC
+# Databricks notebook source exported at Thu, 23 Jun 2016 16:13:57 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -744,7 +744,7 @@ print filteredDF.is_cached
 # MAGIC Spark's use of lazy evaluation can make debugging more difficult because code is not always executed immediately. To see an example of how this can happen, let's first define a broken filter function.
 # MAGIC Next we perform a `filter()` operation using the broken filtering function.  No error will occur at this point due to Spark's use of lazy evaluation.
 # MAGIC 
-# MAGIC The `filter()` method will not be executed *until* an action operation is invoked on the DataFrame.  We will perform an action by using the `collect()` method to return a list that contains all of the elements in this DataFrame.
+# MAGIC The `filter()` method will not be executed *until* an action operation is invoked on the DataFrame.  We will perform an action by using the `count()` method to return a list that contains all of the elements in this DataFrame.
 
 # COMMAND ----------
 
@@ -785,7 +785,7 @@ brokenDF.count()
 # MAGIC 
 # MAGIC When the `filter()` method is executed, Spark calls the UDF. Since our UDF has an error in the underlying filtering function `brokenTen()`, an error occurs.
 # MAGIC 
-# MAGIC Scroll through the output "Py4JJavaError     Traceback (most recent call last)" part of the cell and first you will see that the line that generated the error is the `collect()` method line. There is *nothing wrong with this line*. However, it is an action and that caused other methods to be executed. Continue scrolling through the Traceback and you will see the following error line:
+# MAGIC Scroll through the output "Py4JJavaError     Traceback (most recent call last)" part of the cell and first you will see that the line that generated the error is the `count()` method line. There is *nothing wrong with this line*. However, it is an action and that caused other methods to be executed. Continue scrolling through the Traceback and you will see the following error line:
 # MAGIC 
 # MAGIC `NameError: global name 'val' is not defined`
 # MAGIC 
