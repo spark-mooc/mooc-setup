@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sat, 25 Jun 2016 16:02:04 UTC
+# Databricks notebook source exported at Sat, 25 Jun 2016 16:08:28 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -34,11 +34,9 @@ labVersion = 'cs100.1x-lab2-1.1.0'
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Part 1: Introduction to Spark and Databricks
+# MAGIC ## Part 1: Introduction and Imports
 # MAGIC 
-# MAGIC This section will show you how to use [Apache Spark](http://spark.apache.org/), a framework for large-scale data processing, within a Databricks notebook. Many traditional frameworks were designed to be run on a single computer.  However, many datasets today are too large to be stored on a single computer, and even when one can be stored on one computer, it can often be processed much more quickly using multiple computers.
-# MAGIC 
-# MAGIC Spark has efficient implementations of a number of transformations and actions that can be composed together to perform data processing and analysis.  It excels at distributing these operations across a cluster while abstracting away many of the underlying implementation details.  Spark has been designed with a focus on scalability and efficiency.  With Spark you can begin developing your solution on your laptop, using a small dataset, and then use that same code to process terabytes or even petabytes of data across a distributed cluster.
+# MAGIC Before we can get started, we need to import a few things.
 
 # COMMAND ----------
 

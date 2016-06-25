@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sat, 25 Jun 2016 16:02:04 UTC
+# Databricks notebook source exported at Sat, 25 Jun 2016 16:08:28 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -28,11 +28,9 @@ labVersion = 'cs100.1x-lab2-1.1.0'
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Part 1: Introduction to Spark and Databricks
+# MAGIC ## Part 1: Introduction and Imports
 # MAGIC  
-# MAGIC This section will show you how to use [Apache Spark](http://spark.apache.org/), a framework for large-scale data processing, within a Databricks notebook. Many traditional frameworks were designed to be run on a single computer.  However, many datasets today are too large to be stored on a single computer, and even when one can be stored on one computer, it can often be processed much more quickly using multiple computers.
-# MAGIC  
-# MAGIC Spark has efficient implementations of a number of transformations and actions that can be composed together to perform data processing and analysis.  It excels at distributing these operations across a cluster while abstracting away many of the underlying implementation details.  Spark has been designed with a focus on scalability and efficiency.  With Spark you can begin developing your solution on your laptop, using a small dataset, and then use that same code to process terabytes or even petabytes of data across a distributed cluster.
+# MAGIC Before we can get started, we need to import a few things.
 
 # COMMAND ----------
 
