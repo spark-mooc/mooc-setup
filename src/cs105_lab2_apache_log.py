@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 27 Jun 2016 01:44:57 UTC
+# Databricks notebook source exported at Mon, 27 Jun 2016 04:00:50 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -9,7 +9,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs100.1x-lab2-1.1.0'
+labVersion = 'cs105x-lab2-1.1.0'
 
 # COMMAND ----------
 
@@ -73,17 +73,17 @@ print 'This was last run on: {0}'.format(datetime.datetime.now())
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC You can use Python's [dir()](https://docs.python.org/2/library/functions.html?highlight=dir#dir) function to get a list of all the attributes (including methods) accessible through the `sc` object.
+# MAGIC You can use Python's [dir()](https://docs.python.org/2/library/functions.html?highlight=dir#dir) function to get a list of all the attributes (including methods) accessible through the `sqlContext` object.
 
 # COMMAND ----------
 
-# List sc's attributes
+# List sqlContext's attributes
 dir(sqlContext)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Alternatively, you can use Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) function to get an easier to read list of all the attributes, including examples, that the `sc` object has.
+# MAGIC Alternatively, you can use Python's [help()](https://docs.python.org/2/library/functions.html?highlight=help#help) function to get an easier to read list of all the attributes, including examples, that the `sqlContext` object has.
 
 # COMMAND ----------
 
@@ -630,7 +630,7 @@ Test.assertEquals(unique_host_count, 54507, 'incorrect unique_host_count')
 # MAGIC %md
 # MAGIC ### (4c) Exercise: Number of Unique Daily Hosts
 # MAGIC  
-# MAGIC For an advanced exercise, let's determine the number of unique hosts in the entire log on a day-by-day basis. This computation will give us counts of the number of unique daily hosts. We'd like a DataFrame sorted by increasing day of the month which includes the day of the month and the associated number of unique hosts for that day. Make sure you cache the resulting DataFrame `dailyHostsDF` so that we can reuse it in the next exercise.
+# MAGIC For an advanced exercise, let's determine the number of unique hosts in the entire log on a day-by-day basis. This computation will give us counts of the number of unique daily hosts. We'd like a DataFrame sorted by increasing day of the month which includes the day of the month and the associated number of unique hosts for that day. Make sure you cache the resulting DataFrame `daily_hosts_df` so that we can reuse it in the next exercise.
 # MAGIC  
 # MAGIC Think about the steps that you need to perform to count the number of different hosts that make requests *each* day.
 # MAGIC *Since the log only covers a single month, you can ignore the month.*  You may want to use the [`dayofmonth` function](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.dayofmonth) in the `pyspark.sql.functions` module.
@@ -673,7 +673,7 @@ daily_hosts_list = (daily_hosts_df
                     .take(30))
 
 Test.assertEquals(daily_hosts_df.count(), 21, 'incorrect daily_hosts_df.count()')
-Test.assertEquals(daily_hosts_list, [(1, 2582), (3, 3222), (4, 4190), (5, 2502), (6, 2537), (7, 4106), (8, 4406), (9, 4317), (10, 4523), (11, 4346), (12, 2864), (13, 2650), (14, 4454), (15, 4214), (16, 4340), (17, 4385), (18, 4168), (19, 2550), (20, 2560), (21, 4134), (22, 4456)], 'incorrect dailyHostsDF')
+Test.assertEquals(daily_hosts_list, [(1, 2582), (3, 3222), (4, 4190), (5, 2502), (6, 2537), (7, 4106), (8, 4406), (9, 4317), (10, 4523), (11, 4346), (12, 2864), (13, 2650), (14, 4454), (15, 4214), (16, 4340), (17, 4385), (18, 4168), (19, 2550), (20, 2560), (21, 4134), (22, 4456)], 'incorrect daily_hosts_df')
 Test.assertTrue(daily_hosts_df.is_cached, 'incorrect daily_hosts_df.is_cached')
 
 # COMMAND ----------
@@ -719,7 +719,7 @@ Test.assertEquals(hosts, [2582, 3222, 4190, 2502, 2537, 4106, 4406, 4317, 4523, 
 # COMMAND ----------
 
 fig, ax = prepareSubplot(np.arange(0, 30, 5), np.arange(0, 5000, 1000))
-plt.plot(n_days_with_hosts, n_hosts, color=cmap(0), linewidth=3)
+plt.plot(days_with_hosts, hosts, color=cmap(0), linewidth=3)
 plt.axis([0, max(days_with_hosts), 0, max(hosts)+500])
 plt.xlabel('Day')
 plt.ylabel('Hosts')
@@ -889,8 +889,8 @@ print('Found {0} 404 URLs').format(not_found_df.count())
 # COMMAND ----------
 
 # TEST Counting 404 (5a)
-Test.assertEquals(not_found_df.count(), 6185, 'incorrect badRecordsDF.count()')
-Test.assertTrue(not_found_df.is_cached, 'incorrect badRecordsDF.is_cached')
+Test.assertEquals(not_found_df.count(), 6185, 'incorrect not_found_df.count()')
+Test.assertTrue(not_found_df.is_cached, 'incorrect not_found_df.is_cached')
 
 # COMMAND ----------
 
@@ -1000,7 +1000,7 @@ Test.assertEquals(top_20_not_found, top_20_expected, 'incorrect top_20_not_found
 hosts_404_count_df = not_found_df.<FILL IN>
 
 print 'Top 25 hosts that generated errors:\n'
-errHostsCountDF.show(n=25, truncate=False)
+hosts_404_count_df.show(n=25, truncate=False)
 
 
 # COMMAND ----------
@@ -1056,7 +1056,7 @@ Test.assertEquals(len(set(top_25_404) - expected), 0, 'incorrect hosts_404_count
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### (5e) Exercise: Listing 404 Errors per Day**
+# MAGIC ### (5e) Exercise: Listing 404 Errors per Day
 # MAGIC  
 # MAGIC Let's explore the 404 records temporally. Break down the 404 requests by day (cache the `errors_by_date_sorted_df` DataFrame) and get the daily counts sorted by day as a list.
 # MAGIC  
@@ -1207,7 +1207,7 @@ Test.assertEquals([(r[0], r[1]) for r in top_err_date_df.take(5)], [(7, 532), (8
 # MAGIC %md
 # MAGIC ### (5h) Exercise: Hourly 404 Errors
 # MAGIC  
-# MAGIC Using the DataFrame `not_found_df` you cached in the part (5a) and sorting by hour of the day in increasing order, create a DataFrame containing the number ofrequests had a 404 return code for each hour of the day (midnight starts at 0). Cache the resulting DataFrame `hour_records_sorted_df` and print that as a list.
+# MAGIC Using the DataFrame `not_found_df` you cached in the part (5a) and sorting by hour of the day in increasing order, create a DataFrame containing the number of requests that had a 404 return code for each hour of the day (midnight starts at 0). Cache the resulting DataFrame `hour_records_sorted_df` and print that as a list.
 
 # COMMAND ----------
 
@@ -1259,8 +1259,8 @@ expected = [
   (22, 234),
   (23, 272)
 ]
-Test.assertEquals(errs_by_hour, expected, 'incorrect hourRecordsSortedDF')
-Test.assertTrue(hour_records_sorted_df.is_cached, 'incorrect hourRecordsSortedDF.is_cached')
+Test.assertEquals(errs_by_hour, expected, 'incorrect errs_by_hour')
+Test.assertTrue(hour_records_sorted_df.is_cached, 'incorrect hour_records_sorted_df.is_cached')
 
 # COMMAND ----------
 
@@ -1295,12 +1295,12 @@ print not_found_counts_per_hour
 # COMMAND ----------
 
 # TEST Visualizing the 404 Response Codes by Hour (5i)
-Test.assertEquals(hours_with_not_found, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 'incorrect hoursWithErrors404')
-Test.assertEquals(not_found_counts_per_hour, [175, 171, 422, 272, 102, 95, 93, 122, 199, 185, 329, 263, 438, 397, 318, 347, 373, 330, 268, 269, 270, 241, 234, 272], 'incorrect errors404ByHours')
+Test.assertEquals(hours_with_not_found, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 'incorrect hours_with_not_found')
+Test.assertEquals(not_found_counts_per_hour, [175, 171, 422, 272, 102, 95, 93, 122, 199, 185, 329, 263, 438, 397, 318, 347, 373, 330, 268, 269, 270, 241, 234, 272], 'incorrect not_found_counts_per_hour')
 
 # COMMAND ----------
 
-fig, ax = prepareSubplot(np.arange(0, 25, 5), np.arange(0, 400, 50))
+fig, ax = prepareSubplot(np.arange(0, 25, 5), np.arange(0, 500, 50))
 plt.plot(hours_with_not_found, not_found_counts_per_hour, color=cmap(0), linewidth=3)
 plt.axis([0, max(hours_with_not_found), 0, max(not_found_counts_per_hour)])
 plt.xlabel('Hour')
