@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 27 Jun 2016 04:00:50 UTC
+# Databricks notebook source exported at Mon, 27 Jun 2016 13:48:59 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -160,7 +160,8 @@ base_df.show(truncate=False)
 # MAGIC Next, we have to parse it into individual columns. We'll use the special built-in [regexp\_extract()](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.regexp_extract)
 # MAGIC function to do the parsing. This function matches a column against a regular expression with one or more [capture groups](http://regexone.com/lesson/capturing_groups) and allows you to extract one of the matched groups. We'll use one regular expression for each field we wish to extract.
 # MAGIC 
-# MAGIC If you can't read these regular expressions, don't worry. Trust us: They work.
+# MAGIC If you can't read these regular expressions, don't worry. Trust us: They work. If you find regular expressions confusing (and they certainly _can_ be), and you want to learn more about them, start with the 
+# MAGIC [RegexOne web site](http://regexone.com/). You might also find [_Regular Expressions Cookbook_](http://shop.oreilly.com/product/0636920023630.do), by Jan Goyvaerts and Steven Levithan, to be helpful.
 # MAGIC 
 # MAGIC _Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems._ (attributed to Jamie Zawinski)
 
@@ -322,6 +323,7 @@ def parse_clf_time(s):
 u_parse_time = udf(parse_clf_time)
 
 logs_df = cleaned_df.select('*', u_parse_time(split_df['timestamp']).cast('timestamp').alias('time')).drop('timestamp') 
+total_log_entries = logs_df.count()
 
 # COMMAND ----------
 
@@ -419,11 +421,24 @@ display(log_status_to_count_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC While this graph is an improvement, we might want to make more adjustments.  The [`matplotlib` library](http://matplotlib.org/) can give us more control in our plot.
+# MAGIC While this graph is an improvement, we might want to make more adjustments.  The [`matplotlib` library](http://matplotlib.org/) can give us more control in our plot and is also useful outside the Databricks environment. In this case, we're essentially just reproducing the Databricks graph using `matplotlib`. However, `matplotlib` exposes far more controls than the Databricks graph, allowing you to change colors, label the axes, and more. We're using a set of helper functions from the [`spark_notebook_helpers`](https://pypi.python.org/pypi/spark_notebook_helpers/1.0.1) library.
 
 # COMMAND ----------
 
+# np is just an alias for numpy.
+# cm and plt are aliases for matplotlib.cm (for "color map") and matplotlib.pyplot, respectively.
+# prepareSubplot is a helper.
 from spark_notebook_helpers import prepareSubplot, np, plt, cm
+
+
+# COMMAND ----------
+
+help(prepareSubplot)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC We're using the "Set1" color map. See the list of Qualitative Color Maps at <http://matplotlib.org/examples/color/colormaps_reference.html> for more details. Feel free to change the color map to a different one, like "Accent".
 
 # COMMAND ----------
 
@@ -634,18 +649,51 @@ Test.assertEquals(unique_host_count, 54507, 'incorrect unique_host_count')
 # MAGIC  
 # MAGIC Think about the steps that you need to perform to count the number of different hosts that make requests *each* day.
 # MAGIC *Since the log only covers a single month, you can ignore the month.*  You may want to use the [`dayofmonth` function](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.dayofmonth) in the `pyspark.sql.functions` module.
+# MAGIC 
+# MAGIC **Description of each variable**
+# MAGIC 
+# MAGIC **`day_to_host_pair_df`**
+# MAGIC 
+# MAGIC A DataFrame with two columns
+# MAGIC 
+# MAGIC | column | explanation          |
+# MAGIC | ------ | -------------------- |
+# MAGIC | `host` | the host name        |
+# MAGIC | `day`  | the day of the month |
+# MAGIC 
+# MAGIC There will be one row in this DataFrame for each row in `logs_df`. Essentially, you're just trimming and transforming each row of `logs_df`. For example, for this row in `logs_df`:
+# MAGIC 
+# MAGIC ```
+# MAGIC gw1.att.com - - [23/Aug/1995:00:03:53 -0400] "GET /shuttle/missions/sts-73/news HTTP/1.0" 302 -
+# MAGIC ```
+# MAGIC 
+# MAGIC your `day_to_host_pair_df` should have:
+# MAGIC 
+# MAGIC ```
+# MAGIC gw1.att.com 23
+# MAGIC ```
+# MAGIC 
+# MAGIC **`day_group_hosts_df`**
+# MAGIC 
+# MAGIC This DataFrame has the same columns as `day_to_host_pair_df`, but with duplicate (`day`, `host`) rows removed.
+# MAGIC 
+# MAGIC **`daily_hosts_df`**
+# MAGIC 
+# MAGIC A DataFrame with two columns:
+# MAGIC 
+# MAGIC | column  | explanation                                        |
+# MAGIC | ------- | -------------------------------------------------- |
+# MAGIC | `day`   | the day of the month                               |
+# MAGIC | `count` | the number of unique requesting hosts for that day |
 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
 from pyspark.sql.functions import dayofmonth
-day_to_host_pair_tuple_df = logs_df.<FILL IN>
 
-day_group_hosts = day_to_host_pair_tuple_df.<FILL IN>
-
-day_host_count_df = day_group_hosts.<FILL IN>
-
-daily_hosts_df = <FILL IN>
+day_to_host_pair_df = logs_df.<FILL IN>
+day_group_hosts_df = day_to_host_pair_df.<FILL IN>
+daily_hosts_df = day_group_hosts_df.<FILL IN>
 
 print 'Unique hosts per day:'
 daily_hosts_df.show(30, False)
@@ -654,13 +702,11 @@ daily_hosts_df.show(30, False)
 
 # ANSWER
 from pyspark.sql.functions import dayofmonth
-day_to_host_pair_tuple_df = logs_df.select("host", dayofmonth("time").alias('day'))
 
-day_group_hosts = day_to_host_pair_tuple_df.distinct()
-
-day_host_count_df = day_group_hosts.groupBy("day").count().orderBy("day")
-
-daily_hosts_df = day_host_count_df.cache()
+day_to_host_pair_df = logs_df.select("host", dayofmonth("time").alias('day'))
+day_group_hosts_df = day_to_host_pair_df.distinct()
+daily_hosts_df = day_group_hosts_df.groupBy("day").count().orderBy("day")
+daily_hosts_df.cache()
 
 print 'Unique hosts per day:'
 daily_hosts_df.show(30, False)
@@ -672,6 +718,7 @@ daily_hosts_list = (daily_hosts_df
                     .map(lambda r: (r[0], r[1]))
                     .take(30))
 
+Test.assertEquals(day_to_host_pair_df.count(), total_log_entries, 'incorrect row count for day_to_host_pair_df')
 Test.assertEquals(daily_hosts_df.count(), 21, 'incorrect daily_hosts_df.count()')
 Test.assertEquals(daily_hosts_list, [(1, 2582), (3, 3222), (4, 4190), (5, 2502), (6, 2537), (7, 4106), (8, 4406), (9, 4317), (10, 4523), (11, 4346), (12, 2864), (13, 2650), (14, 4454), (15, 4214), (16, 4340), (17, 4385), (18, 4168), (19, 2550), (20, 2560), (21, 4134), (22, 4456)], 'incorrect daily_hosts_df')
 Test.assertTrue(daily_hosts_df.is_cached, 'incorrect daily_hosts_df.is_cached')
