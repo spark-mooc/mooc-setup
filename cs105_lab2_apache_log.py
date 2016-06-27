@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 27 Jun 2016 13:48:59 UTC
+# Databricks notebook source exported at Mon, 27 Jun 2016 14:00:53 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -30,6 +30,10 @@ labVersion = 'cs105x-lab2-1.1.0'
 # MAGIC * *Part 3*: Analysis Walk-Through on the Web Server Log File
 # MAGIC * *Part 4*: Analyzing Web Server Log File
 # MAGIC * *Part 5*: Exploring 404 Response Codes
+# MAGIC 
+# MAGIC Also, at the very bottom:
+# MAGIC 
+# MAGIC * *Appendix A*: Submitting Your Exercises to the Autograder
 
 # COMMAND ----------
 
@@ -1211,6 +1215,67 @@ display(fig)
 # COMMAND ----------
 
 display(hour_records_sorted_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC <img src="https://d37djvu3ytnwxt.cloudfront.net/asset-v1:BerkeleyX+CS105x+1T2016+type@asset+block/url-process.png" alt="Drawing" style="float:right"/>
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (a) Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".**
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (b) _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells. **
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time. While the cluster is running all the cells in your lab notebook, you will see the "Stop Execution" button.
+# MAGIC 
+# MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (c) Verify that your LAB notebook passes as many tests as you can. **
+# MAGIC 
+# MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expressions of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/test_passed.png" alt="Drawing" />
+# MAGIC 
+# MAGIC If the cell contains `print` statements or `show()` actions, you'll also see the output from those operations.
+# MAGIC 
+# MAGIC The very last line of output is always the execution time:
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/execution_time.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ** (d) Publish your LAB notebook(this notebook) by clicking on the "Publish" button at the top of your LAB notebook. **
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
 
 # COMMAND ----------
 
