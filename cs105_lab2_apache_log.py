@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sat, 25 Jun 2016 16:08:28 UTC
+# Databricks notebook source exported at Mon, 27 Jun 2016 01:44:57 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -701,7 +701,7 @@ display(day_host_count_df)
 # MAGIC %md
 # MAGIC ### (4e) Exercise: Average Number of Daily Requests per Host
 # MAGIC 
-# MAGIC Next, let's determine the average number of requests on a day-by-day basis.  We'd like a list by increasing day of the month and the associated average number of requests per host for that day. Make sure you cache the resulting RDD `avg_daily_req_per_host_df` so that we can reuse it in the next exercise.
+# MAGIC Next, let's determine the average number of requests on a day-by-day basis.  We'd like a list by increasing day of the month and the associated average number of requests per host for that day. Make sure you cache the resulting DataFrame `avg_daily_req_per_host_df` so that we can reuse it in the next exercise.
 # MAGIC 
 # MAGIC To compute the average number of requests per host, find the total number of requests per day (across all hosts) and divide that by the number of unique hosts per day (which we found in part 4c and cached as `daily_hosts_df`).
 # MAGIC 
