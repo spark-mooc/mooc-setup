@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 27 Jun 2016 14:00:53 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 12:47:14 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -373,14 +373,14 @@ content_size_summary_df.show()
 # COMMAND ----------
 
 from pyspark.sql import functions as sqlFunctions
-contentSizeStats =  (logs_df
-                     .agg(sqlFunctions.min(logs_df['content_size']),
-                          sqlFunctions.avg(logs_df['content_size']),
-                          sqlFunctions.max(logs_df['content_size']))
-                     .first())
+content_size_stats =  (logs_df
+                       .agg(sqlFunctions.min(logs_df['content_size']),
+                            sqlFunctions.avg(logs_df['content_size']),
+                            sqlFunctions.max(logs_df['content_size']))
+                       .first())
 
 print 'Using SQL functions:'
-print 'Content Size Avg: {1:,.2f}; Min: {0:.2f}; Max: {2:,.0f}'.format(*contentSizeStats)
+print 'Content Size Avg: {1:,.2f}; Min: {0:.2f}; Max: {2:,.0f}'.format(*content_size_stats)
 
 # COMMAND ----------
 
@@ -512,7 +512,7 @@ paths_counts = (paths_df
 
 paths, counts = zip(*paths_counts)
 
-colorMap = 'Set1'
+colorMap = 'Accent'
 cmap = cm.get_cmap(colorMap)
 index = np.arange(1000)
 
@@ -526,7 +526,7 @@ display(fig)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC We can also visualize the results as a bar graph using the built-in Databricks `display` function to graph the results.  After calling this function on `endpointsDF`, select the bar graph option.
+# MAGIC We can also visualize the results as a line graph using the built-in Databricks `display` function to graph the results.  After calling this function on `paths_df`, select the line graph option.
 # MAGIC 
 # MAGIC The graph is plotted using the first 1,000 rows of data. To see a more complete plot, click on the "Plot over all results" link. Be prepared to wait a minute or so.
 
@@ -732,6 +732,8 @@ Test.assertEquals(hosts, [2582, 3222, 4190, 2502, 2537, 4106, 4406, 4317, 4523, 
 # COMMAND ----------
 
 fig, ax = prepareSubplot(np.arange(0, 30, 5), np.arange(0, 5000, 1000))
+colorMap = 'Dark2'
+cmap = cm.get_cmap(colorMap)
 plt.plot(days_with_hosts, hosts, color=cmap(0), linewidth=3)
 plt.axis([0, max(days_with_hosts), 0, max(hosts)+500])
 plt.xlabel('Day')
@@ -743,11 +745,11 @@ display(fig)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC You can also pass in the `day_host_count` DataFrame into Databricks plots to plot a line graph of the unique hosts requests by day.
+# MAGIC You can also pass in the `day_host_count_df` DataFrame into Databricks plots to plot a line graph of the unique hosts requests by day.
 
 # COMMAND ----------
 
-display(day_host_count_df)
+display(daily_hosts_df)
 
 # COMMAND ----------
 
@@ -816,6 +818,8 @@ Test.assertEquals([int(a) for a in avgs], [13, 12, 14, 12, 12, 13, 13, 14, 13, 1
 # COMMAND ----------
 
 fig, ax = prepareSubplot(np.arange(0, 20, 5), np.arange(0, 16, 2))
+colorMap = 'Set3'
+cmap = cm.get_cmap(colorMap)
 plt.plot(days_with_avg, avgs, color=cmap(0), linewidth=3)
 plt.axis([0, max(days_with_avg), 0, max(avgs)+2])
 plt.xlabel('Day')
@@ -958,10 +962,6 @@ hosts_404_count_df.show(n=25, truncate=False)
 
 # COMMAND ----------
 
-[(row[0], row[1]) for row in hosts_404_count_df.take(25)]
-
-# COMMAND ----------
-
 # TEST Top twenty-five 404 response code hosts (4d)
 
 top_25_404 = [(row[0], row[1]) for row in hosts_404_count_df.take(25)]
@@ -1074,6 +1074,8 @@ Test.assertEquals(errors_404_by_day, [243, 303, 346, 234, 372, 532, 381, 279, 31
 # COMMAND ----------
 
 fig, ax = prepareSubplot(np.arange(0, 20, 5), np.arange(0, 600, 100))
+colorMap = 'rainbow'
+cmap = cm.get_cmap(colorMap)
 plt.plot(days_with_errors_404, errors_404_by_day, color=cmap(0), linewidth=3)
 plt.axis([0, max(days_with_errors_404), 0, max(errors_404_by_day)])
 plt.xlabel('Day')
@@ -1199,6 +1201,8 @@ Test.assertEquals(not_found_counts_per_hour, [175, 171, 422, 272, 102, 95, 93, 1
 # COMMAND ----------
 
 fig, ax = prepareSubplot(np.arange(0, 25, 5), np.arange(0, 500, 50))
+colorMap = 'seismic'
+cmap = cm.get_cmap(colorMap)
 plt.plot(hours_with_not_found, not_found_counts_per_hour, color=cmap(0), linewidth=3)
 plt.axis([0, max(hours_with_not_found), 0, max(not_found_counts_per_hour)])
 plt.xlabel('Hour')
