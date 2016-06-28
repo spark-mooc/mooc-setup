@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 23:16:03 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 23:17:41 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -868,7 +868,7 @@ avgs = (avg_daily_req_per_host_df.<FILL IN>)
 for <FILL IN>:
   <FILL IN>
 
-print(daysWithAvg)
+print(days_with_avg)
 print(avgs)
 
 # COMMAND ----------
