@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 12:47:14 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 22:31:48 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -114,7 +114,6 @@ import sys
 import os
 
 log_file_path = 'dbfs:/' + os.path.join('databricks-datasets', 'cs100', 'lab2', 'data-001', 'apache.access.log.PROJECT')
-tableName = 'access_logs' + os.urandom(4).encode('hex')
 
 # COMMAND ----------
 
@@ -336,6 +335,15 @@ logs_df.printSchema()
 # COMMAND ----------
 
 display(logs_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Let's cache `logs_df`. We're going to be using it quite a bit from here forward.
+
+# COMMAND ----------
+
+logs_df.cache()
 
 # COMMAND ----------
 
@@ -783,7 +791,7 @@ display(fig)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC You can also pass in the `day_host_count_df` DataFrame into Databricks plots to plot a line graph of the unique hosts requests by day.
+# MAGIC You can also pass in the `day_host_count_df` DataFrame into Databricks plots to plot a line or bar graph of the unique hosts requests by day.
 
 # COMMAND ----------
 
@@ -931,7 +939,6 @@ display(avg_daily_req_per_host_df)
 # TODO: Replace <FILL IN> with appropriate code
 
 not_found_df = logs_df.<FILL IN>
-
 print('Found {0} 404 URLs').format(not_found_df.count())
 
 # COMMAND ----------
@@ -961,7 +968,6 @@ Test.assertTrue(not_found_df.is_cached, 'incorrect not_found_df.is_cached')
 # TODO: Replace <FILL IN> with appropriate code
 
 not_found_paths_df = not_found_df.<FILL IN>
-
 unique_not_found_paths_df = not_found_paths_df.<FILL IN>
 
 print '404 URLS:\n'
@@ -972,7 +978,6 @@ unique_not_found_paths_df.show(n=40, truncate=False)
 # ANSWER
 
 not_found_paths_df = not_found_df.select("path")
-
 unique_not_found_paths_df = not_found_paths_df.distinct()
 
 print '404 URLS:\n'
