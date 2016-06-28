@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 22:31:48 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 23:16:03 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -723,8 +723,10 @@ Test.assertTrue(daily_hosts_df.is_cached, 'incorrect daily_hosts_df.is_cached')
 
 # TODO: Your solution goes here
 
-days_with_hosts =
-hosts =
+days_with_hosts = <FILL IN>
+hosts = <FILL IN>
+for <FILL IN>:
+  <FILL IN>
 
 print(days_with_hosts)
 print(hosts)
@@ -810,8 +812,9 @@ Test.assertTrue(avg_daily_req_per_host_df.is_cached, 'incorrect avg_daily_req_pe
 # TODO: Replace <FILL IN> with appropriate code
 
 days_with_avg = (avg_daily_req_per_host_df.<FILL IN>)
-
 avgs = (avg_daily_req_per_host_df.<FILL IN>)
+for <FILL IN>:
+  <FILL IN>
 
 print(daysWithAvg)
 print(avgs)
@@ -1065,8 +1068,10 @@ Test.assertTrue(errors_by_date_sorted_df.is_cached, 'incorrect errors_by_date_so
 
 # TODO: Replace <FILL IN> with appropriate code
 
-days_with_errors_404 =
-errors_404_by_day =
+days_with_errors_404 = <FILL IN>
+errors_404_by_day = <FILL IN>
+for <FILL IN>:
+  <FILL IN>
 
 print days_with_errors_404
 print errors_404_by_day

@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 22:31:48 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 23:16:03 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -748,8 +748,10 @@ Test.assertTrue(daily_hosts_df.is_cached, 'incorrect daily_hosts_df.is_cached')
 
 # TODO: Your solution goes here
 
-days_with_hosts =
-hosts =
+days_with_hosts = <FILL IN>
+hosts = <FILL IN>
+for <FILL IN>:
+  <FILL IN>
 
 print(days_with_hosts)
 print(hosts)
@@ -862,8 +864,9 @@ Test.assertTrue(avg_daily_req_per_host_df.is_cached, 'incorrect avg_daily_req_pe
 # TODO: Replace <FILL IN> with appropriate code
 
 days_with_avg = (avg_daily_req_per_host_df.<FILL IN>)
-
 avgs = (avg_daily_req_per_host_df.<FILL IN>)
+for <FILL IN>:
+  <FILL IN>
 
 print(daysWithAvg)
 print(avgs)
@@ -1182,8 +1185,10 @@ Test.assertTrue(errors_by_date_sorted_df.is_cached, 'incorrect errors_by_date_so
 
 # TODO: Replace <FILL IN> with appropriate code
 
-days_with_errors_404 =
-errors_404_by_day =
+days_with_errors_404 = <FILL IN>
+errors_404_by_day = <FILL IN>
+for <FILL IN>:
+  <FILL IN>
 
 print days_with_errors_404
 print errors_404_by_day
