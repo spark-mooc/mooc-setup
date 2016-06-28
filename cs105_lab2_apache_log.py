@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 23:17:41 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 23:36:37 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -40,7 +40,31 @@ labVersion = 'cs105x-lab2-1.1.0'
 # MAGIC %md
 # MAGIC ## Part 1: Introduction and Imports
 # MAGIC 
-# MAGIC Before we can get started, we need to import a few things.
+# MAGIC ### A note about DataFrame column references
+# MAGIC 
+# MAGIC In Python, it's possible to access a DataFrame's columns either by attribute (`df.age`) or by indexing (`df['age']`). Referring to a column by attribute (`df.age`) is very Pandas-like, and it's highly convenient, especially when you're doing interactive data exploration. But it can fail, for reasons that aren't obvious. For example:
+
+# COMMAND ----------
+
+throwaway_df = sqlContext.createDataFrame([('Anthony', 10), ('Julia', 20), ('Fred', 5)], ('name', 'count'))
+throwaway_df.select(throwaway_df.count).show()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC To understand why that failed, you have to understand how the attribute-column syntax is implemented.
+# MAGIC 
+# MAGIC When you type `throwaway_df.count`, Python looks for an _existing_ attribute or method called `count` on the `throwaway_df` object. If it finds one, it uses it. Otherwise, it calls a special Python function (`__getattr__`), which defaults to throwing an exception. Spark has overridden `__getattr__` to look for a column on the DataFrame.
+# MAGIC 
+# MAGIC **This means you can only use the attribute (dot) syntax to refer to a column if the DataFrame does not _already_ have an attribute with the column's name.**
+# MAGIC 
+# MAGIC In the above example, there's already a `count()` method on the `DataFrame` class, so `throwaway_df.count` does not refer to our "count" column; instead, it refers to the `count()` _method_.
+# MAGIC 
+# MAGIC To avoid this problem, you can refer to the column using subscript notation: `throwaway_df['count']`. This syntax will _always_ work.
+
+# COMMAND ----------
+
+throwaway_df.select(throwaway_df['count']).show()
 
 # COMMAND ----------
 

@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 23:32:43 UTC
+# Databricks notebook source exported at Tue, 28 Jun 2016 23:36:37 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -36,7 +36,7 @@ labVersion = 'cs105x-lab2-1.1.0'
 # MAGIC 
 # MAGIC ### A note about DataFrame column references
 # MAGIC 
-# MAGIC This is directly from a slide I wrote last year: "In Python, it’s possible to access a DataFrame’s columns either by attribute (`df.age`) or by indexing (`df['age']`). Referring to a column by attribute (`df.age`) is very Pandas-like, and it's highly convenient, especially when you're doing interactive data exploration. But it can fail, for reasons that aren't obvious. For example:
+# MAGIC In Python, it's possible to access a DataFrame's columns either by attribute (`df.age`) or by indexing (`df['age']`). Referring to a column by attribute (`df.age`) is very Pandas-like, and it's highly convenient, especially when you're doing interactive data exploration. But it can fail, for reasons that aren't obvious. For example:
 
 # COMMAND ----------
 
