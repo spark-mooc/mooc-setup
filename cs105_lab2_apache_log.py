@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 29 Jun 2016 00:22:48 UTC
+# Databricks notebook source exported at Wed, 29 Jun 2016 13:32:30 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -47,7 +47,7 @@ labVersion = 'cs105x-lab2-1.1.0'
 # COMMAND ----------
 
 throwaway_df = sqlContext.createDataFrame([('Anthony', 10), ('Julia', 20), ('Fred', 5)], ('name', 'count'))
-throwaway_df.select(throwaway_df.count).show()
+throwaway_df.select(throwaway_df.count).show() # This line does not work. Please comment it out later.
 
 # COMMAND ----------
 
@@ -528,7 +528,7 @@ host_more_than_10_df.show(truncate=False)
 # MAGIC 
 # MAGIC Now, let's visualize the number of hits to paths (URIs) in the log. To perform this task, we start with our `logs_df` and group by the `path` column, aggregate by count, and sort in descending order.
 # MAGIC 
-# MAGIC Next we visualize the results using `matplotlib`. We previously imported the `prepareSubplot` function and the `matplotlib.pyplot` library, so we do not need to import them again.  We extract the endpoints and the counts, and unpack the resulting list of `Rows` using a `map` function and `lambda` expression.
+# MAGIC Next we visualize the results using `matplotlib`. We previously imported the `prepareSubplot` function and the `matplotlib.pyplot` library, so we do not need to import them again.  We extract the paths and the counts, and unpack the resulting list of `Rows` using a `map` function and `lambda` expression.
 
 # COMMAND ----------
 
@@ -575,7 +575,7 @@ display(paths_df)
 
 # COMMAND ----------
 
-# Top Endpoints
+# Top Paths
 print 'Top Ten Paths:'
 paths_df.show(n=10, truncate=False)
 
@@ -603,23 +603,23 @@ assert paths_df.take(10) == expected, 'incorrect Top Ten Paths'
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **(4a) Exercise: Top Ten Error Endpoints**
+# MAGIC **(4a) Exercise: Top Ten Error Paths**
 # MAGIC 
-# MAGIC What are the top ten endpoints which did not have return code 200? Create a sorted list containing the endpoints and the number of times that they were accessed with a non-200 return code and show the top ten.
+# MAGIC What are the top ten paths which did not have return code 200? Create a sorted list containing the paths and the number of times that they were accessed with a non-200 return code and show the top ten.
 # MAGIC 
-# MAGIC Think about the steps that you need to perform to determine which endpoints did not have a 200 return code, how you will uniquely count those endpoints and sort the list.
+# MAGIC Think about the steps that you need to perform to determine which paths did not have a 200 return code, how you will uniquely count those paths and sort the list.
 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
 # You are welcome to structure your solution in a different way, so long as
-# you ensure the variables used in the next Test section are defined (ie. endpointSum, topTenErrURLs).
+# you ensure the variables used in the next Test section are defined
 
 # DataFrame containing all accesses that did not return a code 200
 from pyspark.sql.functions import desc
 not200DF = logs_df.<FILL IN>
 not200DF.show(10)
-# Sorted DataFrame containing all endpoints and the number of times they were accessed with non-200 return code
+# Sorted DataFrame containing all paths and the number of times they were accessed with non-200 return code
 logs_sum_df = not200DF.<FILL IN>
 
 print 'Top Ten failed URLs:'
@@ -627,7 +627,7 @@ logs_sum_df.show(10, False)
 
 # COMMAND ----------
 
-# TEST Top ten error endpoints (4a)
+# TEST Top ten error paths (4a)
 top_10_err_urls = [(row[0], row[1]) for row in logs_sum_df.take(10)]
 top_10_err_expected = [
   (u'/images/NASA-logosmall.gif', 8761),
@@ -927,7 +927,7 @@ unique_not_found_paths_df.show(n=40, truncate=False)
 # TEST Listing 404 records (5b)
 
 bad_unique_paths_40 = set([row[0] for row in unique_not_found_paths_df.take(40)])
-Test.assertEquals(len(bad_unique_paths_40), 40, 'bad_unique_endpoints_40 not distinct')
+Test.assertEquals(len(bad_unique_paths_40), 40, 'bad_unique_paths_40 not distinct')
 
 # COMMAND ----------
 
@@ -936,7 +936,7 @@ Test.assertEquals(len(bad_unique_paths_40), 40, 'bad_unique_endpoints_40 not dis
 # MAGIC 
 # MAGIC Using the DataFrame containing only log records with a 404 response code that you cached in part (5a), print out a list of the top twenty paths that generate the most 404 errors.
 # MAGIC 
-# MAGIC *Remember, top endpoints should be in sorted order*
+# MAGIC *Remember, top paths should be in sorted order*
 
 # COMMAND ----------
 
@@ -1212,8 +1212,8 @@ Test.assertTrue(hour_records_sorted_df.is_cached, 'incorrect hour_records_sorted
 
 # TODO: Replace <FILL IN> with appropriate code
 
-hours_with_not_found =
-not_found_counts_per_hour =
+hours_with_not_found = <FILL IN>
+not_found_counts_per_hour = <FILL IN>
 
 print hours_with_not_found
 print not_found_counts_per_hour
