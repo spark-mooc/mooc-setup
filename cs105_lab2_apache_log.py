@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 23:36:37 UTC
+# Databricks notebook source exported at Wed, 29 Jun 2016 00:22:48 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -1034,7 +1034,7 @@ Test.assertEquals(len(set(top_25_404) - expected), 0, 'incorrect hosts_404_count
 # MAGIC %md
 # MAGIC ### (5e) Exercise: Listing 404 Errors per Day
 # MAGIC 
-# MAGIC Let's explore the 404 records temporally. Break down the 404 requests by day (cache the `errors_by_date_sorted_df` DataFrame) and get the daily counts sorted by day as a list.
+# MAGIC Let's explore the 404 records temporally. Break down the 404 requests by day (cache the `errors_by_date_sorted_df` DataFrame) and get the daily counts sorted by day in `errors_by_date_sorted_df`.
 # MAGIC 
 # MAGIC *Since the log only covers a single month, you can ignore the month in your checks.*
 
@@ -1162,15 +1162,6 @@ Test.assertEquals([(r[0], r[1]) for r in top_err_date_df.take(5)], [(7, 532), (8
 # TODO: Replace <FILL IN> with appropriate code
 from pyspark.sql.functions import hour
 hour_records_sorted_df = not_found_df.<FILL IN>
-
-print 'Top hours for 404 requests:\n'
-hour_records_sorted_df.show(24)
-
-# COMMAND ----------
-
-# TODO: Replace <FILL IN> with appropriate code
-from pyspark.sql.functions import hour
-hour_records_sorted_df = not_found_df.groupBy(hour("time").alias("hr")).count().orderBy("hr").cache()
 
 print 'Top hours for 404 requests:\n'
 hour_records_sorted_df.show(24)

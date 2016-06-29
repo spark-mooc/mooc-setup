@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 28 Jun 2016 23:36:37 UTC
+# Databricks notebook source exported at Wed, 29 Jun 2016 00:22:48 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -1141,7 +1141,7 @@ Test.assertEquals(len(set(top_25_404) - expected), 0, 'incorrect hosts_404_count
 # MAGIC %md
 # MAGIC ### (5e) Exercise: Listing 404 Errors per Day
 # MAGIC  
-# MAGIC Let's explore the 404 records temporally. Break down the 404 requests by day (cache the `errors_by_date_sorted_df` DataFrame) and get the daily counts sorted by day as a list.
+# MAGIC Let's explore the 404 records temporally. Break down the 404 requests by day (cache the `errors_by_date_sorted_df` DataFrame) and get the daily counts sorted by day in `errors_by_date_sorted_df`.
 # MAGIC  
 # MAGIC *Since the log only covers a single month, you can ignore the month in your checks.*
 
@@ -1307,7 +1307,7 @@ hour_records_sorted_df.show(24)
 
 # COMMAND ----------
 
-# TODO: Replace <FILL IN> with appropriate code
+# ANSWER
 from pyspark.sql.functions import hour
 hour_records_sorted_df = not_found_df.groupBy(hour("time").alias("hr")).count().orderBy("hr").cache()
 
