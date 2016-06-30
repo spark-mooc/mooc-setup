@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 29 Jun 2016 13:32:30 UTC
+# Databricks notebook source exported at Thu, 30 Jun 2016 15:22:08 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -344,7 +344,7 @@ def parse_clf_time(s):
         a string suitable for passing to CAST('timestamp')
     """
     # NOTE: We're ignoring time zone here. In a production application, you'd want to handle that.
-    return "{0:02d}-{1:02d}-{2:04d} {3:02d}:{4:02d}:{5:02d}".format(
+    return "{0:04d}-{1:02d}-{2:02d} {3:02d}:{4:02d}:{5:02d}".format(
       int(s[7:11]),
       month_map[s[3:6]],
       int(s[0:2]),

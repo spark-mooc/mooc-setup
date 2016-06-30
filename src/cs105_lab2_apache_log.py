@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 29 Jun 2016 13:32:30 UTC
+# Databricks notebook source exported at Thu, 30 Jun 2016 15:22:08 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -338,7 +338,7 @@ def parse_clf_time(s):
         a string suitable for passing to CAST('timestamp')
     """
     # NOTE: We're ignoring time zone here. In a production application, you'd want to handle that.
-    return "{0:02d}-{1:02d}-{2:04d} {3:02d}:{4:02d}:{5:02d}".format(
+    return "{0:04d}-{1:02d}-{2:02d} {3:02d}:{4:02d}:{5:02d}".format(
       int(s[7:11]),
       month_map[s[3:6]],
       int(s[0:2]),
