@@ -35,7 +35,7 @@ for i in src/*.py
 do
   b=$(basename $i .py)
   cmd rm -rf cs105
-  cmd $master_parse -db -py -in -st -cc $i
+  cmd $master_parse -ei UTF8 -eo UTF8 -db -py -in -st -cc $i
   cmd rm -f build_mp/$b/python/${b}_answers.py
   cmd mkdir cs105
   cmd mv build_mp/$b/python/${b}_student.py cs105/$b.py

@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 23 Jun 2016 16:13:57 UTC
+# Databricks notebook source exported at Fri, 24 Jun 2016 21:33:38 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -235,7 +235,7 @@ fake.seed(4321)
 from pyspark.sql import Row
 def fake_entry():
   name = fake.name().split()
-  return Row(name[1], name[0], fake.ssn(), fake.job(), abs(2016 - fake.date_time().year) + 1)
+  return (name[1], name[0], fake.ssn(), fake.job(), abs(2016 - fake.date_time().year) + 1)
 
 # COMMAND ----------
 
@@ -251,11 +251,11 @@ data = list(repeat(10000, fake_entry))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC `data` is just a normal Python list, containing Spark SQL `Row` objects. Let's look at the first item in the list:
+# MAGIC `data` is just a normal Python list, containing Python tuples objects. Let's look at the first item in the list:
 
 # COMMAND ----------
 
-data[0][0], data[0][1], data[0][2], data[0][3], data[0][4]
+data[0]
 
 # COMMAND ----------
 
