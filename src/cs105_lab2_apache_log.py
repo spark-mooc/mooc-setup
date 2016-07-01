@@ -496,7 +496,7 @@ display(fig)
 # MAGIC %md
 # MAGIC ### (3d) Example: Frequent Hosts
 # MAGIC  
-# MAGIC Let's look at hosts that have accessed the server frequently (e.g., more than ten times). As with the response code analysis in (3b), we create a new DataFrame by grouping `successLogsDF` by the 'host' column and aggregating by count.
+# MAGIC Let's look at hosts that have accessed the server frequently (e.g., more than ten times). As with the response code analysis in (3b), we create a new DataFrame by grouping `logs_df` by the 'host' column and aggregating by count.
 # MAGIC  
 # MAGIC We then filter the result based on the count of accesses by each host being greater than ten.  Then, we select the 'host' column and show 20 elements from the result.
 
