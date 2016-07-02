@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 30 Jun 2016 15:22:08 UTC
+# Databricks notebook source exported at Sat, 2 Jul 2016 14:23:54 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # **Web Server Log Analysis with Apache Spark**
@@ -349,7 +349,7 @@ def parse_clf_time(s):
   
 u_parse_time = udf(parse_clf_time)
 
-logs_df = cleaned_df.select('*', u_parse_time(split_df['timestamp']).cast('timestamp').alias('time')).drop('timestamp') 
+logs_df = cleaned_df.select('*', u_parse_time(cleaned_df['timestamp']).cast('timestamp').alias('time')).drop('timestamp') 
 total_log_entries = logs_df.count()
 
 # COMMAND ----------
@@ -496,7 +496,7 @@ display(fig)
 # MAGIC %md
 # MAGIC ### (3d) Example: Frequent Hosts
 # MAGIC  
-# MAGIC Let's look at hosts that have accessed the server frequently (e.g., more than ten times). As with the response code analysis in (3b), we create a new DataFrame by grouping `logs_df` by the 'host' column and aggregating by count.
+# MAGIC Let's look at hosts that have accessed the server frequently (e.g., more than ten times). As with the response code analysis in (3b), we create a new DataFrame by grouping `successLogsDF` by the 'host' column and aggregating by count.
 # MAGIC  
 # MAGIC We then filter the result based on the count of accesses by each host being greater than ten.  Then, we select the 'host' column and show 20 elements from the result.
 

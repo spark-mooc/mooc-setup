@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 30 Jun 2016 15:22:08 UTC
+# Databricks notebook source exported at Sat, 2 Jul 2016 14:23:54 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -355,7 +355,7 @@ def parse_clf_time(s):
 
 u_parse_time = udf(parse_clf_time)
 
-logs_df = cleaned_df.select('*', u_parse_time(split_df['timestamp']).cast('timestamp').alias('time')).drop('timestamp')
+logs_df = cleaned_df.select('*', u_parse_time(cleaned_df['timestamp']).cast('timestamp').alias('time')).drop('timestamp')
 total_log_entries = logs_df.count()
 
 # COMMAND ----------
