@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 6 Jul 2016 16:11:49 UTC
+# Databricks notebook source exported at Wed, 6 Jul 2016 16:22:21 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Math and Python review
@@ -16,7 +16,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120.1x-lab1-1.0.3'
+labVersion = 'cs120x-lab1-1.0.0'
 
 # COMMAND ----------
 

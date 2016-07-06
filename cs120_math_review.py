@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 6 Jul 2016 16:11:49 UTC
+# Databricks notebook source exported at Wed, 6 Jul 2016 16:22:21 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -22,7 +22,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120.1x-lab1-1.0.3'
+labVersion = 'cs120x-lab1-1.0.0'
 
 # COMMAND ----------
 
