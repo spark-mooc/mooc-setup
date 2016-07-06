@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Quick and dirty build script for CS105.X
+# Quick and dirty build script for MOOC labs.
 #
 # NOTE: To run this script, you'll need:
 #
@@ -13,6 +13,22 @@
 #    to run, but this script assumes "gendbc" is in your PATH.
 
 dir=$(dirname $0)
+
+case "$#" in
+  1)
+    course=$1
+    if [ ! -d src/$course ]
+    then
+      echo "Source directory (src/$course) doesn't exist." >&2
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Usage: $0 course" >&1
+    echo "e.g., $0 cs105x, $0 cs120x"
+    exit 1
+    ;;
+esac
 
 if [ -z $MASTER_PARSE_DIR ]
 then
@@ -31,16 +47,16 @@ cmd() {
   [ $? -eq 0 ] || exit 1
 }
 
-for i in src/*.py
+for i in src/$course/*.py
 do
   b=$(basename $i .py)
-  cmd rm -rf cs105
+  cmd rm -rf $course
   cmd $master_parse -ei UTF8 -eo UTF8 -db -py -in -st -cc $i
   cmd rm -f build_mp/$b/python/${b}_answers.py
-  cmd mkdir cs105
-  cmd mv build_mp/$b/python/${b}_student.py cs105/$b.py
-  cmd cp cs105/$b.py $b.py
+  cmd mkdir $course
+  cmd mv build_mp/$b/python/${b}_student.py $course/$b.py
+  cmd cp $course/$b.py $b.py
   cmd rm -rf build_mp
-  cmd gendbc --flatten cs105 $b.dbc
-  cmd rm -rf cs105
+  cmd gendbc --flatten $course $b.dbc
+  cmd rm -rf $course
 done
