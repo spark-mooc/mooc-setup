@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 6 Jul 2016 16:22:21 UTC
+# Databricks notebook source exported at Fri, 8 Jul 2016 15:02:05 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Math and Python review
@@ -37,7 +37,7 @@ labVersion = 'cs120x-lab1-1.0.0'
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Manually calculate your answer and represent the vector as a list of integers values.
+# Manually calculate your answer and represent the vector as a list of integers.
 # For example, [2, 4, 8].
 vectorX = <FILL IN>
 vectorY = <FILL IN>
@@ -45,7 +45,7 @@ vectorY = <FILL IN>
 # COMMAND ----------
 
 # ANSWER
-# Manually calculate your answer and represent the vector as a list of integers values.
+# Manually calculate your answer and represent the vector as a list of integers.
 # For example, [2, 4, 8].
 vectorX = [3, -6, 0]
 vectorY = [4, 8, 16]
@@ -57,17 +57,17 @@ vectorY = [4, 8, 16]
 from databricks_test_helper import Test
 
 Test.assertEqualsHashed(vectorX, 'e460f5b87531a2b60e0f55c31b2e49914f779981',
-                        'incorrect value for vector vectorX')
+                        'incorrect value for vectorX')
 Test.assertEqualsHashed(vectorY, 'e2d37ff11427dbac7f833a5a7039c0de5a740b1e',
-                        'incorrect value for vector vectorY')
+                        'incorrect value for vectorY')
 
 # COMMAND ----------
 
 # PRIVATE_TEST Scalar multiplication: vectors (1a)
 Test.assertEqualsHashed(vectorX, 'e460f5b87531a2b60e0f55c31b2e49914f779981',
-                        'incorrect value for vector vectorX')
+                        'incorrect value for vectorX')
 Test.assertEqualsHashed(vectorY, 'e2d37ff11427dbac7f833a5a7039c0de5a740b1e',
-                        'incorrect value for vector vectorY')
+                        'incorrect value for vectorY')
 
 # COMMAND ----------
 
@@ -83,26 +83,26 @@ Test.assertEqualsHashed(vectorY, 'e2d37ff11427dbac7f833a5a7039c0de5a740b1e',
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Manually calculate your answer and represent the vector as a list of integers values.
+# Manually calculate your answer and represent the vector as a list of integers.
 z = <FILL IN>
 
 # COMMAND ----------
 
 # ANSWER
-# Manually calculate your answer and represent the vector as a list of integers values.
+# Manually calculate your answer and represent the vector as a list of integers.
 z = [4, 10, 18]
 
 # COMMAND ----------
 
 # TEST Element-wise multiplication: vectors (1b)
 Test.assertEqualsHashed(z, '4b5fe28ee2d274d7e0378bf993e28400f66205c2',
-                        'incorrect value for vector z')
+                        'incorrect value for z')
 
 # COMMAND ----------
 
 # PRIVATE_TEST Element-wise multiplication: vectors (1b)
 Test.assertEqualsHashed(z, '4b5fe28ee2d274d7e0378bf993e28400f66205c2',
-                        'incorrect value for vector z')
+                        'incorrect value for z')
 
 # COMMAND ----------
 
@@ -160,10 +160,11 @@ Test.assertEqualsHashed(c2, '887309d048beef83ad3eabf2a79a64a389ab1c9f', 'incorre
 # MAGIC 
 # MAGIC Next, you'll perform an outer product and calculate the value for \\( \mathbf{Y} \\). 
 # MAGIC 
+# MAGIC \\[ \mathbf{Y} = \begin{bmatrix} 1 \\\ 2 \\\ 3 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \end{bmatrix} \\]
+# MAGIC 
 # MAGIC The resulting matrices should be stored row-wise (see [row-major order](https://en.wikipedia.org/wiki/Row-major_order)). This means that the matrix is organized by rows. For instance, a 2x2 row-wise matrix would be represented as: \\( [[r_1c_1, r_1c_2], [r_2c_1, r_2c_2]] \\) where r stands for row and c stands for column. 
 # MAGIC 
 # MAGIC Note that outer product is just a special case of general matrix multiplication and follows the same rules as normal matrix multiplication.
-# MAGIC \\[ \mathbf{Y} = \begin{bmatrix} 1 \\\ 2 \\\ 3 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \end{bmatrix} \\]
 
 # COMMAND ----------
 
@@ -185,17 +186,17 @@ matrixY = [[1, 2, 3], [2, 4, 6], [3, 6, 9]]
 
 # TEST Matrix multiplication (1d)
 Test.assertEqualsHashed(matrixX, 'c2ada2598d8a499e5dfb66f27a24f444483cba13',
-                        'incorrect value for matrix matrixX')
+                        'incorrect value for matrixX')
 Test.assertEqualsHashed(matrixY, 'f985daf651531b7d776523836f3068d4c12e4519',
-                        'incorrect value for matrix matrixY')
+                        'incorrect value for matrixY')
 
 # COMMAND ----------
 
 # PRIVATE_TEST Matrix multiplication (1d)
 Test.assertEqualsHashed(matrixX, 'c2ada2598d8a499e5dfb66f27a24f444483cba13',
-                        'incorrect value for matrix matrixX')
+                        'incorrect value for matrixX')
 Test.assertEqualsHashed(matrixY, 'f985daf651531b7d776523836f3068d4c12e4519',
-                        'incorrect value for matrix matrixY')
+                        'incorrect value for matrixY')
 
 # COMMAND ----------
 
@@ -225,8 +226,8 @@ import numpy as np
 simpleArray = <FILL IN>
 # Perform the scalar product of 5 and the numpy array
 timesFive = <FILL IN>
-print simpleArray
-print timesFive
+print 'simpleArray\n{0}'.format(simpleArray)
+print '\ntimesFive\n{0}'.format(timesFive)
 
 # COMMAND ----------
 
@@ -309,7 +310,7 @@ Test.assertEquals(dotProduct, 183.75, 'incorrect value for dotProduct')
 # MAGIC 
 # MAGIC You can transpose a matrix by calling [numpy.matrix.transpose()](http://docs.scipy.org/doc/numpy/reference/generated/numpy.matrix.transpose.html) or by using `.T` on the matrix object (e.g. `myMatrix.T`).  Transposing a matrix produces a matrix where the new rows are the columns from the old matrix. For example: \\[  \begin{bmatrix} 1 & 2 & 3 \\\ 4 & 5 & 6 \end{bmatrix}^\top = \begin{bmatrix} 1 & 4 \\\ 2 & 5 \\\ 3 & 6 \end{bmatrix} \\]
 # MAGIC  
-# MAGIC Inverting a matrix can be done using [numpy.linalg.inv()](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.inv.html).  Note that only square matrices can be inverted, and square matrices are not guaranteed to have an inverse.  If the inverse exists, then multiplying a matrix by its inverse will produce the identity matrix.  \\( \scriptsize ( A^{-1} A = I_n ) \\)  The identity matrix \\( \scriptsize I_n \\) has ones along its diagonal and zero elsewhere. \\[ I_n = \begin{bmatrix} 1 & 0 & 0 & ... & 0 \\\ 0 & 1 & 0 & ... & 0 \\\ 0 & 0 & 1 & ... & 0 \\\ ... & ... & ... & ... & ... \\\ 0 & 0 & 0 & ... & 1 \end{bmatrix} \\]
+# MAGIC Inverting a matrix can be done using [numpy.linalg.inv()](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.inv.html).  Note that only square matrices can be inverted, and square matrices are not guaranteed to have an inverse.  If the inverse exists, then multiplying a matrix by its inverse will produce the identity matrix.  \\( \scriptsize ( A^{-1} A = I_n ) \\)  The identity matrix \\( \scriptsize I_n \\) has ones along its diagonal and zeros elsewhere. \\[ I_n = \begin{bmatrix} 1 & 0 & 0 & ... & 0 \\\ 0 & 1 & 0 & ... & 0 \\\ 0 & 0 & 1 & ... & 0 \\\ ... & ... & ... & ... & ... \\\ 0 & 0 & 0 & ... & 1 \end{bmatrix} \\]
 # MAGIC 
 # MAGIC For this exercise, multiply \\( A \\) times its transpose \\( ( A^\top ) \\) and then calculate the inverse of the result \\( (  [ A A^\top ]^{-1}  ) \\).
 
@@ -479,7 +480,7 @@ Test.assertTrue(np.all(zerosAboveOnes == [[0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1]]),
 # MAGIC %md
 # MAGIC ### (3c) PySpark's DenseVector
 # MAGIC 
-# MAGIC PySpark provides a [DenseVector](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.linalg.DenseVector) class within the module [pyspark.mllib.linalg](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#module-pyspark.mllib.linalg).  `DenseVector` is used to store arrays of values for use in PySpark.  `DenseVector` actually stores values in a NumPy array and delegates calculations to that object.  You can create a new `DenseVector` using `DenseVector()` and passing in an NumPy array or a Python list.
+# MAGIC PySpark provides a [DenseVector](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.linalg.DenseVector) class within the module [pyspark.mllib.linalg](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#module-pyspark.mllib.linalg).  `DenseVector` is used to store arrays of values for use in PySpark.  `DenseVector` actually stores values in a NumPy array and delegates calculations to that object.  You can create a new `DenseVector` using `DenseVector()` and passing in a NumPy array or a Python list.
 # MAGIC 
 # MAGIC `DenseVector` implements several functions.  The only function needed for this course is `DenseVector.dot()`, which operates just like `np.ndarray.dot()`.
 # MAGIC Note that `DenseVector` stores all values as `np.float64`, so even if you pass in an NumPy array of integers, the resulting `DenseVector` will contain floating-point numbers. Also, `DenseVector` objects exist locally and are not inherently distributed.  `DenseVector` objects can be used in the distributed setting by either passing functions that contain them to resilient distributed dataset (RDD) transformations or by distributing them directly as RDDs.  You'll learn more about RDDs in the spark tutorial.
@@ -728,7 +729,7 @@ print 'sumThree((1, 2), (3, 4), (5, 6)) = {0}'.format(sumThree((1, 2), (3, 4), (
 # TEST Lambda expression arguments (4c)
 Test.assertEquals(swap1((1, 2)), (2, 1), 'incorrect definition for swap1')
 Test.assertEquals(swap2((1, 2)), (2, 1), 'incorrect definition for swap2')
-Test.assertEquals(swapOrder((1, 2, 3)), (2, 3, 1), 'incorrect definition fo swapOrder')
+Test.assertEquals(swapOrder((1, 2, 3)), (2, 3, 1), 'incorrect definition for swapOrder')
 Test.assertEquals(sumThree((1, 2), (3, 4), (5, 6)), (9, 12), 'incorrect definition for sumThree')
 
 # COMMAND ----------
@@ -736,7 +737,7 @@ Test.assertEquals(sumThree((1, 2), (3, 4), (5, 6)), (9, 12), 'incorrect definiti
 # PRIVATE_TEST Lambda expression arguments (4c)
 Test.assertEquals(swap1((1, 2)), (2, 1), 'incorrect definition for swap1')
 Test.assertEquals(swap2((1, 2)), (2, 1), 'incorrect definition for swap2')
-Test.assertEquals(swapOrder((1, 2, 3)), (2, 3, 1), 'incorrect definition fo swapOrder')
+Test.assertEquals(swapOrder((1, 2, 3)), (2, 3, 1), 'incorrect definition for swapOrder')
 Test.assertEquals(sumThree((1, 2), (3, 4), (5, 6)), (9, 12), 'incorrect definition for sumThree')
 Test.assertEquals(sumThree((1, 1), (2, 2), (3, 3)), (6, 6), 'incorrect definition for sumThree')
 
@@ -889,8 +890,8 @@ Test.assertEquals(reduceResult, 45, 'incorrect value for reduceResult')
 
 # COMMAND ----------
 
-# Example of a mult-line expression statement
-# Note that placing parentheses around the expression allow it to exist on multiple lines without
+# Example of a multi-line expression statement
+# Note that placing parentheses around the expression allows it to exist on multiple lines without
 # causing a syntax error.
 (dataset
  .map(lambda x: x + 2)
@@ -921,3 +922,6 @@ Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
 
 # PRIVATE_TEST Composability (4f)
 Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
+
+# COMMAND ----------
+
