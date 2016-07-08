@@ -25,7 +25,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120x-lab2-1.0.0'
+labVersion = 'cs120x-lab1b-1.0.0'
 
 # COMMAND ----------
 

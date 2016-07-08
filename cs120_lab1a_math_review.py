@@ -23,7 +23,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120x-lab1-1.0.0'
+labVersion = 'cs120x-lab1a-1.0.0'
 
 # COMMAND ----------
 
@@ -691,10 +691,10 @@ Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
 # MAGIC ```
 # MAGIC labID = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab1":
+# MAGIC and change `<FILL IN>` to "CS120x-lab1a":
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = "CS120x-lab1"
+# MAGIC labID = "CS120x-lab1a"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.
