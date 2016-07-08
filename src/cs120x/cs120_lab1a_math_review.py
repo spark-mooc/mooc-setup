@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 15:02:05 UTC
+# Databricks notebook source exported at Fri, 8 Jul 2016 16:20:07 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Math and Python review
@@ -13,6 +13,7 @@
 # MAGIC * *Part 2:* NumPy
 # MAGIC * *Part 3:* Additional NumPy and Spark linear algebra
 # MAGIC * *Part 4:* Python lambda expressions
+# MAGIC * *Appendix A:* Submitting your exercises to the Autograder
 
 # COMMAND ----------
 
@@ -116,10 +117,10 @@ Test.assertEqualsHashed(z, '4b5fe28ee2d274d7e0378bf993e28400f66205c2',
 # MAGIC Note that you may also see \\( \mathbf{w} \cdot \mathbf{x} \\) represented as \\( \mathbf{w}^\top \mathbf{x} \\)
 # MAGIC 
 # MAGIC Calculate the value for \\( c_1 \\) based on the dot product of the following two vectors:
-# MAGIC \\[ c_1 = \begin{bmatrix} 1 \\\ -3 \end{bmatrix} \cdot \begin{bmatrix} 4 \\\ 5 \end{bmatrix}\\]
+# MAGIC \\[ c_1 = \begin{bmatrix} 1 & -3 \end{bmatrix} \cdot \begin{bmatrix} 4 \\\ 5 \end{bmatrix}\\]
 # MAGIC 
 # MAGIC Calculate the value for \\( c_2 \\) based on the dot product of the following two vectors:
-# MAGIC \\[ c_2 = \begin{bmatrix} 3 \\\ 4 \\\ 5 \end{bmatrix} \cdot \begin{bmatrix} 1 \\\ 2 \\\ 3 \end{bmatrix}\\]
+# MAGIC \\[ c_2 = \begin{bmatrix} 3 & 4 & 5 \end{bmatrix} \cdot \begin{bmatrix} 1 \\\ 2 \\\ 3 \end{bmatrix}\\]
 
 # COMMAND ----------
 
@@ -480,7 +481,9 @@ Test.assertTrue(np.all(zerosAboveOnes == [[0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1]]),
 # MAGIC %md
 # MAGIC ### (3c) PySpark's DenseVector
 # MAGIC 
-# MAGIC PySpark provides a [DenseVector](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.linalg.DenseVector) class within the module [pyspark.mllib.linalg](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#module-pyspark.mllib.linalg).  `DenseVector` is used to store arrays of values for use in PySpark.  `DenseVector` actually stores values in a NumPy array and delegates calculations to that object.  You can create a new `DenseVector` using `DenseVector()` and passing in a NumPy array or a Python list.
+# MAGIC In frequent ML scenarios, you may end up with very long vectors, possibly 100k's to millions, where most of the values are zeroes.  PySpark provides a [DenseVector](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.linalg.DenseVector) class (in module the module [pyspark.mllib.linalg](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#module-pyspark.mllib.linalg)), which allows you to more efficiently operate and store these sparse vectors.
+# MAGIC 
+# MAGIC `DenseVector` is used to store arrays of values for use in PySpark.  `DenseVector` actually stores values in a NumPy array and delegates calculations to that object.  You can create a new `DenseVector` using `DenseVector()` and passing in a NumPy array or a Python list.
 # MAGIC 
 # MAGIC `DenseVector` implements several functions.  The only function needed for this course is `DenseVector.dot()`, which operates just like `np.ndarray.dot()`.
 # MAGIC Note that `DenseVector` stores all values as `np.float64`, so even if you pass in an NumPy array of integers, the resulting `DenseVector` will contain floating-point numbers. Also, `DenseVector` objects exist locally and are not inherently distributed.  `DenseVector` objects can be used in the distributed setting by either passing functions that contain them to resilient distributed dataset (RDD) transformations or by distributing them directly as RDDs.  You'll learn more about RDDs in the spark tutorial.
@@ -922,6 +925,107 @@ Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
 
 # PRIVATE_TEST Composability (4f)
 Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC <img src="https://d37djvu3ytnwxt.cloudfront.net/asset-v1:BerkeleyX+CS105x+1T2016+type@asset+block/url-process.png" alt="Drawing" style="float:right"/>
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 1: Publish this notebook
+# MAGIC 
+# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2: Set the notebook URL and Lab ID in the Autograder notebook, and run it
+# MAGIC 
+# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
+# MAGIC 
+# MAGIC ```
+# MAGIC notebook_url = "..." # put your URL here
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, find the line that looks like this:
+# MAGIC 
+# MAGIC ```
+# MAGIC labID = <FILL IN>
+# MAGIC ```
+# MAGIC and change `<FILL IN>` to "CS120x-lab1":
+# MAGIC 
+# MAGIC ```
+# MAGIC labID = "CS120x-lab1"
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, run the Autograder notebook to submit your lab.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
+# MAGIC 
+# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, re-run the notebook in a fresh cluster, as described below. Then, perform Steps 1 and 2 (above) again.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time. While the cluster is running all the cells in your lab notebook, you will see the "Stop Execution" button.
+# MAGIC 
+# MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Verify that your LAB notebook passes as many tests as you can.
+# MAGIC 
+# MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expressions of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/test_passed.png" alt="Drawing" />
+# MAGIC 
+# MAGIC If the cell contains `print` statements or `show()` actions, you'll also see the output from those operations.
+# MAGIC 
+# MAGIC The very last line of output is always the execution time:
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/execution_time.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Try Steps 1 and 2 again.
+# MAGIC 
+# MAGIC Once you've successfully re-run your notebook from scratch, go back to Steps 1 and 2 above, to republish and resubmit your notebook to the Autograder.
 
 # COMMAND ----------
 
