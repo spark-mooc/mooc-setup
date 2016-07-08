@@ -145,7 +145,8 @@ except NameError:
 # COMMAND ----------
 
 client = autograder(username, private_token)
-client.submit(lab, notebook_url)
+result = client.submit(lab, notebook_url)
+print ("Result for autograder#submit(): %s" % result )
 
 # COMMAND ----------
 
@@ -178,9 +179,10 @@ import json
 (result,queue) = client.get_queue_status()
 print("Result for get_queue_status(): %s" % result)
 if (queue == []):
-  print "No submisions for %s found in autograder queue. Proceed to Part 5." % username
+  print "All submissions are processed. Proceed to Part 5."
 else:
   # convert result to a Spark DataFrame
+  print("If there are no submissions in the queue with your name.Proceed to Part 5.")
   df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
   display(df_queue['submission_timestamp','grading_status','lab','username'])
 
@@ -205,10 +207,11 @@ import json
 (result,submission_list) = client.get_submission_list(lab)
 print("Result for get_submission_list(): %s" % result)
 if (submission_list == []):
-  print "All submissions are processed. please go ahead to check your results from autograder."
+  print("No submissions found for lab of %s. Please re-run the notebook and check the output in B-5." % lab)
 else:
   # convert result to a Spark DataFrame
   df_submission_list = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in submission_list]))
+  print "Pick up one submission ID with your expected grade and submit it to edX for your final grade."
   display(df_submission_list['submission_timestamp','grade','submission_id','lab','autograder_results','username'])
 
 # COMMAND ----------

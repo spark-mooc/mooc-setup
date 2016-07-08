@@ -245,7 +245,7 @@ import json
 (result,queue) = client.get_queue_status()
 print("Result for get_queue_status(): %s" % result)
 if (queue == []):
-  print "No submisions for %s found in autograder queue. Proceed to Part 5." % username
+  print "No submissions for %s found in autograder queue. Proceed to Part 5." % username
 else:
   # convert result to a Spark DataFrame
   df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
