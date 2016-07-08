@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 16:20:07 UTC
+# Databricks notebook source exported at Fri, 8 Jul 2016 18:22:36 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -23,7 +23,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120x-lab1a-1.0.0'
+labVersion = 'cs120x-lab1-1.0.0'
 
 # COMMAND ----------
 
@@ -689,12 +689,12 @@ Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
 # MAGIC Then, find the line that looks like this:
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = <FILL IN>
+# MAGIC lab = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab1a":
+# MAGIC and change `<FILL IN>` to "CS120x-lab1":
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = "CS120x-lab1a"
+# MAGIC lab = "CS120x-lab1"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.

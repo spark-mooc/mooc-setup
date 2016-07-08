@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 16:20:07 UTC
+# Databricks notebook source exported at Fri, 8 Jul 2016 18:22:36 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Math and Python review
@@ -17,7 +17,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120x-lab1a-1.0.0'
+labVersion = 'cs120x-lab1-1.0.0'
 
 # COMMAND ----------
 
@@ -966,12 +966,12 @@ Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
 # MAGIC Then, find the line that looks like this:
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = <FILL IN>
+# MAGIC lab = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab1a":
+# MAGIC and change `<FILL IN>` to "CS120x-lab1":
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = "CS120x-lab1a"
+# MAGIC lab = "CS120x-lab1"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.

@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 16:19:43 UTC
+# Databricks notebook source exported at Fri, 8 Jul 2016 18:23:19 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC # Word Count Lab: Building a word count application
@@ -19,7 +19,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs120x-lab1b-1.0.0'
+labVersion = 'cs120x-lab2-1.0.0'
 
 # COMMAND ----------
 
@@ -49,7 +49,7 @@ print type(wordsRDD)
 # MAGIC %md
 # MAGIC ### (1b) Pluralize and test
 # MAGIC 
-# MAGIC Let's use a `map()` transformation to add the letter 's' to each string in the base RDD we just created. We'll define a Python function that returns the word with an 's' at the end of the word.  Please replace `<FILL IN>` with your solution.  If you have trouble, the next cell has the solution.  After you have defined `makePlural` you can run the third cell which contains a test.  If your implementation is correct it will print `1 test passed`.
+# MAGIC Let's use a `map()` transformation to add the letter 's' to each string in the base RDD we just created. We'll define a Python function that returns the word with an 's' at the end of the word.  Please replace `<FILL IN>` with your solution.  If you have trouble, the next cell has the solution.  After you have defined `makePlural` you can run the third cell which contains a test.  If you implementation is correct it will print `1 test passed`.
 # MAGIC 
 # MAGIC This is the general form that exercises will take, except that no example solution will be provided.  Exercises will include an explanation of what is expected, followed by code cells where one cell will have one or more `<FILL IN>` sections.  The cell that needs to be modified will have `# TODO: Replace <FILL IN> with appropriate code` on its first line.  Once the `<FILL IN>` sections are updated and the code is run, the test cell can then be run to verify the correctness of your solution.  The last code cell before the next markdown section will contain the tests.
 
@@ -322,8 +322,6 @@ Test.assertEquals(sorted(wordCountsGrouped.collect()),
 # MAGIC ** (2c) Counting using `reduceByKey` **
 # MAGIC 
 # MAGIC A better approach is to start from the pair RDD and then use the [reduceByKey()](http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.reduceByKey) transformation to create a new pair RDD. The `reduceByKey()` transformation gathers together pairs that have the same key and applies the function provided to two values at a time, iteratively reducing all of the values to a single value. `reduceByKey()` operates by applying the function first within each partition on a per-key basis and then across the partitions, allowing it to scale efficiently to large datasets.
-# MAGIC 
-# MAGIC NOTE: When it is possible to use `reduceByKey`, avoid using using `groupByKey` because of the additional data shuffling caused by `groupByKey`.
 
 # COMMAND ----------
 
@@ -604,7 +602,11 @@ Test.assertEquals(removePunctuation(" Hi, It's possible I'm cheating. "),
 # MAGIC %md
 # MAGIC ### (4c) Load a text file
 # MAGIC 
-# MAGIC For the next part of this lab, we will use the [Complete Works of William Shakespeare](http://www.gutenberg.org/ebooks/100) from [Project Gutenberg](http://www.gutenberg.org/wiki/Main_Page). To convert a text file into an RDD, we use the `sc.textFile()` method. We also apply the recently defined `removePunctuation()` function using a `map()` transformation to strip out the punctuation and change all text to lower case.  Since the file is large we use `take(15)`, so that we only print 15 lines.
+# MAGIC For the next part of this lab, we will use the [Complete Works of William Shakespeare](http://www.gutenberg.org/ebooks/100) from [Project Gutenberg](http://www.gutenberg.org/wiki/Main_Page). To convert a text file into an RDD, we use the `SparkContext.textFile()` method. We also apply the recently defined `removePunctuation()` function using a `map()` transformation to strip out the punctuation and change all text to lower case.  Since the file is large we use `take(15)`, so that we only print 15 lines.
+
+# COMMAND ----------
+
+# MAGIC %fs ls /mnt/
 
 # COMMAND ----------
 
@@ -782,12 +784,12 @@ Test.assertEquals(top15WordsAndCounts,
 # MAGIC Then, find the line that looks like this:
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = <FILL IN>
+# MAGIC lab = <FILL IN>
 # MAGIC ```
 # MAGIC and change `<FILL IN>` to "CS120x-lab1b":
 # MAGIC 
 # MAGIC ```
-# MAGIC labID = "CS120x-lab1b"
+# MAGIC lab = "CS120x-lab1b"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.
@@ -844,3 +846,4 @@ Test.assertEquals(top15WordsAndCounts,
 # MAGIC Once you've successfully re-run your notebook from scratch, go back to Steps 1 and 2 above, to republish and resubmit your notebook to the Autograder.
 
 # COMMAND ----------
+
