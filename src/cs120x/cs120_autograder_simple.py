@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 18:37:17 UTC
+# Databricks notebook source exported at Fri, 8 Jul 2016 19:05:16 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -80,7 +80,18 @@ notebook_url = <FILL_IN>
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Step B-3: Set the lab ID
+# MAGIC ### Step B-3: Add your user name
+# MAGIC 
+# MAGIC Put your user name (the email address you used in the [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_register.dbc)) in the cell below.
+
+# COMMAND ----------
+
+username = <FILL IN>
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step B-4: Set the lab ID
 # MAGIC 
 # MAGIC Get the Lab ID from your lab notebook. It's in the section at the bottom of the notebook, in the Autograder Appendix, in a cell entitled "Step 2: Set the notebook URL and Lab ID in the Autograder notebook, and run it".
 # MAGIC Set the lab ID in the cell below.
@@ -95,7 +106,7 @@ lab = <FILL_IN>
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Step B-4: Re-run the AUTOGRADER notebook (_this_ notebook)
+# MAGIC ### Step B-5: Re-run the AUTOGRADER notebook (_this_ notebook)
 # MAGIC 
 # MAGIC Click on "Run All" at the top of this notebook.
 # MAGIC 
