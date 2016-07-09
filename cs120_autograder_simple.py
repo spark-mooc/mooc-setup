@@ -152,7 +152,7 @@ except NameError:
 
 client = autograder(username, private_token)
 result = client.submit(lab, notebook_url)
-print ("Result for autograder#submit(): %s" % result )
+print "Result for autograder#submit(): %s" % result
 
 # COMMAND ----------
 
@@ -183,12 +183,12 @@ stop_here # This will fail. That's okay.
 # Re-run this cell to see the autograder queue status
 import json
 (result,queue) = client.get_queue_status()
-print("Result for get_queue_status(): %s" % result)
+print "Result for get_queue_status(): %s" % result
 if (queue == []):
   print "All submissions are processed. Proceed to Part 5."
 else:
   # convert result to a Spark DataFrame
-  print("If there are no submissions in the queue with your name.Proceed to Part 5.")
+  print "If there are no submissions in the queue with your name.Proceed to Part 5."
   df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
   display(df_queue['submission_timestamp','grading_status','lab','username'])
 
@@ -211,9 +211,9 @@ else:
 
 import json
 (result,submission_list) = client.get_submission_list(lab)
-print("Result for get_submission_list(): %s" % result)
+print "Result for get_submission_list(): %s" % result
 if (submission_list == []):
-  print("No submissions found for lab of %s. Please re-run the notebook and check the output in B-5." % lab)
+  print "No submissions found for lab of %s. Please re-run the notebook and check the output in B-5." % lab
 else:
   # convert result to a Spark DataFrame
   df_submission_list = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in submission_list]))

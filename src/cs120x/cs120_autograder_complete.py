@@ -243,7 +243,7 @@ client.submit(lab, notebook_url)
 # Re-run this cell to see the autograder queue status
 import json
 (result,queue) = client.get_queue_status()
-print("Result for get_queue_status(): %s" % result)
+print "Result for get_queue_status(): %s" % result
 if (queue == []):
   print "No submissions for %s found in autograder queue. Proceed to Part 5." % username
 else:
@@ -265,7 +265,7 @@ else:
 
 import json
 (result,submission_list) = client.get_submission_list(lab)
-print("Result for get_submission_list(): %s" % result)
+print "Result for get_submission_list(): %s" % result
 if (submission_list == []):
   print "All submissions are processed. please go ahead to check your results from autograder."
 else:
@@ -297,7 +297,7 @@ submission_id = <FILL_IN>
 
 import json
 (result,submission_detail) = client.get_submission_detail(submission_id)
-print("Result for get_submission_detail(): %s" % result)
+print "Result for get_submission_detail(): %s" % result
 print submission_detail['autograder_results']
 print submission_detail['grade']
 
