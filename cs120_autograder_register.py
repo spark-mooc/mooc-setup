@@ -50,7 +50,7 @@ except NameError:
 try:
   print "Your private token is: " + signup.signup(username)
 except:
-  print(“autograder signup failed. please detach the cluster and re-run the notebook”)
+  print "autograder signup failed. please detach the cluster and re-run the notebook"
 
 # COMMAND ----------
 
