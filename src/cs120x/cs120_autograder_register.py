@@ -37,12 +37,14 @@ username = <FILL_IN>
 # Verify that the username is set
 from autograder import autograder
 
+client = autograder()
+
 try:
   print "Your username is " + username
 except NameError:
   assert False, "Your username is not set. Please check that you set your username in the previous cell and you exectuted the cell using SHIFT-ENTER."
 try:
-  print "Your private token is: " + signup.signup(username)
+  print "Your private token is: " + client.signup(username)
 except:
   print "autograder signup failed. please detach the cluster and re-run the notebook"
 
