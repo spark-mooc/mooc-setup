@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 19:05:16 UTC
+# Databricks notebook source exported at Sat, 9 Jul 2016 15:36:22 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -176,7 +176,7 @@ stop_here # This will fail. That's okay.
 # MAGIC 
 # MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder, and you can move on to submitting to edX.
 # MAGIC 
-# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/edx_berkeley/summer2016/cs1201x) to contact the TAs for support.
+# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/class/iqfbu516yuj5t3) to contact the TAs for support.
 
 # COMMAND ----------
 
