@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 11 Jul 2016 16:45:18 UTC
+# Databricks notebook source exported at Mon, 11 Jul 2016 17:51:44 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -123,6 +123,8 @@ except NameError:
   assert False, "Your lab ID value is not set. Please check that you set the lab variable, above."
 
 # COMMAND ----------
+
+from autograder import autograder
 
 client = autograder(username, private_token)
 result = client.submit(lab, notebook_url)

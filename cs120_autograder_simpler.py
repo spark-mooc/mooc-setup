@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 11 Jul 2016 16:45:18 UTC
+# Databricks notebook source exported at Mon, 11 Jul 2016 17:51:44 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -129,6 +129,8 @@ except NameError:
   assert False, "Your lab ID value is not set. Please check that you set the lab variable, above."
 
 # COMMAND ----------
+
+from autograder import autograder
 
 client = autograder(username, private_token)
 result = client.submit(lab, notebook_url)
