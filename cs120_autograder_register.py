@@ -46,6 +46,7 @@ username = <FILL_IN>
 
 # Verify that the username is set
 from autograder import autograder
+signup = autograder()
 
 try:
   print "Your username is " + username
