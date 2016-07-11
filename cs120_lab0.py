@@ -139,6 +139,78 @@ Test.assertEquals(sorted(unsortedList), [(3, 'a'), (4, 'c'), (5, 'a'), (5, 'b')]
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC You have completed the lab!
+# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
 # MAGIC 
-# MAGIC Return to the edX website and proceed with the page for registering with the autograder.
+# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
+# MAGIC 
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time.
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(c): Publish this notebook
+# MAGIC 
+# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
+# MAGIC 
+# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
+# MAGIC 
+# MAGIC ```
+# MAGIC notebook_url = "..." # put your URL here
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, find the line that looks like this:
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = <FILL IN>
+# MAGIC ```
+# MAGIC and change `<FILL IN>` to "CS120x-lab0":
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = "CS120x-lab0"
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, run the Autograder notebook to submit your lab.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
+# MAGIC 
+# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
