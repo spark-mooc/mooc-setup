@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 18:57:28 UTC
+# Databricks notebook source exported at Mon, 11 Jul 2016 16:37:17 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -18,6 +18,10 @@
 # MAGIC [autograder notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_simple.dbc).
 # MAGIC 
 # MAGIC If you're interested in more details on the autograder, see the [Complete Autograder notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_complete.dbc).
+# MAGIC 
+# MAGIC ## NOTE TO CS105x STUDENTS
+# MAGIC 
+# MAGIC If you took CS105, and you already have an autograder private token, **DO NOT REGISTER FOR ANOTHER ONE.** Re-use your private token from CS105x.
 
 # COMMAND ----------
 
@@ -43,14 +47,12 @@ username = <FILL_IN>
 # Verify that the username is set
 from autograder import autograder
 
-client = autograder()
-
 try:
   print "Your username is " + username
 except NameError:
   assert False, "Your username is not set. Please check that you set your username in the previous cell and you exectuted the cell using SHIFT-ENTER."
 try:
-  print "Your private token is: " + client.signup(username)
+  print "Your private token is: " + signup.signup(username)
 except:
   print "autograder signup failed. please detach the cluster and re-run the notebook"
 
