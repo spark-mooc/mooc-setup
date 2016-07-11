@@ -990,10 +990,10 @@ Test.assertEquals(finalSum, 100, 'incorrect value for finalSum')
 # MAGIC ```
 # MAGIC lab = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab1":
+# MAGIC and change `<FILL IN>` to "CS120x-lab1a":
 # MAGIC 
 # MAGIC ```
-# MAGIC lab = "CS120x-lab1"
+# MAGIC lab = "CS120x-lab1a"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.
