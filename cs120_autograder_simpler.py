@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sat, 9 Jul 2016 15:36:22 UTC
+# Databricks notebook source exported at Mon, 11 Jul 2016 05:39:26 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
@@ -11,9 +11,10 @@
 # MAGIC # The Course Autograder
 # MAGIC 
 # MAGIC Grading in this course is a three step process:
-# MAGIC * Completing the lab exercises and using the lab notebook's built-in autograder functionality (TestAssert). The built-in autograder provides you with immediate feedback about the correctness of your code.
-# MAGIC * Using this notebook to submit a completed lab exercise to the course autograder. The course autograder runs the _exact_ same tests as the built-in notebook autograder. _There is no advantage to submitting to the course autograder until your code passes all built-in tests._
-# MAGIC * Submitting the submission ID from the course autograder on the edX course website. Submitting your submission ID on the edX course website will record your score for the assignment.
+# MAGIC 
+# MAGIC 1. **Grade Locally.** Completing the lab exercises and using the lab notebook's built-in autograder functionality (TestAssert). The built-in autograder provides you with immediate feedback about the correctness of your code. You will spend most of your time using this built-in autograder functionality.
+# MAGIC 2. **Submit to Autograder.** Using the autograder notebook to submit a completed lab exercise to the course autograder. The course autograder runs the exact same tests as the built-in notebook autograder. There is no advantage to submitting to the course autograder until your code passes as many built-in tests as you can.
+# MAGIC 3. **Submit to edX.** Submitting the submission ID from the course autograder on the edX course website. Submitting your submission ID on the edX course website will record your score for the assignment. You should only need to do this step once, after you have completed a lab exercise.
 # MAGIC 
 # MAGIC ** You must complete _all_ three steps to receive a score for a lab assignment. **
 # MAGIC 
