@@ -580,10 +580,10 @@ Test.assertEquals(top15WordsAndCounts,
 # MAGIC ```
 # MAGIC lab = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab1":
+# MAGIC and change `<FILL IN>` to "CS120x-lab1b":
 # MAGIC 
 # MAGIC ```
-# MAGIC lab = "CS120x-lab1"
+# MAGIC lab = "CS120x-lab1b"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.
