@@ -520,15 +520,37 @@ Test.assertEquals(top15WordsAndCounts,
 
 # MAGIC %md
 # MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
+# MAGIC 
+# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
+# MAGIC 
 # MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
-# MAGIC <img src="https://d37djvu3ytnwxt.cloudfront.net/asset-v1:BerkeleyX+CS105x+1T2016+type@asset+block/url-process.png" alt="Drawing" style="float:right"/>
 # MAGIC 
 # MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Step 1: Publish this notebook
+# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time.
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(c): Publish this notebook
 # MAGIC 
 # MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
 # MAGIC 
@@ -545,7 +567,7 @@ Test.assertEquals(top15WordsAndCounts,
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Step 2: Set the notebook URL and Lab ID in the Autograder notebook, and run it
+# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
 # MAGIC 
 # MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
 # MAGIC 
@@ -558,10 +580,10 @@ Test.assertEquals(top15WordsAndCounts,
 # MAGIC ```
 # MAGIC lab = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab1b":
+# MAGIC and change `<FILL IN>` to "CS120x-lab1":
 # MAGIC 
 # MAGIC ```
-# MAGIC lab = "CS120x-lab1b"
+# MAGIC lab = "CS120x-lab1"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.
@@ -571,51 +593,4 @@ Test.assertEquals(top15WordsAndCounts,
 # MAGIC %md
 # MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
 # MAGIC 
-# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, re-run the notebook in a fresh cluster, as described below. Then, perform Steps 1 and 2 (above) again.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
-# MAGIC 
-# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
-# MAGIC 
-# MAGIC This step will take some time. While the cluster is running all the cells in your lab notebook, you will see the "Stop Execution" button.
-# MAGIC 
-# MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
-# MAGIC 
-# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Verify that your LAB notebook passes as many tests as you can.
-# MAGIC 
-# MAGIC Most computations should complete within a few seconds unless stated otherwise. As soon as the expressions of a cell have been successfully evaluated, you will see one or more "test passed" messages if the cell includes test expressions:
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/test_passed.png" alt="Drawing" />
-# MAGIC 
-# MAGIC If the cell contains `print` statements or `show()` actions, you'll also see the output from those operations.
-# MAGIC 
-# MAGIC The very last line of output is always the execution time:
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/execution_time.png" alt="Drawing" />
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Try Steps 1 and 2 again.
-# MAGIC 
-# MAGIC Once you've successfully re-run your notebook from scratch, go back to Steps 1 and 2 above, to republish and resubmit your notebook to the Autograder.
-
-# COMMAND ----------
-
+# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.

@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 11 Jul 2016 05:39:26 UTC
+# Databricks notebook source exported at Mon, 11 Jul 2016 16:45:18 UTC
 # MAGIC %md
 # MAGIC #![Spark Logo](http://spark-mooc.github.io/web-assets/images/ta_Spark-logo-small.png) + ![Python Logo](http://spark-mooc.github.io/web-assets/images/python-logo-master-v3-TM-flattened_small.png)
 # MAGIC 
@@ -12,7 +12,7 @@
 # MAGIC 
 # MAGIC ** You must complete _all_ three steps to receive a score for a lab assignment. **
 # MAGIC 
-# MAGIC This notebook is, essentially, the program you use to submit a lab to the autograder for grading.
+# MAGIC This notebook will guide you through Steps 2 and 3 of this process.
 # MAGIC 
 # MAGIC **You _must_ register with the autograder first.**
 # MAGIC 
@@ -43,27 +43,8 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Section B: Submit a lab to the autograder
+# MAGIC ## Section B: Performing Step 2: Submit to Autograder
 # MAGIC 
-# MAGIC Now, you can use this notebook to submit a lab to the course autograder, get a list of your lab submissions to the autograder, get details about a specific submission you made, and get the status of the autograder queue.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 
-# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it for grading.
-# MAGIC 
-# MAGIC First, you'll submit it to the course autograder. Then, you'll submit it to the edX web site, to receive a grade.
-# MAGIC 
-# MAGIC To perform these steps, open two browser tabs: one with your lab notebook, and one with this autograder notebook.
-# MAGIC 
-# MAGIC ** Note that you can only submit to the course autograder once every one minute. **
-# MAGIC 
-# MAGIC #### Every time you submit to the course autograder, you must perform the steps below.
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC ### Step B-1: Publish your notebook
 # MAGIC 
 # MAGIC At the bottom of your lab notebook, you'll find instructions on how to publish your notebook. Follow those instructions _carefully_.
@@ -113,9 +94,7 @@ lab = <FILL_IN>
 # MAGIC 
 # MAGIC  <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" />
 # MAGIC 
-# MAGIC This step will finish quickly. While the cluster is running all the cells in your autograder notebook, you will see the "Stop Execution" button.
-# MAGIC 
-# MAGIC   <img src="http://spark-mooc.github.io/web-assets/images/stop_execution.png" alt="Drawing" />
+# MAGIC This step _should_ finish quickly.
 # MAGIC 
 # MAGIC Wait for your cluster to finish running the cells in your autograder notebook before proceeding.
 
@@ -156,7 +135,7 @@ print "Result for autograder#submit(): %s" % result
 # MAGIC 
 # MAGIC **If all the cells above worked, then your lab has been submitted to the autograder.**
 # MAGIC 
-# MAGIC To check the autograder status of your lab, or to submit your lab to edX, continue below.
+# MAGIC To submit your lab to edX, continue below.
 
 # COMMAND ----------
 
@@ -165,36 +144,11 @@ stop_here # This will fail. That's okay.
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Section C: Check the status of the course autograder queue
-# MAGIC 
-# MAGIC To check the status of the autograder queue, just run the following cell. You can run it more than once.
-# MAGIC 
-# MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder, and you can move on to submitting to edX.
-# MAGIC 
-# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/class/iqfbu516yuj5t3) to contact the TAs for support.
-
-# COMMAND ----------
-
-# Re-run this cell to see the autograder queue status
-import json
-(result,queue) = client.get_queue_status()
-print "Result for get_queue_status(): %s" % result
-if (queue == []):
-  print "All submissions are processed. Proceed to Part 5."
-else:
-  # convert result to a Spark DataFrame
-  print "If there are no submissions in the queue with your name.Proceed to Part 5."
-  df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
-  display(df_queue['submission_timestamp','grading_status','lab','username'])
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Section D: Submitting to edX
+# MAGIC ## Section C: Performing Step 3: Submit to edX
 # MAGIC 
 # MAGIC To get a grade for your lab on edX, you have to complete the following steps. You'll do this for every lab.
 # MAGIC 
-# MAGIC ### Step D-1: Get your submission ID for submitting on the edX course website
+# MAGIC ### Step C-1: Get your submission ID for submitting on the edX course website
 # MAGIC 
 # MAGIC To record your score for a lab, you need to submit a submission ID on the edX course website.
 # MAGIC 
@@ -217,3 +171,25 @@ else:
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ## Section D: Checking the status of the course autograder queue (OPTIONAL)
+# MAGIC 
+# MAGIC To check the status of the autograder queue, just run the following cell. You can run it more than once.
+# MAGIC 
+# MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder, and you can move on to submitting to edX.
+# MAGIC 
+# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/class/iqfbu516yuj5t3) to contact the TAs for support.
+
+# COMMAND ----------
+
+# Re-run this cell to see the autograder queue status
+import json
+(result,queue) = client.get_queue_status()
+print "Result for get_queue_status(): %s" % result
+if (queue == []):
+  print "All submissions are processed. Proceed to Part 5."
+else:
+  # convert result to a Spark DataFrame
+  print "If there are no submissions in the queue with your name.Proceed to Part 5."
+  df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
+  display(df_queue['submission_timestamp','grading_status','lab','username'])
