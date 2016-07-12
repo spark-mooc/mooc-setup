@@ -300,12 +300,6 @@ print uniqueWords
 
 # COMMAND ----------
 
-## ANSWER
-uniqueWords = wordCounts.count()
-print uniqueWords
-
-# COMMAND ----------
-
 # TEST Unique words (3a)
 Test.assertEquals(uniqueWords, 3, 'incorrect count of uniqueWords')
 

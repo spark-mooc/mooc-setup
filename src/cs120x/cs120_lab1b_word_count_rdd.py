@@ -405,7 +405,7 @@ print uniqueWords
 
 # COMMAND ----------
 
-## ANSWER
+# ANSWER
 uniqueWords = wordCounts.count()
 print uniqueWords
 
