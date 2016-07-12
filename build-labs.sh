@@ -5,8 +5,7 @@
 # NOTE: To run this script, you'll need:
 #
 # 1. The master parse tool, which is in the databricks/training repo.
-#    Depending on where you checked that repo out, you may need to change
-#    the "master_parse" variable, below.
+#    You have to install that tool, as described in its README.
 # 2. The "gendbc" tool, which is in the databricks/training repo, under
 #    devops/gendbc. This tool is written in Scala and must be installed
 #    per the README.md in its source directory. It only requires a JVM
@@ -30,12 +29,12 @@ case "$#" in
     ;;
 esac
 
-if [ -z $MASTER_PARSE_DIR ]
+master_parse=$(type -p master_parse)
+if [ $? -ne 0 -o -z "$master_parse" ]
 then
-    echo "Environment variable MASTER_PARSE_DIR is not set." >&2
+    echo "master_parse is not installed or not in the path." >&2
     exit 1
 fi
-master_parse=$MASTER_PARSE_DIR/master_parse.py
 
 rm -rf build_mp
 
