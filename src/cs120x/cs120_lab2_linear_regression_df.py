@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 14 Jul 2016 19:30:41 UTC
+# Databricks notebook source exported at Thu, 14 Jul 2016 22:17:35 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Linear Regression Lab
@@ -47,7 +47,7 @@ labVersion = 'cs120x-lab2-1.0.5'
 # load testing library
 from databricks_test_helper import Test
 import os.path
-file_name = os.path.join('mnt', 'spark-mooc', 'cs190', 'millionsong.txt')
+file_name = os.path.join('databricks-datasets', 'cs190', 'data-001', 'millionsong.txt')
 
 raw_data_df = sqlContext.read.load(file_name, 'text')
 

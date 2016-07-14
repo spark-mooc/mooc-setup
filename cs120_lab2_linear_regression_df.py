@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 14 Jul 2016 19:30:41 UTC
+# Databricks notebook source exported at Thu, 14 Jul 2016 22:17:35 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -53,7 +53,7 @@ labVersion = 'cs120x-lab2-1.0.5'
 # load testing library
 from databricks_test_helper import Test
 import os.path
-file_name = os.path.join('mnt', 'spark-mooc', 'cs190', 'millionsong.txt')
+file_name = os.path.join('databricks-datasets', 'cs190', 'data-001', 'millionsong.txt')
 
 raw_data_df = sqlContext.read.load(file_name, 'text')
 
