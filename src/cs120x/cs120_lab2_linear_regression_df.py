@@ -137,7 +137,7 @@ def parse_point(df):
              .map(lambda r: LabeledPoint(float(r[0][0]), r[0][1:]))
              .toDF())
 
-parsed_points_df = parse_point(rawDataDF)
+parsed_points_df = parse_point(raw_data_df)
 first_point_features = parsed_points_df.first()['features']
 first_point_label = parsed_points_df.first()['label']
 print first_point_features, first_point_label
