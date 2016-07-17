@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 14 Jul 2016 22:17:35 UTC
+# Databricks notebook source exported at Sun, 17 Jul 2016 19:47:23 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -90,9 +90,9 @@ import numpy as np
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-from pyspark.sql import functions as sqlFunctions
+from pyspark.sql import functions as sql_functions
 
-def parse_point(line):
+def parse_point(df):
     """Converts a DataFrame of comma separated unicode strings into a DataFrame of `LabeledPoints`.
 
     Args:
@@ -812,7 +812,7 @@ use_intercept = True  # intercept
 
 for reg in <FILL IN>:
     lin_reg = LinearRegression(maxIter=num_iters, regParam=reg, elasticNetParam=alpha, fitIntercept=use_intercept)
-    model = linReg.fit(parsed_train_data_df)
+    model = lin_reg.fit(parsed_train_data_df)
     val_pred_df = model.transform(parsed_val_data_df)
 
     rmse_val_grid = calc_RMSE(val_pred_df)
@@ -826,7 +826,7 @@ for reg in <FILL IN>:
 rmse_val_LR_grid = best_RMSE
 
 print ('Validation RMSE:\n\tBaseline = {0:.3f}\n\tLR0 = {1:.3f}\n\tLR1 = {2:.3f}\n' +
-       '\tLRGrid = {3:.3f}').format(rmse_val_base, rmse_val_LR0, rmse_val_LR1, rmseval_LR_grid)
+       '\tLRGrid = {3:.3f}').format(rmse_val_base, rmse_val_LR0, rmse_val_LR1, rmse_val_LR_grid)
 
 
 # COMMAND ----------
@@ -1012,7 +1012,7 @@ rmse_val_interact = calc_RMSE(preds_and_labels_interact_df)
 
 print ('Validation RMSE:\n\tBaseline = {0:.3f}\n\tLR0 = {1:.3f}\n\tLR1 = {2:.3f}\n\tLRGrid = ' +
        '{3:.3f}\n\tLRInteract = {4:.3f}').format(rmse_val_base, rmse_val_LR0, rmse_val_LR1,
-                                                 rms_eval_LR_grid, rmse_val_interact)
+                                                 rmse_val_LR_grid, rmse_val_interact)
 
 # COMMAND ----------
 
@@ -1024,7 +1024,7 @@ Test.assertTrue(np.allclose(rmse_val_interact, 14.3495530997), 'incorrect value 
 # MAGIC %md
 # MAGIC ### (5c) Evaluate interaction model on test data
 # MAGIC 
-# MAGIC Our final step is to evaluate the new model on the test dataset.  Note that we haven't used the test set to evaluate any of our models.  Because of this, our evaluation provides us with an unbiased estimate for how our model will perform on new data.  If we had changed our model based on viewing its performance on the test set, our estimate of RMSE would likely be overly optimistic.
+# MAGIC Our next step is to evaluate the new model on the test dataset.  Note that we haven't used the test set to evaluate any of our models.  Because of this, our evaluation provides us with an unbiased estimate for how our model will perform on new data.  If we had changed our model based on viewing its performance on the test set, our estimate of RMSE would likely be overly optimistic.
 # MAGIC 
 # MAGIC We'll also print the RMSE for both the baseline model and our new model.  With this information, we can see how much better our model performs than the baseline model.
 
@@ -1042,6 +1042,43 @@ print ('Test RMSE:\n\tBaseline = {0:.3f}\n\tLRInteract = {1:.3f}'
 # TEST Evaluate interaction model on test data (5c)
 Test.assertTrue(np.allclose(rmse_test_interact, 14.9990015721),
                 'incorrect value for rmse_test_interact')
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### (5d) Use a pipeline to create the interaction model
+# MAGIC 
+# MAGIC Our final step is to create the interaction model using a [Pipeline](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline).  Note that Spark contains the [PolynomialExpansion](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.feature.PolynomialExpansion) transformer which will automatically generate interactions for us.  In this section, you'll need to generate the `PolynomialExpansion` transformer and set the stages for the `Pipeline` estimator.   Make sure to use a degree of 2 for `PolynomialExpansion`, set the input column appropriately, and set the output column to 'polyFeatures'.  The pipeline should contain two stages: the polynomial expansion and the linear regression.
+
+# COMMAND ----------
+
+# TODO: Replace <FILL IN> with appropriate code
+from pyspark.ml import Pipeline
+from pyspark.ml.feature import PolynomialExpansion
+
+num_iters = 500
+reg = 1e-10
+alpha = .2
+use_intercept = True
+
+polynomial_expansion = PolynomialExpansion(<FILL IN>)
+linear_regression = LinearRegression(maxIter=num_iters, regParam=reg, elasticNetParam=alpha,
+                                     fitIntercept=use_intercept, featuresCol='polyFeatures')
+
+pipeline = Pipeline(stages=[<FILL IN>])
+pipeline_model = pipeline.fit(parsed_train_data_df)
+
+predictions_df = pipeline_model.transform(parsed_test_data_df)
+
+evaluator = RegressionEvaluator()
+rmse_test_pipeline = evaluator.evaluate(predictions_df, {evaluator.metricName: "rmse"})
+print('RMSE for test data set using pipelines: {0:.3f}'.format(rmse_test_pipeline))
+
+# COMMAND ----------
+
+# TEST Use a pipeline to create the interaction model (5d)
+Test.assertTrue(np.allclose(rmse_test_pipeline, 14.99415450247963),
+                'incorrect value for rmse_test_pipeline')
 
 # COMMAND ----------
 
@@ -1121,3 +1158,7 @@ Test.assertTrue(np.allclose(rmse_test_interact, 14.9990015721),
 # MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
 # MAGIC 
 # MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
+
+# COMMAND ----------
+
+
