@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 17 Jul 2016 19:47:23 UTC
+# Databricks notebook source exported at Mon, 18 Jul 2016 13:35:39 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Linear Regression Lab
@@ -213,7 +213,7 @@ display(fig)
 # MAGIC %md
 # MAGIC ### (1c) Find the range
 # MAGIC 
-# MAGIC Now let's examine the labels to find the range of song years.  To do this, find the smallest and largest labels in the parsedPointsDF.
+# MAGIC Now let's examine the labels to find the range of song years.  To do this, find the smallest and largest labels in the `parsed_points_df`.
 # MAGIC 
 # MAGIC We will use the min and max functions that are native to the DataFrames, and thus can be optimized using Spark's Catalyst Optimizer and Project Tungsten (don't worry about the technical details). This code will run faster than simply using the native min and max functions in Python. Use [selectExpr](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.selectExpr) to retrieve the min and max label values.
 
@@ -435,7 +435,7 @@ Test.assertTrue(np.allclose(average_train_year, 54.0403195838),
 # MAGIC %md
 # MAGIC ### (2b) Root mean squared error
 # MAGIC 
-# MAGIC We naturally would like to see how well this naive baseline performs.  We will use root mean squared error ([RMSE](http://en.wikipedia.org/wiki/Root-mean-square_deviation)) for evaluation purposes.  Using [Regression Evaluator](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator),  compute the RMSE given a dataset of (prediction, label) tuples. 
+# MAGIC We naturally would like to see how well this naive baseline performs.  We will use root mean squared error ([RMSE](http://en.wikipedia.org/wiki/Root-mean-square_deviation)) for evaluation purposes.  Using [Regression Evaluator](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator),  compute the RMSE given a dataset of _(prediction, label)_ tuples. 
 
 # COMMAND ----------
 
@@ -495,7 +495,7 @@ Test.assertTrue(np.allclose(example_rmse, 1.29099444874), 'incorrect value for e
 # MAGIC %md
 # MAGIC ### (2c) Training, validation and test RMSE
 # MAGIC 
-# MAGIC Now let's calculate the training, validation and test RMSE of our baseline model. To do this, first create DataFrames of `(prediction, label)` tuples for each dataset, and then call `calc_RMSE()`. Note that each RMSE can be interpreted as the average prediction error for the given dataset (in terms of number of years). You can use [createDataFrame](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.SQLContext.createDataFrame) to make a DataFrame with the column names of "prediction" and "label" from an RDD.
+# MAGIC Now let's calculate the training, validation and test RMSE of our baseline model. To do this, first create DataFrames of _(prediction, label)_ tuples for each dataset, and then call `calc_RMSE()`. Note that each RMSE can be interpreted as the average prediction error for the given dataset (in terms of number of years). You can use [createDataFrame](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.SQLContext.createDataFrame) to make a DataFrame with the column names of "prediction" and "label" from an RDD.
 
 # COMMAND ----------
 
@@ -554,7 +554,7 @@ Test.assertTrue(np.allclose([rmse_train_base, rmse_val_base, rmse_test_base],
 # MAGIC %md
 # MAGIC ### Visualization 3: Predicted vs. actual
 # MAGIC 
-# MAGIC We will visualize predictions on the validation dataset. The scatter plots below visualize tuples storing i) the predicted value and ii) true label.  The first scatter plot represents the ideal situation where the predicted value exactly equals the true label, while the second plot uses the baseline predictor (i.e., `averageTrainYear`) for all predicted values.  Further note that the points in the scatter plots are color-coded, ranging from light yellow when the true and predicted values are equal to bright red when they drastically differ.
+# MAGIC We will visualize predictions on the validation dataset. The scatter plots below visualize tuples storing i) the predicted value and ii) true label.  The first scatter plot represents the ideal situation where the predicted value exactly equals the true label, while the second plot uses the baseline predictor (i.e., `average_train_year`) for all predicted values.  Further note that the points in the scatter plots are color-coded, ranging from light yellow when the true and predicted values are equal to bright red when they drastically differ.
 
 # COMMAND ----------
 
@@ -563,7 +563,7 @@ from matplotlib.cm import get_cmap
 cmap = get_cmap('YlOrRd')
 norm = Normalize()
 
-def squaredError(label, prediction):
+def squared_error(label, prediction):
     """Calculates the squared error for a single prediction."""
     return float((label - prediction)**2)
 
@@ -573,7 +573,7 @@ actual = np.asarray(parsed_val_data_df
 error = np.asarray(parsed_val_data_df
                    .rdd
                    .map(lambda lp: (lp.label, lp.label))
-                   .map(lambda (l, p): squaredError(l, p))
+                   .map(lambda (l, p): squared_error(l, p))
                    .collect())
 clrs = cmap(np.asarray(norm(error)))[:,0:3]
 
@@ -697,7 +697,7 @@ Test.assertTrue(np.allclose(summand_two, [1.7304,-5.1912,-2.5956]), 'incorrect v
 # MAGIC %md
 # MAGIC ### (3b) Use weights to make predictions
 # MAGIC 
-# MAGIC Next, implement a `get_labeled_predictions` function that takes in weights and an observation's `LabeledPoint` and returns a `(prediction, label)` tuple.  Note that we can predict by computing the dot product between weights and an observation's features.
+# MAGIC Next, implement a `get_labeled_predictions` function that takes in weights and an observation's `LabeledPoint` and returns a _(prediction, label)_ tuple.  Note that we can predict by computing the dot product between weights and an observation's features.
 
 # COMMAND ----------
 
@@ -1023,7 +1023,8 @@ Test.assertTrue(np.allclose(coeffs_LR1, expected_weights), 'incorrect value for 
 # MAGIC %md
 # MAGIC ### (4b) Transform
 # MAGIC 
-# MAGIC Now use the [LinearRegressionModel.transform()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel.transform) method to make predictions on the `parsedTrainDataDF`.
+# MAGIC Now use the [LinearRegressionModel.transform()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel.transform) method to make predictions 
+# MAGIC on the `parsed_train_data_df`.
 
 # COMMAND ----------
 
@@ -1446,7 +1447,7 @@ Test.assertTrue(np.allclose(rmse_test_interact, 14.9990015721),
 # MAGIC %md
 # MAGIC ### (5d) Use a pipeline to create the interaction model
 # MAGIC 
-# MAGIC Our final step is to create the interaction model using a [Pipeline](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline).  Note that Spark contains the [PolynomialExpansion](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.feature.PolynomialExpansion) transformer which will automatically generate interactions for us.  In this section, you'll need to generate the `PolynomialExpansion` transformer and set the stages for the `Pipeline` estimator.   Make sure to use a degree of 2 for `PolynomialExpansion`, set the input column appropriately, and set the output column to 'polyFeatures'.  The pipeline should contain two stages: the polynomial expansion and the linear regression.
+# MAGIC Our final step is to create the interaction model using a [Pipeline](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline).  Note that Spark contains the [PolynomialExpansion](http://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.feature.PolynomialExpansion) transformer which will automatically generate interactions for us.  In this section, you'll need to generate the `PolynomialExpansion` transformer and set the stages for the `Pipeline` estimator.   Make sure to use a degree of 2 for `PolynomialExpansion`, set the input column appropriately, and set the output column to "polyFeatures".  The pipeline should contain two stages: the polynomial expansion and the linear regression.
 
 # COMMAND ----------
 
