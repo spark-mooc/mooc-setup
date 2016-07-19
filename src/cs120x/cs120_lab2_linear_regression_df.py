@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 18 Jul 2016 13:35:39 UTC
+# Databricks notebook source exported at Tue, 19 Jul 2016 11:30:22 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Linear Regression Lab
@@ -78,7 +78,64 @@ Test.assertEquals(len(sample_points), 5, 'incorrect length for sample_points')
 # MAGIC %md
 # MAGIC ### (1b) Using `LabeledPoint`
 # MAGIC 
-# MAGIC In MLlib, labeled training instances are stored using the [LabeledPoint](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.regression.LabeledPoint) object.  Write the parsePoint function that takes as input a raw data point, parses it using Spark's [select](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.select) and [split](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.split) methods. Then map it to a `LabeledPoint` and convert it to a Dataframe using `toDF()`.  Use this function to parse samplePoints (from the previous question).  Then print out the features and label for the first training point, using the `features` and `label` attributes. Finally, calculate the number of features for this dataset.
+# MAGIC In MLlib, labeled training instances are stored using the [LabeledPoint](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.regression.LabeledPoint) object.  Write the `parse_points` function that takes, as input, a DataFrame of comma-separated strings. We'll pass it the `raw_data_df` DataFrame.
+# MAGIC 
+# MAGIC It should parse each row in the DataFrame into individual elements, using Spark's [select](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.select) and [split](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.split) methods. 
+# MAGIC 
+# MAGIC For example, split `"2001.0,0.884,0.610,0.600,0.474,0.247,0.357,0.344,0.33,0.600,0.425,0.60,0.419"` into `['2001.0', '0.884', '0.610', '0.600', '0.474', '0.247', '0.357', '0.344', '0.33', '0.600', '0.425', '0.60', '0.419']`.
+# MAGIC 
+# MAGIC The first value in the resulting list (`2001.0` in the example, above) is the label. The remaining values (`0.884`, `0.610`, etc., in the example) are the features.
+# MAGIC 
+# MAGIC After splitting each row, map it to a `LabeledPoint`. You'll have to step down to an RDD (using `.rdd`) or use a DataFrame user-defined function to convert to the `LabeledPoint` object. (See **Hint**, below.) If you step down to an RDD, you'll have to use [toDF()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.toDF) to convert back to a DataFrame. 
+# MAGIC 
+# MAGIC Use this new `parse_points` function to parse `raw_data_df`.  Then print out the features and label for the first training point, using the `features` and `label` attributes. Finally, calculate the number of features for this dataset.
+# MAGIC 
+# MAGIC ## Hint: Running Arbitrary Lambdas on a DataFrame
+# MAGIC 
+# MAGIC To solve this problem, you need a way to run your `parse_points` function on a DataFrame. There are two ways to do this, which we will illustrate with an extremely simple example.
+# MAGIC 
+# MAGIC Suppose you have a DataFrame consisting of a first name and a last name, and you want to add a unique [SHA-256](https://en.wikipedia.org/wiki/Secure_Hash_Algorithm) hash to each row.
+# MAGIC 
+# MAGIC ```
+# MAGIC df = sqlContext.createDataFrame([("John", "Smith"), ("Ravi", "Singh"), ("Julia", "Jones")], ("first_name", "last_name"))
+# MAGIC ```
+# MAGIC 
+# MAGIC Here's a simple function to calculate such a hash, using Python's built-in `hashlib` library:
+# MAGIC 
+# MAGIC ```
+# MAGIC def make_hash(first_name, last_name):
+# MAGIC     import hashlib
+# MAGIC     m = hashlib.sha256()
+# MAGIC     # Join the first name and last name by a blank and hash the resulting
+# MAGIC     # string.
+# MAGIC     full_name = ' '.join((first_name, last_name))
+# MAGIC     m.update(full_name)
+# MAGIC     return m.hexdigest()
+# MAGIC ```
+# MAGIC 
+# MAGIC Okay, that's great. But, how do we use it on our DataFrame? We can use a UDF:
+# MAGIC 
+# MAGIC ```
+# MAGIC from pyspark.sql.functions import udf
+# MAGIC u_make_hash = udf(make_hash)
+# MAGIC df2 = df.select(df['*'], u_make_hash(df['first_name'], df['last_name']))
+# MAGIC # could run df2.show() here to prove it works
+# MAGIC ```
+# MAGIC 
+# MAGIC Or we can step down to an RDD, use a lambda to call `make_hash` and have the lambda return a `Row` object, which Spark can use to ["infer" a new DataFrame](http://spark.apache.org/docs/latest/sql-programming-guide.html#inferring-the-schema-using-reflection).
+# MAGIC 
+# MAGIC ```
+# MAGIC from pyspark.sql import Row
+# MAGIC def make_hash_from_row(row):
+# MAGIC     hash = make_hash(row[0], row[1])
+# MAGIC     return Row(first_name=row[0], last_name=row[1], hash=hash)
+# MAGIC     
+# MAGIC df2 = (df.rdd
+# MAGIC          .map(lambda row: make_hash_from_row(row))
+# MAGIC          .toDF())
+# MAGIC ```
+# MAGIC 
+# MAGIC These methods are roughly equivalent. You'll need to do something similar to convert _your_ `raw_data_df` DataFrame into a new DataFrame of `LabeledPoint` objects.
 
 # COMMAND ----------
 
@@ -94,7 +151,7 @@ import numpy as np
 # TODO: Replace <FILL IN> with appropriate code
 from pyspark.sql import functions as sql_functions
 
-def parse_point(df):
+def parse_points(df):
     """Converts a DataFrame of comma separated unicode strings into a DataFrame of `LabeledPoints`.
 
     Args:
@@ -120,7 +177,7 @@ print d
 # ANSWER
 from pyspark.sql import functions as sql_functions
 
-def parse_point(df):
+def parse_points(df):
     """Converts a DataFrame of comma separated unicode strings into a DataFrame of `LabeledPoints`.
 
     Args:
@@ -137,7 +194,7 @@ def parse_point(df):
              .map(lambda r: LabeledPoint(float(r[0][0]), r[0][1:]))
              .toDF())
 
-parsed_points_df = parse_point(raw_data_df)
+parsed_points_df = parse_points(raw_data_df)
 first_point_features = parsed_points_df.first()['features']
 first_point_label = parsed_points_df.first()['label']
 print first_point_features, first_point_label
