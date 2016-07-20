@@ -820,7 +820,7 @@ scores_scaled = np.vstack(scaled_scores.collect())
 image_one_scaled = scores_scaled[:, 0].reshape(230, 202).T
 
 # generate layout and plot data
-fig, ax = prepare_plot(np.arange(0, 10, 1), np.arange(0, 10, 1), figsize=(9.0, 7.2), hideLabels=True)
+fig, ax = prepare_plot(np.arange(0, 10, 1), np.arange(0, 10, 1), figsize=(9.0, 7.2), hide_labels=True)
 ax.grid(False)
 ax.set_title('Top Principal Component', color='#888888')
 image = plt.imshow(image_one_scaled, interpolation='nearest', aspect='auto', cmap=cm.gray)
