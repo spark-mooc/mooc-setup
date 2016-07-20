@@ -777,7 +777,7 @@ display(fig)
 # MAGIC 
 # MAGIC We're already doing better than the baseline model, but let's see if we can do better by adding an intercept, using regularization, and (based on the previous visualization) training for more iterations.  SparkML's [LinearRegression](https://spark.apache.org/docs/1.6.1/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression) essentially implements the same algorithm that we implemented in Part (3b), albeit more efficiently and with various additional functionality, such as including an intercept in the model and allowing L1, L2, or [elastic net regularization](https://en.wikipedia.org/wiki/Elastic_net_regularization). Elastic net regularization is a linear combination of L1 and L2 regularization. For alpha = 0, the penalty is an L2 penalty. For alpha = 1, it is an L1 penalty.
 # MAGIC 
-# MAGIC First use LinearRegression to train a model with [elastic net](https://spark.apache.org/docs/1.6.1/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression.elasticNetParam) regularization and an intercept.  This method returns a [LinearRegressionModel](https://spark.apache.org/docs/latest/api/python/pyspark.mllib.html#pyspark.mllib.regression.LinearRegressionModel).  Next, use the model's [coefficients](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel.coefficients) (weights) and [intercept](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel.intercept) attributes to print out the model's parameters.
+# MAGIC First use LinearRegression to train a model with [elastic net](https://spark.apache.org/docs/1.6.1/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression.elasticNetParam) regularization and an intercept.  This method returns a [LinearRegressionModel](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel).  Next, use the model's [coefficients](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel.coefficients) (weights) and [intercept](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegressionModel.intercept) attributes to print out the model's parameters.
 
 # COMMAND ----------
 
@@ -1218,5 +1218,3 @@ Test.assertTrue(np.allclose(rmse_test_pipeline, 14.99415450247963),
 # MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
 
 # COMMAND ----------
-
-
