@@ -1,7 +1,7 @@
-# Databricks notebook source exported at Fri, 24 Jun 2016 21:33:38 UTC
+# Databricks notebook source exported at Fri, 24 Jun 2016 23:04:35 UTC
 
 # MAGIC %md
-# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
 
 # COMMAND ----------
 
@@ -224,10 +224,9 @@ fake.seed(4321)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC We're going to use this factory to create a collection of randomly generated people records. In the next section, we'll turn that collection into a DataFrame. We'll use the Spark `Row` class,
-# MAGIC because that will help us define the Spark DataFrame schema. There are other ways to define schemas, though; see
+# MAGIC We're going to use this factory to create a collection of randomly generated people records. In the next section, we'll turn that collection into a DataFrame. We'll use a Python tuple to help us define the Spark DataFrame schema. There are other ways to define schemas, though; see
 # MAGIC the Spark Programming Guide's discussion of [schema inference](http://spark.apache.org/docs/latest/sql-programming-guide.html#inferring-the-schema-using-reflection) for more information. (For instance,
-# MAGIC we could also use a Python `namedtuple`.)
+# MAGIC we could also use a Python `namedtuple` or a Spark `Row` object.)
 
 # COMMAND ----------
 

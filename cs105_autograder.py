@@ -1,7 +1,7 @@
 # Databricks notebook source exported at Tue, 21 Jun 2016 17:18:30 UTC
 
 # MAGIC %md
-# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+# MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
 
 # COMMAND ----------
 
@@ -116,7 +116,7 @@ except NameError:
 # MAGIC 
 # MAGIC To perform the steps in Part 3, open two browser tabs: one with your lab notebook, and one with this autograder notebook.
 # MAGIC 
-# MAGIC ** Note that you can only submit to the course autograder once every ten minutes. **
+# MAGIC ** Note that you can only submit to the course autograder once every one minute. **
 # MAGIC 
 # MAGIC ### Every time you submit to the course autograder, you must perform steps (3a), (3b), (3c), and (3d). ##
 
@@ -249,9 +249,9 @@ client.submit(lab, notebook_url)
 # Re-run this cell to see the autograder queue status
 import json
 (result,queue) = client.get_queue_status()
-print("Result for get_queue_status(): %s" % result)
+print "Result for get_queue_status(): %s" % result
 if (queue == []):
-  print "No submisions for %s found in autograder queue. Proceed to Part 5." % username
+  print "No submissions for %s found in autograder queue. Proceed to Part 5." % username
 else:
   # convert result to a Spark DataFrame
   df_queue = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in queue]))
@@ -271,9 +271,9 @@ else:
 
 import json
 (result,submission_list) = client.get_submission_list(lab)
-print("Result for get_submission_list(): %s" % result)
+print "Result for get_submission_list(): %s" % result
 if (submission_list == []):
-  print "No submisions for %s found in autograder queue for lab %s" % (username, lab)
+  print "All submissions are processed. please go ahead to check your results from autograder."
 else:
   # convert result to a Spark DataFrame
   df_submission_list = sqlContext.jsonRDD(sc.parallelize([json.dumps(item) for item in submission_list]))
@@ -303,7 +303,7 @@ submission_id = <FILL_IN>
 
 import json
 (result,submission_detail) = client.get_submission_detail(submission_id)
-print("Result for get_submission_detail(): %s" % result)
+print "Result for get_submission_detail(): %s" % result
 print submission_detail['autograder_results']
 print submission_detail['grade']
 

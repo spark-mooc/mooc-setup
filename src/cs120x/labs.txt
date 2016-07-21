@@ -1,0 +1,20 @@
+# List of labs to copy for course. Format:
+#
+# source | target
+#
+# source is relative to the top of the training directory, which is
+#     passed as an argument to build-labs.
+# target is relative to wherever build-labs is run (which should be the
+#     top-level spark_mooc directory.
+#
+# Blank lines and comment lines are ignored.
+
+mooc/Notebooks/cs120x/Lab0.py|cs120_lab0.py
+mooc/Notebooks/cs120x/Math_Review.py|cs120_lab1a_math_review.py
+mooc/Notebooks/cs120x/Word_Count_RDD.py|cs120_lab1b_word_count_rdd.py
+mooc/Notebooks/cs120x/Linear_Regression_DF.py|cs120_lab2_linear_regression_df.py
+mooc/Notebooks/cs120x/CTR_DF.py|cs120_lab3_ctr_df.py
+mooc/Notebooks/cs120x/PCA.py|cs120_lab4_pca.py
+mooc/Notebooks/Autograder_register.py|cs120_autograder_register.py
+mooc/Notebooks/Autograder_simple.py|cs120_autograder_simpler.py
+mooc/Notebooks/Autograder_complete.py|cs120_autograder_complete.py

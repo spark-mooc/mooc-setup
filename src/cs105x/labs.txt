@@ -1,0 +1,17 @@
+# List of labs to copy for course. Format:
+#
+# source | target
+#
+# source is relative to the top of the training directory, which is
+#     passed as an argument to build-labs.
+# target is relative to wherever build-labs is run (which should be the
+#     top-level spark_mooc directory.
+#
+# Blank lines and comment lines are ignored.
+
+mooc/Notebooks/cs105x/Lab0.py|cs105_lab0.py
+mooc/Notebooks/Autograder_complete.py|cs105_autograder.py
+mooc/Notebooks/cs105x/Spark_Tutorial_DF.py|cs105_lab1a_spark_tutorial.py
+mooc/Notebooks/cs105x/Word_Count_DF.py|cs105_lab1b_word_count.py
+mooc/Notebooks/cs105x/Apache_Log_DF.py|cs105_lab2_apache_log.py
+
