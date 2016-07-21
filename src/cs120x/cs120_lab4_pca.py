@@ -1604,3 +1604,86 @@ display(fig)
 # MAGIC In the analyses above we have successfully identified regions of the brain that encode particular properties, e.g., a particular temporal pattern or selectivity to a stimulus. However, this is only the first step! These exploratory analyses are typically followed with more targeted investigation, both through analysis and experiment. For example, we might find all neurons that prefer one stimulus direction, and then do an experiment in which we stimulate or inactivate only those neurons and look at the effect on the animal's behavior.
 # MAGIC 
 # MAGIC Alternatively, we might subdivide neurons into groups based on simple forms of stimulus selectivity like the ones analyzed here, and then estimate coupling across different neuronal populations, i.e. can we predict one population's response as a function of another. This can  be framed as a massive pair-wise regression problem, related to techniques you learned earlier in the course, and demanding large-scale implementations.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
+# MAGIC 
+# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
+# MAGIC 
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time. 
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(c): Publish this notebook
+# MAGIC 
+# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
+# MAGIC 
+# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
+# MAGIC 
+# MAGIC ```
+# MAGIC notebook_url = "..." # put your URL here
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, find the line that looks like this:
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = <FILL IN>
+# MAGIC ```
+# MAGIC and change `<FILL IN>` to "CS120x-lab4":
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = "CS120x-lab4"
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, run the Autograder notebook to submit your lab.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
+# MAGIC 
+# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
+
+# COMMAND ----------
+
+

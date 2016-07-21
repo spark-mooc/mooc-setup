@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 20 Jul 2016 19:52:22 UTC
+# Databricks notebook source exported at Thu, 21 Jul 2016 13:50:15 UTC
 # MAGIC %md
 # MAGIC ![ML Logo](http://spark-mooc.github.io/web-assets/images/CS190.1x_Banner_300.png)
 # MAGIC # Click-Through Rate Prediction Lab
@@ -1849,3 +1849,99 @@ Test.assertTrue(np.allclose(log_loss_test_baseline, expected_test_baseline),
 expected_test = 0.458838771351
 Test.assertTrue(np.allclose(log_loss_test, expected_test),
                 'incorrect value for log_loss_test. Got {0}, expected {1}'.format(log_loss_test, expected_test))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Part 6: Cleanup
+# MAGIC 
+# MAGIC To avoid exceeding disk storage quotas on Databricks Community Edition, run the following cell to remove the Criteo data file you downloaded earlier.
+
+# COMMAND ----------
+
+if ('downloaded_data_file' not in locals()) or (downloaded_data_file is None):
+  dbutils.fs.rm(downloaded_data_file, recurse=True)
+  downloaded_data_file = None
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
+# MAGIC 
+# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
+# MAGIC 
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time. 
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(c): Publish this notebook
+# MAGIC 
+# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
+# MAGIC 
+# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
+# MAGIC 
+# MAGIC ```
+# MAGIC notebook_url = "..." # put your URL here
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, find the line that looks like this:
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = <FILL IN>
+# MAGIC ```
+# MAGIC and change `<FILL IN>` to "CS120x-lab3":
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = "CS120x-lab3"
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, run the Autograder notebook to submit your lab.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
+# MAGIC 
+# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
+
+# COMMAND ----------
+
+
