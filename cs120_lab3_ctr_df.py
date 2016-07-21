@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 21 Jul 2016 13:50:15 UTC
+# Databricks notebook source exported at Thu, 21 Jul 2016 23:55:15 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -72,48 +72,47 @@ def sample_to_row(sample):
 
 sqlContext.createDataFrame(map(sample_to_row, [sample_one, sample_two, sample_three]),
                            ['animal', 'color', 'food']).show()
-
 sample_data_df = sqlContext.createDataFrame([(sample_one,), (sample_two,), (sample_three,)], ['features'])
 sample_data_df.show(truncate=False)
 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-sample_OHE_dict_manual = {}
-sample_OHE_dict_manual[(0, 'bear')] = <FILL IN >
-sample_OHE_dict_manual[(0, 'cat')] = <FILL IN >
-sample_OHE_dict_manual[(0, 'mouse')] = <FILL IN >
-sample_OHE_dict_manual < FILL IN >
-sample_OHE_dict_manual < FILL IN >
-sample_OHE_dict_manual < FILL IN >
-sample_OHE_dict_manual < FILL IN >
+sample_ohe_dict_manual = {}
+sample_ohe_dict_manual[(0, 'bear')] = <FILL IN >
+sample_ohe_dict_manual[(0, 'cat')] = <FILL IN >
+sample_ohe_dict_manual[(0, 'mouse')] = <FILL IN >
+sample_ohe_dict_manual < FILL IN >
+sample_ohe_dict_manual < FILL IN >
+sample_ohe_dict_manual < FILL IN >
+sample_ohe_dict_manual < FILL IN >
 
 # COMMAND ----------
 
 # TEST One-hot-encoding (1a)
-Test.assertEqualsHashed(sample_OHE_dict_manual[(0, 'bear')],
+Test.assertEqualsHashed(sample_ohe_dict_manual[(0, 'bear')],
                         'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c',
-                        "incorrect value for sample_OHE_dict_manual[(0,'bear')]")
-Test.assertEqualsHashed(sample_OHE_dict_manual[(0, 'cat')],
+                        "incorrect value for sample_ohe_dict_manual[(0,'bear')]")
+Test.assertEqualsHashed(sample_ohe_dict_manual[(0, 'cat')],
                         '356a192b7913b04c54574d18c28d46e6395428ab',
-                        "incorrect value for sample_OHE_dict_manual[(0,'cat')]")
-Test.assertEqualsHashed(sample_OHE_dict_manual[(0, 'mouse')],
+                        "incorrect value for sample_ohe_dict_manual[(0,'cat')]")
+Test.assertEqualsHashed(sample_ohe_dict_manual[(0, 'mouse')],
                         'da4b9237bacccdf19c0760cab7aec4a8359010b0',
-                        "incorrect value for sample_OHE_dict_manual[(0,'mouse')]")
-Test.assertEqualsHashed(sample_OHE_dict_manual[(1, 'black')],
+                        "incorrect value for sample_ohe_dict_manual[(0,'mouse')]")
+Test.assertEqualsHashed(sample_ohe_dict_manual[(1, 'black')],
                         '77de68daecd823babbb58edb1c8e14d7106e83bb',
-                        "incorrect value for sample_OHE_dict_manual[(1,'black')]")
-Test.assertEqualsHashed(sample_OHE_dict_manual[(1, 'tabby')],
+                        "incorrect value for sample_ohe_dict_manual[(1,'black')]")
+Test.assertEqualsHashed(sample_ohe_dict_manual[(1, 'tabby')],
                         '1b6453892473a467d07372d45eb05abc2031647a',
-                        "incorrect value for sample_OHE_dict_manual[(1,'tabby')]")
-Test.assertEqualsHashed(sample_OHE_dict_manual[(2, 'mouse')],
+                        "incorrect value for sample_ohe_dict_manual[(1,'tabby')]")
+Test.assertEqualsHashed(sample_ohe_dict_manual[(2, 'mouse')],
                         'ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4',
-                        "incorrect value for sample_OHE_dict_manual[(2,'mouse')]")
-Test.assertEqualsHashed(sample_OHE_dict_manual[(2, 'salmon')],
+                        "incorrect value for sample_ohe_dict_manual[(2,'mose')]")
+Test.assertEqualsHashed(sample_ohe_dict_manual[(2, 'salmon')],
                         'c1dfd96eea8cc2b62785275bca38ac261256e278',
-                        "incorrect value for sample_OHE_dict_manual[(2,'salmon')]")
-Test.assertEquals(len(sample_OHE_dict_manual.keys()), 7,
-                  'incorrect number of keys in sample_OHE_dict_manual')
+                        "incorrect value for sample_ohe_dict_manual[(2,'salmon')]")
+Test.assertEquals(len(sample_ohe_dict_manual.keys()), 7,
+                  'incorrect number of keys in sample_ohe_dict_manual')
 
 # COMMAND ----------
 
@@ -212,32 +211,32 @@ Test.assertEqualsHashed(sample_three_ohe_feat_manual,
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-def one_hot_encoding(rawFeats, oheDictBroadcast, numOHEFeats):
+def one_hot_encoding(raw_feats, ohe_dict_broadcast, num_ohe_feats):
     """Produce a one-hot-encoding from a list of features and an OHE dictionary.
 
     Note:
         You should ensure that the indices used to create a SparseVector are sorted.
 
     Args:
-        rawFeats (list of (int, str)): The features corresponding to a single observation.  Each
+        raw_feats (list of (int, str)): The features corresponding to a single observation.  Each
             feature consists of a tuple of featureID and the feature's value. (e.g. sample_one)
-        oheDictBroadcast (Broadcast of dict): Broadcast variable containing a dict that maps
+        ohe_dict_broadcast (Broadcast of dict): Broadcast variable containing a dict that maps
             (featureID, value) to unique integer.
-        numOHEFeats (int): The total number of unique OHE features (combinations of featureID and
+        num_ohe_feats (int): The total number of unique OHE features (combinations of featureID and
             value).
 
     Returns:
-        SparseVector: A SparseVector of length numOHEFeats with indices equal to the unique
+        SparseVector: A SparseVector of length num_ohe_feats with indices equal to the unique
             identifiers for the (featureID, value) combinations that occur in the observation and
             with values equal to 1.0.
     """
     <FILL IN>
 
-# Calculate the number of features in sample_OHE_dict_manual
+# Calculate the number of features in sample_ohe_dict_manual
 num_sample_ohe_feats = <FILL IN >
-sample_ohe_dict_manual_broadcast = sc.broadcast(sample_OHE_dict_manual)
+sample_ohe_dict_manual_broadcast = sc.broadcast(sample_ohe_dict_manual)
 
-# Run oneHotEnoding on sample_one.  Make sure to pass in the Broadcast variable.
+# Run one_hot_encoding() on sample_one.  Make sure to pass in the Broadcast variable.
 sample_one_ohe_feat = <FILL IN >
 
 print sample_one_ohe_feat
@@ -288,9 +287,9 @@ def ohe_udf_generator(ohe_dict_broadcast):
     length = <FILL IN>
     return udf(lambda x: <FILL IN>, VectorUDT())
 
-sample_OHE_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
-sample_OHE_df = sample_data_df.select( < FILL IN >)
-sample_OHE_df.show(truncate=False)
+sample_ohe_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
+sample_ohe_df = sample_data_df.select( < FILL IN >)
+sample_ohe_df.show(truncate=False)
 
 # COMMAND ----------
 
@@ -317,22 +316,22 @@ def ohe_udf_generator(ohe_dict_broadcast):
     length = len(ohe_dict_broadcast.value.keys())
     return udf(lambda x: one_hot_encoding(x, ohe_dict_broadcast, length), VectorUDT())
 
-sample_OHE_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
-sample_OHE_df = sample_data_df.select(sample_OHE_dict_udf('features'))
-sample_OHE_df.show(truncate=False)
+sample_ohe_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
+sample_ohe_df = sample_data_df.select(sample_ohe_dict_udf('features'))
+sample_ohe_df.show(truncate=False)
 
 # COMMAND ----------
 
 # TEST Apply OHE to a dataset (1e)
-sampleOHEDataValues = sample_OHE_df.collect()
-Test.assertTrue(len(sampleOHEDataValues) == 3, 'sampleOHEData should have three elements')
-Test.assertEquals(sampleOHEDataValues[0], (SparseVector(7, {2: 1.0, 3: 1.0}),),
+sample_ohe_data_values = sample_ohe_df.collect()
+Test.assertTrue(len(sample_ohe_data_values) == 3, 'sample_ohe_data_values should have three elements')
+Test.assertEquals(sample_ohe_data_values[0], (SparseVector(7, {2: 1.0, 3: 1.0}),),
                   'incorrect OHE for first sample')
-Test.assertEquals(sampleOHEDataValues[1], (SparseVector(7, {1: 1.0, 4: 1.0, 5: 1.0}),),
+Test.assertEquals(sample_ohe_data_values[1], (SparseVector(7, {1: 1.0, 4: 1.0, 5: 1.0}),),
                   'incorrect OHE for second sample')
-Test.assertEquals(sampleOHEDataValues[2], (SparseVector(7, {0: 1.0, 3: 1.0, 6: 1.0}),),
+Test.assertEquals(sample_ohe_data_values[2], (SparseVector(7, {0: 1.0, 3: 1.0, 6: 1.0}),),
                   'incorrect OHE for third sample')
-Test.assertTrue('one_hot_encoding' in sample_OHE_dict_udf.func.func_code.co_names,
+Test.assertTrue('one_hot_encoding' in sample_ohe_dict_udf.func.func_code.co_names,
                 'ohe_udf_generator should call one_hot_encoding')
 
 # COMMAND ----------
@@ -352,7 +351,7 @@ Test.assertTrue('one_hot_encoding' in sample_OHE_dict_udf.func.func_code.co_name
 # TODO: Replace <FILL IN> with appropriate code
 from pyspark.sql.functions import explode
 sample_distinct_feats_df = (sample_data_df
-                         < FILL IN>)
+                              <FILL IN>)
 sample_distinct_feats_df.show()
 
 # COMMAND ----------
@@ -361,7 +360,7 @@ sample_distinct_feats_df.show()
 Test.assertEquals(sorted(map(lambda r: r[0], sample_distinct_feats_df.collect())),
                   [(0, 'bear'), (0, 'cat'), (0, 'mouse'), (1, 'black'),
                    (1, 'tabby'), (2, 'mouse'), (2, 'salmon')],
-                  'incorrect value for sampleDistinctFeats')
+                  'incorrect value for sample_distinct_feats')
 
 # COMMAND ----------
 
@@ -377,20 +376,20 @@ Test.assertEquals(sorted(map(lambda r: r[0], sample_distinct_feats_df.collect())
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-sample_OHE_dict = (sample_distinct_feats_df
+sample_ohe_dict = (sample_distinct_feats_df
                      .rdd
                      .map(lambda r: tuple(r[0]))
                      <FILL IN>)
-print sample_OHE_dict
+print sample_ohe_dict
 
 # COMMAND ----------
 
 # TEST OHE Dictionary from distinct features (2b)
-Test.assertEquals(sorted(sample_OHE_dict.keys()),
+Test.assertEquals(sorted(sample_ohe_dict.keys()),
                   [(0, 'bear'), (0, 'cat'), (0, 'mouse'), (1, 'black'),
                    (1, 'tabby'), (2, 'mouse'), (2, 'salmon')],
-                  'sample_OHE_dict has unexpected keys')
-Test.assertEquals(sorted(sample_OHE_dict.values()), range(7), 'sample_OHE_dict has unexpected values')
+                  'sample_ohe_dict has unexpected keys')
+Test.assertEquals(sorted(sample_ohe_dict.values()), range(7), 'sample_ohe_dict has unexpected values')
 
 # COMMAND ----------
 
@@ -423,9 +422,9 @@ sample_ohe_dict_auto = create_one_hot_dict(sample_data_df)
 Test.assertEquals(sorted(sample_ohe_dict_auto.keys()),
                   [(0, 'bear'), (0, 'cat'), (0, 'mouse'), (1, 'black'),
                    (1, 'tabby'), (2, 'mouse'), (2, 'salmon')],
-                  'sample_OHE_dict_auto has unexpected keys')
+                  'sample_ohe_dict_auto has unexpected keys')
 Test.assertEquals(sorted(sample_ohe_dict_auto.values()), range(7),
-                  'sample_OHE_dict_auto has unexpected values')
+                  'sample_ohe_dict_auto has unexpected values')
 
 # COMMAND ----------
 
@@ -438,7 +437,7 @@ Test.assertEquals(sorted(sample_ohe_dict_auto.values()), range(7),
 # MAGIC Before we can proceed, you'll first need to obtain the data from Criteo.  Here is the link to Criteo's data sharing agreement: <a href="http://labs.criteo.com/downloads/2014-kaggle-display-advertising-challenge-dataset/" target="criteo">http://labs.criteo.com/downloads/2014-kaggle-display-advertising-challenge-dataset/</a>.  After you accept the agreement, you can obtain the download URL by right-clicking on the "**Download Sample**" button and clicking "Copy link address" or "Copy Link Location", depending on your browser.
 # MAGIC 
 # MAGIC * Run the cell containing the `download_criteo()` function.
-# MAGIC * Paste the URL into the `# TODO` cell below that cell. Then, run the cell. It will download the data and make it available as a DataFrame, in variable `raw_df`.
+# MAGIC * Paste the URL into the `TODO` cell below that cell. Then, run the cell. It will download the data and make it available as a DataFrame, in variable `raw_df`.
 # MAGIC 
 # MAGIC Note that the download should complete within 30 seconds.
 # MAGIC 
@@ -455,6 +454,7 @@ def download_criteo(url):
   import tempfile
   import random
   import string
+  import os
 
   if not url.endswith('dac_sample.tar.gz'):
     raise Exception('Check your download URL. Are you downloading the sample dataset?')
@@ -698,7 +698,7 @@ feature_counts = (ohe_train_df
 
 import matplotlib.pyplot as plt
 
-x, y = zip(*featureCounts)
+x, y = zip(*feature_counts)
 x, y = x, np.log(y)
 
 def prepare_plot(xticks, yticks, figsize=(10.5, 6), hide_labels=False, grid_color='#999999',
@@ -749,7 +749,7 @@ def one_hot_encoding(raw_feats, ohe_dict_broadcast, num_ohe_feats):
             value).
 
     Returns:
-        SparseVector: A SparseVector of length num_OHE_feats with indices equal to the unique
+        SparseVector: A SparseVector of length num_ohe_feats with indices equal to the unique
             identifiers for the (featureID, value) combinations that occur in the observation and
             with values equal to 1.0.
     """
@@ -848,8 +848,7 @@ def add_log_loss(df):
     Returns:
         DataFrame: A new DataFrame with an additional column called 'log_loss' where
     """
-    return df.withColumn('log_loss', when(col('label') == 1, -log(col('p')+epsilon)).
-                                    when(col('label') == 0, -log(1 - col('p') + epsilon)))
+    return <FILL IN>
 
 add_log_loss(example_log_loss_df).show()
 
@@ -859,9 +858,9 @@ add_log_loss(example_log_loss_df).show()
 log_loss_values = add_log_loss(example_log_loss_df).select('log_loss').rdd.map(lambda r: r[0]).collect()
 Test.assertTrue(np.allclose(log_loss_values[:-2],
                             [0.6931471805599451, 0.6931471805599451, 0.010050335853501338, 4.60517018598808,
-                             4.605170185988081, 0.010050335853501338, -0.0]), 'computeLogLoss is not correct')
+                             4.605170185988081, 0.010050335853501338, -0.0]), 'log loss is not correct')
 Test.assertTrue(not(any(map(lambda x: x is None, log_loss_values[-2:]))),
-                'computeLogLoss needs to bound p away from 0 and 1 by epsilon')
+                'log loss needs to bound p away from 0 and 1 by epsilon')
 
 # COMMAND ----------
 
@@ -929,9 +928,9 @@ def add_probability(df, model):
             float: A probability between 0 and 1.
         """
         # Compute the raw value
-        rawPrediction = <FILL IN>
+        raw_prediction = <FILL IN>
         # Bound the raw value between 20 and -20
-        rawPrediction = <FILL IN>
+        raw_prediction = <FILL IN>
         # Return the probability
         <FILL IN>
 
@@ -1212,11 +1211,11 @@ Test.assertEquals(hash_test_df_feature_sum, expected_test_sum, 'incorrect number
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-def vector_feature_sparsity(sparseVector):
+def vector_feature_sparsity(sparse_vector):
     """Calculates the sparsity of a SparseVector.
 
     Args:
-        sparseVector (SparseVector): The vector containing the features.
+        sparse_vector (SparseVector): The vector containing the features.
 
     Returns:
         float: The ratio of features found in the vector to the total number of features.
