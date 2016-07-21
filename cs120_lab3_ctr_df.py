@@ -288,7 +288,7 @@ def ohe_udf_generator(ohe_dict_broadcast):
     length = <FILL IN>
     return udf(lambda x: <FILL IN>, VectorUDT())
 
-sample_OHE_dict_udf = oheUDFGenerator(sample_ohe_dict_manual_broadcast)
+sample_OHE_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
 sample_OHE_df = sample_data_df.select( < FILL IN >)
 sample_OHE_df.show(truncate=False)
 
