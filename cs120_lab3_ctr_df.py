@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 22 Jul 2016 14:22:30 UTC
+# Databricks notebook source exported at Fri, 22 Jul 2016 16:37:25 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -289,35 +289,6 @@ def ohe_udf_generator(ohe_dict_broadcast):
 
 sample_ohe_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
 sample_ohe_df = sample_data_df.select( < FILL IN >)
-sample_ohe_df.show(truncate=False)
-
-# COMMAND ----------
-
-from pyspark.sql.functions import udf
-from pyspark.mllib.linalg import VectorUDT
-
-def ohe_udf_generator(ohe_dict_broadcast):
-    """Generate a UDF that is setup to one-hot-encode rows with the given dictionary.
-
-    Note:
-        We'll reuse this function to generate a UDF that can one-hot-encode rows based on a
-        one-hot-encoding dictionary built from the training data.  Also, you should calculate
-        the number of features before calling the one_hot_encoding function.
-
-    Args:
-        ohe_dict_broadcast (Broadcast of dict): Broadcast variable containing a dict that maps
-            (featureID, value) to unique integer.
-
-    Returns:
-        UserDefinedFunction: A UDF can be used in `DataFrame` `select` statement to call a
-            function on each row in a given column.  This UDF should call the one_hot_encoding
-            function with the appropriate parameters.
-    """
-    length = len(ohe_dict_broadcast.value.keys())
-    return udf(lambda x: one_hot_encoding(x, ohe_dict_broadcast, length), VectorUDT())
-
-sample_ohe_dict_udf = ohe_udf_generator(sample_ohe_dict_manual_broadcast)
-sample_ohe_df = sample_data_df.select(sample_ohe_dict_udf('features'))
 sample_ohe_df.show(truncate=False)
 
 # COMMAND ----------
