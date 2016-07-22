@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Thu, 21 Jul 2016 23:55:15 UTC
+# Databricks notebook source exported at Fri, 22 Jul 2016 14:07:10 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -446,6 +446,7 @@ Test.assertEquals(sorted(sample_ohe_dict_auto.values()), range(7),
 # COMMAND ----------
 
 # Nothing to edit here. Just run this cell.
+
 def download_criteo(url):
   from io import BytesIO
   import urllib2
@@ -455,10 +456,19 @@ def download_criteo(url):
   import random
   import string
   import os
+  from fnmatch import fnmatch
 
   if not url.endswith('dac_sample.tar.gz'):
     raise Exception('Check your download URL. Are you downloading the sample dataset?')
 
+  # Clean up old downloaded files from dbfs:/tmp to prevent QUOTA_EXCEEDED errors.
+  for f in dbutils.fs.ls('/tmp'):
+    name = str(f.name)
+    if fnmatch(name, 'criteo_*'):
+      dbutils.fs.rm(str(f.path), recurse=True)
+
+  # Create a random ID for the directory containing the downloaded file, to avoid any name clashes
+  # with any other clusters. (Might not be necessary, but, safety first...)
   rng = random.SystemRandom()
   tlds = ('.org', '.net', '.com', '.info', '.biz')
   random_domain_name = (
@@ -466,6 +476,12 @@ def download_criteo(url):
     rng.choice(tlds)
   )
   random_id = str(uuid.uuid3(uuid.NAMESPACE_DNS, random_domain_name)).replace('-', '_')
+  unique_id = str(uuid.uuid3(uuid.NAMESPACE_DNS, random_id)).replace('-', '_')
+  dbfs_dir  = 'dbfs:/tmp/criteo_{0}'.format(unique_id)
+  dbfs_path = '{0}/data.txt'.format(dbfs_dir)
+  dbutils.fs.mkdirs(dbfs_dir)
+
+  # Download the tarball and unpack it.
   tmp = BytesIO()
   req = urllib2.Request(url, headers={'User-Agent': 'Databricks'})
   url_handle = urllib2.urlopen(req)
@@ -474,11 +490,11 @@ def download_criteo(url):
   tf = tarfile.open(fileobj=tmp)
   dac_sample = tf.extractfile('dac_sample.txt')
   dac_sample = '\n'.join([unicode(x.replace('\n', '').replace('\t', ',')) for x in dac_sample])
+
+  # Write the downloaded data to to dbfs:/tmp.
   with tempfile.NamedTemporaryFile(mode='wb', delete=False, prefix='dac', suffix='.txt') as t:
-    unique_id = uuid.uuid3(uuid.NAMESPACE_DNS, random_id)
     t.write(dac_sample)
     t.close()
-    dbfs_path = 'dbfs:/tmp/ctr_{0}.txt'.format(unique_id)
     dbutils.fs.cp('file://{0}'.format(t.name), dbfs_path)
     os.unlink(t.name)
 
@@ -913,16 +929,13 @@ def add_probability(df, model):
     intercept = model.intercept
 
     def get_p(features):
-        """Calculate the probability for an observation given a set of weights and intercept.
+        """Calculate the probability for an observation given a of feeatures.
 
         Note:
             We'll bound our raw prediction between 20 and -20 for numerical purposes.
 
         Args:
-            x (SparseVector): A vector with values of 1.0 for features that exist in this
-                observation and 0.0 otherwise.
-            w (DenseVector): A vector of weights (betas) for the model.
-            intercept (float): The model's intercept.
+            features: the features
 
         Returns:
             float: A probability between 0 and 1.
