@@ -588,7 +588,7 @@ def parse_raw_df(raw_df):
         raw_df (DataFrame with a 'text' column): DataFrame containg the raw comma separated data.
 
     Returns:
-        DataFrame: A DataFrame with 'label' and 'tuple' columns.
+        DataFrame: A DataFrame with 'label' and 'tuples' columns.
     """
     <FILL IN>
 
