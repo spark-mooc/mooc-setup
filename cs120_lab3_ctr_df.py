@@ -570,7 +570,7 @@ Test.assertEquals(parse_point(raw_df.select('text').first()[0])[:3], [(0, u'1'),
 # MAGIC %md
 # MAGIC ### (3c) Extracting features continued
 # MAGIC 
-# MAGIC Next, we'll create a `parse_raw_df` function that creates a 'label' column from the first value in the text and a 'tuples' column from the rest of the values.  The 'tuples' column will be created using `parse_point_udf`, which we've provided and is based on your `parse_point` function.  Note that to name your columns you should use [alias](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.Column.alias).  You can split the 'text' field in `raw_df` using [split](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.split) and retrieve the first value of the resulting array with [getItem](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.Column.getItem).  Your `parse_raw_df` function should also cache the DataFrame it returns.
+# MAGIC Next, we'll create a `parse_raw_df` function that creates a 'label' column from the first value in the text and a 'feature' column from the rest of the values.  The 'feature' column will be created using `parse_point_udf`, which we've provided and is based on your `parse_point` function.  Note that to name your columns you should use [alias](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.Column.alias).  You can split the 'text' field in `raw_df` using [split](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.split) and retrieve the first value of the resulting array with [getItem](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.Column.getItem). Be sure to call [cast](http://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.Column.cast) to cast the column value to `double`. Your `parse_raw_df` function should also cache the DataFrame it returns.
 
 # COMMAND ----------
 
@@ -582,13 +582,18 @@ parse_point_udf = udf(parse_point, ArrayType(StructType([StructField('_1', LongT
                                                          StructField('_2', StringType())])))
 
 def parse_raw_df(raw_df):
-    """Convert a DataFrame consisting of rows of comma separated text into labels and tuples.
+    """Convert a DataFrame consisting of rows of comma separated text into labels and feature.
+
 
     Args:
         raw_df (DataFrame with a 'text' column): DataFrame containg the raw comma separated data.
 
     Returns:
+<<<<<<< HEAD
         DataFrame: A DataFrame with 'label' and 'tuples' columns.
+=======
+        DataFrame: A DataFrame with 'label' and 'feature' columns.
+>>>>>>> 98baa0003aa7d57f1b2adc4293b91baa1a31729c
     """
     <FILL IN>
 
@@ -597,9 +602,9 @@ parsed_train_df = <FILL IN>
 
 from pyspark.sql.functions import (explode, col)
 num_categories = (parsed_train_df
-                    .select(explode('tuples').alias('tuple'))
+                    .select(explode('feature').alias('feature'))
                     .distinct()
-                    .select(col('tuple').getField('_1').alias('featureNumber'))
+                    .select(col('feature').getField('_1').alias('featureNumber'))
                     .groupBy('featureNumber')
                     .sum()
                     .orderBy('featureNumber')
@@ -609,7 +614,7 @@ print num_categories[2][1]
 
 # COMMAND ----------
 
-# TEST Extract features (3b)
+# TEST Extract features (3c)
 Test.assertTrue(parsed_train_df.is_cached, 'parse_raw_df should return a cached DataFrame')
 Test.assertEquals(num_categories[2][1], 1706, 'incorrect implementation of parse_point or parse_raw_df')
 Test.assertEquals(num_categories[32][1], 128, 'incorrect implementation of parse_point or parse_raw_df')
@@ -777,7 +782,7 @@ Test.assertEquals(num_nz_val, nz_expected, 'incorrect number of features: Got {0
 # MAGIC 
 # MAGIC We are now ready to train our first CTR classifier.  A natural classifier to use in this setting is logistic regression, since it models the probability of a click-through event rather than returning a binary response, and when working with rare events, probabilistic predictions are useful.
 # MAGIC 
-# MAGIC First use [LogisticRegression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegression) from the pyspark.ml package to train a model using `ohe_train_df` with the given hyperparameter configuration.  `LogisticRegression` returns a [LogisticRegressionModel](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegressionModel).  Next, we'll use the `LogisticRegressionModel.coefficients` and `LogisticRegressionModel.intercept` attributes to print out some details of the model's parameters.  Note that these are the names of the object's attributes and should be called using a syntax like `model.coefficients` for a given `model`.
+# MAGIC First use [LogisticRegression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegression) from the pyspark.ml package to train a model using `ohe_train_df` with the given hyperparameter configuration.  `LogisticRegression.fit` returns a [LogisticRegressionModel](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.classification.LogisticRegressionModel).  Next, we'll use the `LogisticRegressionModel.coefficients` and `LogisticRegressionModel.intercept` attributes to print out some details of the model's parameters.  Note that these are the names of the object's attributes and should be called using a syntax like `model.coefficients` for a given `model`.
 
 # COMMAND ----------
 
@@ -1416,7 +1421,3 @@ cleanup_old_downloads()
 # MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
 # MAGIC 
 # MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
-
-# COMMAND ----------
-
-
