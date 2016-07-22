@@ -13,6 +13,7 @@ def die(msg):
     sys.stderr.write(msg + "\n")
     sys.exit(1)
 
+
 def find_in_path(executable):
     def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
@@ -24,6 +25,25 @@ def find_in_path(executable):
             return exe_file
 
     return None
+
+
+def cp(source, target):
+    print "cp {0} {1}".format(source, target)
+    shutil.copy(source, target)
+
+
+def mv(source, target):
+    print "mv {0} {1}".format(source, target)
+    shutil.move(source, target)
+
+
+def rm_rf(f):
+    if os.path.exists(f):
+        if os.path.isdir(f):
+            shutil.rmtree(f)
+        else:
+            os.unlink(f)
+
 
 def sh(cmd):
     try:
@@ -98,8 +118,7 @@ try:
                     )
                 )
     
-            if os.path.exists(BUILD_DIR):
-                shutil.rmtree(BUILD_DIR)
+            rm_rf(BUILD_DIR)
     
             cmd = ["master_parse", "-d", BUILD_DIR, "-ei", "UTF-8", "-eo",
                    "UTF8", "-py", "-db", "-in", "-st", "-cc", source]
@@ -113,15 +132,14 @@ try:
 
             target_filename = os.path.basename(target)
             tmp_target = os.path.join(COPY_DIR, target_filename)
-            print "mv {0} {1}".format(student_lab, tmp_target)
-            shutil.move(student_lab, tmp_target)
+            mv(student_lab, tmp_target)
 
             target_base, _ = os.path.splitext(target_filename)
             cmd = ["gendbc", "--flatten", COPY_DIR,
                    "{0}.dbc".format(target_base)]
             sh(cmd)
 
-            shutil.copy(tmp_target, target)
+            mv(tmp_target, target)
             
     
 except Exception as e:
@@ -129,8 +147,7 @@ except Exception as e:
     rc = 1
 
 finally:
-    if os.path.exists(TMP_DIR):
-        shutil.rmtree(TMP_DIR)
+    rm_rf(TMP_DIR)
 
 sys.exit(rc)
 

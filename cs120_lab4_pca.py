@@ -213,7 +213,7 @@ Test.assertTrue(np.allclose(correct_test_cov, estimate_covariance(cov_test_data)
 # MAGIC 
 # MAGIC Now that we've computed the sample covariance matrix, we can use it to find directions of maximal variance in the data.  Specifically, we can perform an eigendecomposition of this matrix to find its eigenvalues and eigenvectors.  The \\(\scriptsize d \\) eigenvectors of the covariance matrix give us the directions of maximal variance, and are often called the "principal components."  The associated eigenvalues are the variances in these directions.  In particular, the eigenvector corresponding to the largest eigenvalue is the direction of maximal variance (this is sometimes called the "top" eigenvector). Eigendecomposition of a \\(\scriptsize d \times d \\) covariance matrix has a (roughly) cubic runtime complexity with respect to \\(\scriptsize d \\).  Whenever \\(\scriptsize d \\) is relatively small (e.g., less than a few thousand) we can quickly perform this eigendecomposition locally.
 # MAGIC 
-# MAGIC Use a function from `numpy.linalg` called [eigh](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) to perform the eigendecomposition.  Next, sort the eigenvectors based on their corresponding eigenvalues (from high to low), yielding a matrix where the columns are the eigenvectors (and the first column is the top eigenvector).  Note that [np.argsort](http://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy-argsort) can be used to obtain the indices of the eigenvalues that correspond to the ascending order of eigenvalues.  Finally, set the `topComponent` variable equal to the top eigenvector or prinicipal component, which is a \\(\scriptsize 2 \\)-dimensional vector (array with two values).
+# MAGIC Use a function from `numpy.linalg` called [eigh](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) to perform the eigendecomposition.  Next, sort the eigenvectors based on their corresponding eigenvalues (from high to low), yielding a matrix where the columns are the eigenvectors (and the first column is the top eigenvector).  Note that [np.argsort](http://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy-argsort) can be used to obtain the indices of the eigenvalues that correspond to the ascending order of eigenvalues.  Finally, set the `top_component` variable equal to the top eigenvector or prinicipal component, which is a \\(\scriptsize 2 \\)-dimensional vector (array with two values).
 # MAGIC 
 # MAGIC > Note:
 # MAGIC > * The eigenvectors returned by `eigh` appear in the columns and not the rows.
@@ -240,7 +240,7 @@ print '\ntop principal component: {0}'.format(top_component)
 def check_basis(vectors, correct):
     return np.allclose(vectors, correct) or np.allclose(np.negative(vectors), correct)
 Test.assertTrue(check_basis(top_component, [0.68915649, 0.72461254]),
-                'incorrect value for topComponent')
+                'incorrect value for top_component')
 
 # COMMAND ----------
 
@@ -252,7 +252,7 @@ Test.assertTrue(check_basis(top_component, [0.68915649, 0.72461254]),
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Use the topComponent and the data from correlated_data to generate PCA scores
+# Use the top_component and the data from correlated_data to generate PCA scores
 correlated_data_scores = <FILL IN >
 print 'one-dimensional data (first three):\n{0}'.format(np.asarray(correlated_data_scores.take(3)))
 
