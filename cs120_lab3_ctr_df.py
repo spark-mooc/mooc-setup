@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 22 Jul 2016 14:07:10 UTC
+# Databricks notebook source exported at Fri, 22 Jul 2016 14:22:30 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -447,6 +447,15 @@ Test.assertEquals(sorted(sample_ohe_dict_auto.values()), range(7),
 
 # Nothing to edit here. Just run this cell.
 
+def cleanup_old_downloads():
+  from fnmatch import fnmatch
+
+  # Clean up old downloaded files from dbfs:/tmp to prevent QUOTA_EXCEEDED errors.
+  for f in dbutils.fs.ls('/tmp'):
+    name = str(f.name)
+    if fnmatch(name, 'criteo_*'):
+      dbutils.fs.rm(str(f.path), recurse=True)
+
 def download_criteo(url):
   from io import BytesIO
   import urllib2
@@ -456,16 +465,11 @@ def download_criteo(url):
   import random
   import string
   import os
-  from fnmatch import fnmatch
 
   if not url.endswith('dac_sample.tar.gz'):
     raise Exception('Check your download URL. Are you downloading the sample dataset?')
 
-  # Clean up old downloaded files from dbfs:/tmp to prevent QUOTA_EXCEEDED errors.
-  for f in dbutils.fs.ls('/tmp'):
-    name = str(f.name)
-    if fnmatch(name, 'criteo_*'):
-      dbutils.fs.rm(str(f.path), recurse=True)
+  cleanup_old_downloads()
 
   # Create a random ID for the directory containing the downloaded file, to avoid any name clashes
   # with any other clusters. (Might not be necessary, but, safety first...)
@@ -1359,9 +1363,9 @@ Test.assertTrue(np.allclose(log_loss_test, expected_test),
 
 # COMMAND ----------
 
-if ('downloaded_data_file' not in locals()) or (downloaded_data_file is None):
-  dbutils.fs.rm(downloaded_data_file, recurse=True)
-  downloaded_data_file = None
+downloaded_data_file = None
+raw_df = None
+cleanup_old_downloads()
 
 # COMMAND ----------
 
