@@ -583,7 +583,7 @@ Test.assertEquals(parse_point(raw_df.select('text').first()[0])[:3], [(0, u'1'),
 
 # COMMAND ----------
 
-# TODO
+# TODO: Replace <FILL IN> with the appropriate code
 from pyspark.sql.functions import udf, split
 from pyspark.sql.types import ArrayType, StructType, StructField, LongType, StringType
 
@@ -653,7 +653,7 @@ Test.assertTrue((0, '') in ctr_ohe_dict, 'incorrect features in ctr_ohe_dict')
 
 # COMMAND ----------
 
-# TODO
+# TODO: Replace <FILL IN> with the appropriate code
 ohe_dict_broadcast = <FILL IN>
 ohe_dict_udf = <FILL IN>
 ohe_train_df = (parsed_train_df
