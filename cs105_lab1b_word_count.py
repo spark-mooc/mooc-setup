@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Tue, 21 Jun 2016 17:08:38 UTC
+# Databricks notebook source exported at Sat, 23 Jul 2016 13:31:09 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -99,7 +99,7 @@ pluralLengthsDF.show()
 from collections import Iterable
 asSelf = lambda v: map(lambda r: r[0] if isinstance(r, Iterable) and len(r) == 1 else r, v)
 
-Test.assertEquals(asSelf(pluralLengthsDF.collect()), [4, 9, 4, 4, 4],
+Test.assertEquals(set(asSelf(pluralLengthsDF.collect())), {4, 9, 4, 4, 4},
                   'incorrect values for pluralLengths')
 
 # COMMAND ----------
@@ -133,7 +133,7 @@ wordCountsDF.show()
 # COMMAND ----------
 
 # TEST groupBy and count (2a)
-Test.assertEquals(wordCountsDF.collect(), [('cat', 2), ('rat', 2), ('elephant', 1)],
+Test.assertEquals(set(wordCountsDF.collect()), {('rat', 2), ('elephant', 1), ('cat', 2)},
                  'incorrect counts for wordCountsDF')
 
 # COMMAND ----------
@@ -224,7 +224,8 @@ wordCount(wordsDF).show()
 # COMMAND ----------
 
 # TEST wordCount function (4a)
-Test.assertEquals(sorted(wordCount(wordsDF).collect()),
+res = [(row[0], row[1]) for row in wordCount(wordsDF).collect()]
+Test.assertEquals(sorted(res),
                   [('cat', 2), ('elephant', 1), ('rat', 2)],
                   'incorrect definition for wordCountDF function')
 
