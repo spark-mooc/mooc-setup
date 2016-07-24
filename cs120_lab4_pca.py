@@ -213,7 +213,7 @@ Test.assertTrue(np.allclose(correct_test_cov, estimate_covariance(cov_test_data)
 # MAGIC 
 # MAGIC Now that we've computed the sample covariance matrix, we can use it to find directions of maximal variance in the data.  Specifically, we can perform an eigendecomposition of this matrix to find its eigenvalues and eigenvectors.  The \\(\scriptsize d \\) eigenvectors of the covariance matrix give us the directions of maximal variance, and are often called the "principal components."  The associated eigenvalues are the variances in these directions.  In particular, the eigenvector corresponding to the largest eigenvalue is the direction of maximal variance (this is sometimes called the "top" eigenvector). Eigendecomposition of a \\(\scriptsize d \times d \\) covariance matrix has a (roughly) cubic runtime complexity with respect to \\(\scriptsize d \\).  Whenever \\(\scriptsize d \\) is relatively small (e.g., less than a few thousand) we can quickly perform this eigendecomposition locally.
 # MAGIC 
-# MAGIC Use a function from `numpy.linalg` called [eigh](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) to perform the eigendecomposition.  Next, sort the eigenvectors based on their corresponding eigenvalues (from high to low), yielding a matrix where the columns are the eigenvectors (and the first column is the top eigenvector).  Note that [np.argsort](http://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy-argsort) can be used to obtain the indices of the eigenvalues that correspond to the ascending order of eigenvalues.  Finally, set the `top_component` variable equal to the top eigenvector or prinicipal component, which is a \\(\scriptsize 2 \\)-dimensional vector (array with two values).
+# MAGIC Use a function from `numpy.linalg` called [eigh](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) to perform the eigendecomposition.  Next, sort the eigenvectors based on their corresponding eigenvalues (from high to low), yielding a matrix where the columns are the eigenvectors (and the first column is the top eigenvector).  Note that [np.argsort](http://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy-argsort) can be used to obtain the indices of the eigenvalues that correspond to the ascending order of eigenvalues.  Finally, set the `topComponent` variable equal to the top eigenvector or prinicipal component, which is a \\(\scriptsize 2 \\)-dimensional vector (array with two values).
 # MAGIC 
 # MAGIC > Note:
 # MAGIC > * The eigenvectors returned by `eigh` appear in the columns and not the rows.
@@ -240,7 +240,7 @@ print '\ntop principal component: {0}'.format(top_component)
 def check_basis(vectors, correct):
     return np.allclose(vectors, correct) or np.allclose(np.negative(vectors), correct)
 Test.assertTrue(check_basis(top_component, [0.68915649, 0.72461254]),
-                'incorrect value for top_component')
+                'incorrect value for topComponent')
 
 # COMMAND ----------
 
@@ -252,7 +252,7 @@ Test.assertTrue(check_basis(top_component, [0.68915649, 0.72461254]),
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Use the top_component and the data from correlated_data to generate PCA scores
+# Use the topComponent and the data from correlated_data to generate PCA scores
 correlated_data_scores = <FILL IN >
 print 'one-dimensional data (first three):\n{0}'.format(np.asarray(correlated_data_scores.take(3)))
 
@@ -1246,86 +1246,3 @@ display(fig)
 # MAGIC In the analyses above we have successfully identified regions of the brain that encode particular properties, e.g., a particular temporal pattern or selectivity to a stimulus. However, this is only the first step! These exploratory analyses are typically followed with more targeted investigation, both through analysis and experiment. For example, we might find all neurons that prefer one stimulus direction, and then do an experiment in which we stimulate or inactivate only those neurons and look at the effect on the animal's behavior.
 # MAGIC 
 # MAGIC Alternatively, we might subdivide neurons into groups based on simple forms of stimulus selectivity like the ones analyzed here, and then estimate coupling across different neuronal populations, i.e. can we predict one population's response as a function of another. This can  be framed as a massive pair-wise regression problem, related to techniques you learned earlier in the course, and demanding large-scale implementations.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
-# MAGIC 
-# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
-# MAGIC 
-# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
-# MAGIC 
-# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
-# MAGIC 
-# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
-# MAGIC 
-# MAGIC This step will take some time.
-# MAGIC 
-# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(c): Publish this notebook
-# MAGIC 
-# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
-# MAGIC 
-# MAGIC When you click on the button, you will see the following popup.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
-# MAGIC 
-# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
-# MAGIC 
-# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
-# MAGIC 
-# MAGIC ```
-# MAGIC notebook_url = "..." # put your URL here
-# MAGIC ```
-# MAGIC 
-# MAGIC Then, find the line that looks like this:
-# MAGIC 
-# MAGIC ```
-# MAGIC lab = <FILL IN>
-# MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab4":
-# MAGIC 
-# MAGIC ```
-# MAGIC lab = "CS120x-lab4"
-# MAGIC ```
-# MAGIC 
-# MAGIC Then, run the Autograder notebook to submit your lab.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
-# MAGIC 
-# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
-
-# COMMAND ----------
-
-
