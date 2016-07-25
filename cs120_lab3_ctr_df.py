@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 25 Jul 2016 13:11:12 UTC
+# Databricks notebook source exported at Mon, 25 Jul 2016 15:04:51 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -755,7 +755,7 @@ ohe_dict_missing_udf = <FILL IN>
 ohe_validation_df = (<FILL IN>)
 
 ohe_validation_df.count()
-ohe_validation_df.show(1, truncate=False)
+display(ohe_validation_df) # replace with ohe_validate_df.show() if running outside of Databricks
 
 # COMMAND ----------
 
@@ -1130,7 +1130,7 @@ Test.assertEquals(samp_three_hundred_buckets, {80: 1.0, 82: 1.0, 51: 1.0},
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (5b) Creating hashed features **
+# MAGIC ### (5b) Creating hashed features
 # MAGIC 
 # MAGIC Next we will use this hash function to create hashed features for our CTR datasets. Use the provided UDF to create a function that takes in a DataFrame and returns labels and hashed features.  Then use this function to create new training, validation and test datasets with hashed features.
 
