@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 25 Jul 2016 02:12:18 UTC
+# Databricks notebook source exported at Mon, 25 Jul 2016 13:11:12 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -54,6 +54,10 @@ from databricks_test_helper import Test
 
 # COMMAND ----------
 
+# By default, when a shuffle operation occurs with DataFrames, the post-shuffle partition
+# count is 200. This is controlled by Spark configuration value spark.sql.shuffle.partitions.
+# 200 is a little too high for this data set, so we set the post-shuffle partition count to
+# twice the number of available threads in Community Edition.
 sqlContext.setConf('spark.sql.shuffle.partitions', '6')  # Set default partitions for DataFrame operations
 
 # COMMAND ----------
