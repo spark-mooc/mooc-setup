@@ -14,7 +14,7 @@ mooc/Notebooks/cs120x/Math_Review.py|cs120_lab1a_math_review.py
 mooc/Notebooks/cs120x/Word_Count_RDD.py|cs120_lab1b_word_count_rdd.py
 mooc/Notebooks/cs120x/Linear_Regression_DF.py|cs120_lab2_linear_regression_df.py
 mooc/Notebooks/cs120x/CTR_DF.py|cs120_lab3_ctr_df.py
-#mooc/Notebooks/cs120x/PCA.py|cs120_lab4_pca.py
+mooc/Notebooks/cs120x/PCA.py|cs120_lab4_pca.py
 mooc/Notebooks/Autograder_register.py|cs120_autograder_register.py
 mooc/Notebooks/Autograder_simple.py|cs120_autograder_simpler.py
 mooc/Notebooks/Autograder_complete.py|cs120_autograder_complete.py
