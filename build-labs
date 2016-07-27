@@ -9,8 +9,15 @@ TMP_DIR = "tmp"
 BUILD_DIR = os.path.join(TMP_DIR, "build_mp")
 COPY_DIR = os.path.join(TMP_DIR, "copy")
 
-def die(msg):
+def error(msg, wrap=True):
+    import textwrap
+    if wrap:
+        t = textwrap.TextWrapper()
+        msg = '\n'.join(t.wrap(msg))
     sys.stderr.write(msg + "\n")
+
+def die(msg, wrap=True):
+    error(msg, wrap)
     sys.exit(1)
 
 
@@ -56,14 +63,29 @@ def sh(cmd):
             'Failed to run {0}: {1}'.format(' '.join(cmd), e.message)
         )
 
+USAGE="""Usage: {0} <course> [<path_to_training_repo>]
 
-if len(sys.argv) != 3:
-    die("Usage: {0} path_to_training_repo course".format(sys.argv[0]))
+If <path_to_training_repo> is not specified, then environment variable
+TRAINING_REPO is used.  """.format(sys.argv[0])
 
-course = sys.argv[2]
+if len(sys.argv) == 2:
+    course = sys.argv[1]
+    training_repo = os.getenv("TRAINING_REPO")
+    if not training_repo:
+       error("You did not specify the path to the training repo, and the " +
+             "TRAINING_REPO environment variable is not set.")
+       error("\n")
+       die(USAGE, wrap=False)
+
+elif len(sys.argv) == 3:
+    course = sys.argv[1]
+    training_repo = sys.argv[2]  
+
+else:
+    die(USAGE, wrap=False)
+
 course_dir = os.path.join("src", course)
 manifest = os.path.join(course_dir, "labs.txt")
-training_repo = sys.argv[1]
 
 if not os.path.exists(training_repo):
     die('Training repo "{0}" does not exist.'.format(training_repo))
