@@ -524,7 +524,7 @@ predictions = np.asarray(parsed_val_data_df
                          .collect())
 error = np.asarray(parsed_val_data_df
                    .rdd
-                   .map(lambda lp: (lp.label, average_train_year))
+                   .map(lambda lp: (average_train_year, lp.label))
                    .map(lambda (l, p): squared_error(l, p))
                    .collect())
 norm = Normalize()

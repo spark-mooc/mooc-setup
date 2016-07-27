@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 25 Jul 2016 15:37:31 UTC
+# Databricks notebook source exported at Wed, 20 Jul 2016 15:49:55 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -151,7 +151,7 @@ Test.assertTrue(np.allclose(correlated_data_zero_mean.take(1)[0], [-0.28561917, 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Compute the covariance matrix using outer products and correlated_data_zero_mean
+# Compute the covariance matrix using outer products and correlated_dataZeroMean
 correlated_cov = <FILL IN>
 print correlated_cov
 
@@ -213,7 +213,7 @@ Test.assertTrue(np.allclose(correct_test_cov, estimate_covariance(cov_test_data)
 # MAGIC 
 # MAGIC Now that we've computed the sample covariance matrix, we can use it to find directions of maximal variance in the data.  Specifically, we can perform an eigendecomposition of this matrix to find its eigenvalues and eigenvectors.  The \\(\scriptsize d \\) eigenvectors of the covariance matrix give us the directions of maximal variance, and are often called the "principal components."  The associated eigenvalues are the variances in these directions.  In particular, the eigenvector corresponding to the largest eigenvalue is the direction of maximal variance (this is sometimes called the "top" eigenvector). Eigendecomposition of a \\(\scriptsize d \times d \\) covariance matrix has a (roughly) cubic runtime complexity with respect to \\(\scriptsize d \\).  Whenever \\(\scriptsize d \\) is relatively small (e.g., less than a few thousand) we can quickly perform this eigendecomposition locally.
 # MAGIC 
-# MAGIC Use a function from `numpy.linalg` called [eigh](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) to perform the eigendecomposition.  Next, sort the eigenvectors based on their corresponding eigenvalues (from high to low), yielding a matrix where the columns are the eigenvectors (and the first column is the top eigenvector).  Note that [np.argsort](http://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy-argsort) can be used to obtain the indices of the eigenvalues that correspond to the ascending order of eigenvalues.  Finally, set the `top_component` variable equal to the top eigenvector or prinicipal component, which is a \\(\scriptsize 2 \\)-dimensional vector (array with two values).
+# MAGIC Use a function from `numpy.linalg` called [eigh](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) to perform the eigendecomposition.  Next, sort the eigenvectors based on their corresponding eigenvalues (from high to low), yielding a matrix where the columns are the eigenvectors (and the first column is the top eigenvector).  Note that [np.argsort](http://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy-argsort) can be used to obtain the indices of the eigenvalues that correspond to the ascending order of eigenvalues.  Finally, set the `topComponent` variable equal to the top eigenvector or prinicipal component, which is a \\(\scriptsize 2 \\)-dimensional vector (array with two values).
 # MAGIC 
 # MAGIC > Note:
 # MAGIC > * The eigenvectors returned by `eigh` appear in the columns and not the rows.
@@ -231,7 +231,7 @@ print '\neigenvectors: \n{0}'.format(eig_vecs)
 
 # Use np.argsort to find the top eigenvector based on the largest eigenvalue
 inds = np.argsort(<FILL IN>)
-top_component = <FILL IN>
+top_component = <FILL IN >
 print '\ntop principal component: {0}'.format(top_component)
 
 # COMMAND ----------
@@ -240,7 +240,7 @@ print '\ntop principal component: {0}'.format(top_component)
 def check_basis(vectors, correct):
     return np.allclose(vectors, correct) or np.allclose(np.negative(vectors), correct)
 Test.assertTrue(check_basis(top_component, [0.68915649, 0.72461254]),
-                'incorrect value for top_component')
+                'incorrect value for topComponent')
 
 # COMMAND ----------
 
@@ -252,16 +252,16 @@ Test.assertTrue(check_basis(top_component, [0.68915649, 0.72461254]),
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Use the top_component and the data from correlated_data to generate PCA scores
-correlated_data_scores = <FILL IN>
+# Use the topComponent and the data from correlated_data to generate PCA scores
+correlated_data_scores = <FILL IN >
 print 'one-dimensional data (first three):\n{0}'.format(np.asarray(correlated_data_scores.take(3)))
 
 # COMMAND ----------
 
 # TEST PCA Scores (1e)
-first_three = [70.51682806, 69.30622356, 71.13588168]
-Test.assertTrue(check_basis(correlated_data_scores.take(3), first_three),
-                'incorrect value for correlated_data_scores')
+firstThree = [70.51682806, 69.30622356, 71.13588168]
+Test.assertTrue(check_basis(correlated_data_scores.take(3), firstThree),
+                'incorrect value for correlated_dataScores')
 
 # COMMAND ----------
 
@@ -303,11 +303,11 @@ def pca(data, k=2):
     <FILL IN>
 
 # Run pca on correlated_data with k = 2
-top_components_correlated, correlated_data_scores_auto, eigenvalues_correlated = <FILL IN>
+top_components_correlated, correlated_data_scores_auto, eigenvalues_correlated = <FILL IN >
 
 # Note that the 1st principal component is in the first column
 print 'top_components_correlated: \n{0}'.format(top_components_correlated)
-print ('\ncorrelated_data_scores_auto (first three): \n{0}'
+print ('\ncorrelated_dataScoresAuto (first three): \n{0}'
        .format('\n'.join(map(str, correlated_data_scores_auto.take(3)))))
 print '\neigenvalues_correlated: \n{0}'.format(eigenvalues_correlated)
 
@@ -326,13 +326,13 @@ print '\neigenvalues_test: \n{0}'.format(eigenvalues_test)
 # TEST PCA Function (2a)
 Test.assertTrue(check_basis(top_components_correlated.T,
                             [[0.68915649,  0.72461254], [-0.72461254, 0.68915649]]),
-                'incorrect value for top_components_correlated')
+                'incorrect value for topComponentsCorrelated')
 first_three_correlated = [[70.51682806, 69.30622356, 71.13588168], [1.48305648, 1.5888655, 1.86710679]]
 Test.assertTrue(np.allclose(first_three_correlated,
                             np.vstack(np.abs(correlated_data_scores_auto.take(3))).T),
-                'incorrect value for first three correlated values')
+                'incorrect value for firstThreeCorrelated')
 Test.assertTrue(np.allclose(eigenvalues_correlated, [1.94345403, 0.13820481]),
-                           'incorrect values for eigenvalues_correlated')
+                           'incorrect values for eigenvaluesCorrelated')
 top_components_correlated_k1, correlated_data_scores_k1, eigenvalues_correlated_k1 = pca(correlated_data, 1)
 Test.assertTrue(check_basis(top_components_correlated_k1.T, [0.68915649, 0.72461254]),
                'incorrect value for components when k=1')
@@ -342,25 +342,25 @@ Test.assertTrue(np.allclose([70.51682806, 69.30622356, 71.13588168],
 Test.assertTrue(np.allclose(eigenvalues_correlated_k1, [1.94345403, 0.13820481]),
                            'incorrect values for eigenvalues when k=1')
 Test.assertTrue(check_basis(components_test.T[0], [.5, .5, .5, .5]),
-                'incorrect value for components_test')
+                'incorrect value for componentsTest')
 Test.assertTrue(np.allclose(np.abs(test_scores.first()[0]), 3.),
-                'incorrect value for test_scores')
-Test.assertTrue(np.allclose(eigenvalues_test, [128, 0, 0, 0]), 'incorrect value for eigenvalues_test')
+                'incorrect value for testScores')
+Test.assertTrue(np.allclose(eigenvalues_test, [128, 0, 0, 0]), 'incorrect value for eigenvaluesTest')
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### (2b) PCA on `data_random`
+# MAGIC ### (2b) PCA on `dataRandom`
 # MAGIC 
-# MAGIC Next, use the PCA function we just developed to find the top two principal components of the spherical `data_random` we created in Visualization 1.
+# MAGIC Next, use the PCA function we just developed to find the top two principal components of the spherical `dataRandom` we created in Visualization 1.
 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-random_data_df = sc.parallelize(data_random)
+random_data = sc.parallelize(data_random)
 
-# Use pca on data_random
-top_components_random, random_data_scores_auto, eigenvalues_random = <FILL IN>
+# Use pca on randomData
+top_components_random, random_data_scores_auto, eigenvalues_random = <FILL IN >
 
 print 'top_components_random: \n{0}'.format(top_components_random)
 print ('\nrandom_data_scores_auto (first three): \n{0}'
@@ -369,16 +369,16 @@ print '\neigenvalues_random: \n{0}'.format(eigenvalues_random)
 
 # COMMAND ----------
 
-# TEST PCA on `data_random` (2b)
+# TEST PCA on `dataRandom` (2b)
 Test.assertTrue(check_basis(top_components_random.T,
                             [[-0.2522559 ,  0.96766056], [-0.96766056,  -0.2522559]]),
-                'incorrect value for top_components_random')
+                'incorrect value for topComponentsRandom')
 first_three_random = [[36.61068572, 35.97314295, 35.59836628],
                       [61.3489929 ,  62.08813671,  60.61390415]]
 Test.assertTrue(np.allclose(first_three_random, np.vstack(np.abs(random_data_scores_auto.take(3))).T),
-                'incorrect value for random_data_scores_auto')
+                'incorrect value for randomDataScoresAuto')
 Test.assertTrue(np.allclose(eigenvalues_random, [1.4204546, 0.99521397]),
-                            'incorrect value for eigenvalues_random')
+                            'incorrect value for eigenvaluesRandom')
 
 # COMMAND ----------
 
@@ -397,7 +397,7 @@ def project_points_and_get_lines(data, components, x_range):
     means = data.mean()[:2]
     demeaned = data.map(lambda v: v - means)
     projected = demeaned.map(lambda v: (v.dot(top_component) /
-                                        top_component.dot(top_component)) * top_component)
+                                        topComponent.dot(top_component)) * top_component)
     remeaned = projected.map(lambda v: v + means)
     x1,x2 = zip(*remeaned.collect())
 
@@ -424,11 +424,12 @@ plt.scatter(data_correlated[:,0], data_correlated[:,1], s=14**2, c='#d6ebf2',
             edgecolors='#8cbfd0', alpha=0.75)
 plt.scatter(x1, x2, s=14**2, c='#62c162', alpha=.75)
 display(fig)
+pass
 
 # COMMAND ----------
 
 ((x1, x2), (line1X1, line1X2), (line2X1, line2X2)) = \
-    project_points_and_get_lines(random_data_df, top_components_random, 5)
+    project_points_and_get_lines(random_data, top_components_random, 5)
 
 # generate layout and plot data
 fig, ax = prepare_plot(np.arange(46, 55, 2), np.arange(46, 55, 2), figsize=(7, 7))
@@ -440,6 +441,7 @@ plt.scatter(data_random[:,0], data_random[:,1], s=14**2, c='#d6ebf2',
             edgecolors='#8cbfd0', alpha=0.75)
 plt.scatter(x1, x2, s=14**2, c='#62c162', alpha=.75)
 display(fig)
+pass
 
 # COMMAND ----------
 
@@ -499,6 +501,7 @@ ax.set_zlim((-20, 120)), ax.set_ylim((-20, 100)), ax.set_xlim((30, 75))
 ax.plot_surface(xx, yy, z, alpha=.1)
 plt.tight_layout()
 display(fig)
+pass
 
 # COMMAND ----------
 
@@ -511,7 +514,7 @@ display(fig)
 
 # TODO: Replace <FILL IN> with appropriate code
 threeD_data = sc.parallelize(data_threeD)
-components_threeD, threeD_scores, eigenvalues_threeD = <FILL IN>
+components_threeD, threeD_scores, eigenvalues_threeD = <FILL IN >
 
 print 'components_threeD: \n{0}'.format(components_threeD)
 print ('\nthreeD_scores (first three): \n{0}'
@@ -521,13 +524,13 @@ print '\neigenvalues_threeD: \n{0}'.format(eigenvalues_threeD)
 # COMMAND ----------
 
 # TEST 3D to 2D (2c)
-Test.assertEquals(components_threeD.shape, (3, 2), 'incorrect shape for components_threeD')
+Test.assertEquals(components_threeD.shape, (3, 2), 'incorrect shape for componentsThreeD')
 Test.assertTrue(np.allclose(np.sum(eigenvalues_threeD), 969.796443367),
-                'incorrect value for eigenvalues_threeD')
+                'incorrect value for eigenvaluesThreeD')
 Test.assertTrue(np.allclose(np.abs(np.sum(components_threeD)), 1.77238943258),
-                'incorrect value for components_threeD')
+                'incorrect value for componentsThreeD')
 Test.assertTrue(np.allclose(np.abs(np.sum(threeD_scores.take(3))), 237.782834092),
-                'incorrect value for threeD_scores')
+                'incorrect value for threeDScores')
 
 # COMMAND ----------
 
@@ -545,12 +548,13 @@ fig, ax = prepare_plot(np.arange(20, 150, 20), np.arange(-40, 110, 20))
 ax.set_xlabel(r'New $x_1$ values'), ax.set_ylabel(r'New $x_2$ values')
 ax.set_xlim(5, 150), ax.set_ylim(-45, 50)
 plt.scatter(scores_threeD[:, 0], scores_threeD[:, 1], s=14 ** 2, c=clrs, edgecolors='#8cbfd0', alpha=0.75)
-display(fig)
+display(fig) 
+pass
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### (2d) Variance explained
+# MAGIC **(2d) Variance explained**
 # MAGIC 
 # MAGIC Finally, let's quantify how much of the variance is being captured by PCA in each of the three synthetic datasets we've analyzed.  To do this, we'll compute the fraction of retained variance by the top principal components.  Recall that the eigenvalue corresponding to each principal component captures the variance along this direction.  If our initial data is \\(\scriptsize d\\)-dimensional, then the total variance in our data equals: \\( \scriptsize \sum_{i=1}^d \lambda_i \\), where \\(\scriptsize \lambda_i\\) is the eigenvalue corresponding to the \\(\scriptsize i\\)th principal component. Moreover, if we use PCA with some \\(\scriptsize k < d\\), then we can compute the variance retained by these principal components by adding the top \\(\scriptsize k\\) eigenvalues.  The fraction of retained variance equals the sum of the top \\(\scriptsize k\\) eigenvalues divided by the sum of all of the eigenvalues.
 
@@ -572,31 +576,31 @@ def variance_explained(data, k=1):
     components, scores, eigenvalues = <FILL IN>
     <FILL IN>
 
-variance_random_1 = variance_explained(random_data_df, 1)
+variance_random_1 = variance_explained(random_data, 1)
 variance_correlated_1 = variance_explained(correlated_data, 1)
-variance_random_2 = variance_explained(random_data_df, 2)
+variance_random_2 = variance_explained(random_data, 2)
 variance_correlated_2 = variance_explained(correlated_data, 2)
 variance_threeD_2 = variance_explained(threeD_data, 2)
-print ('Percentage of variance explained by the first component of random_data_df: {0:.1f}%'
+print ('Percentage of variance explained by the first component of randomData: {0:.1f}%'
        .format(variance_random_1 * 100))
-print ('Percentage of variance explained by both components of random_data_df: {0:.1f}%'
+print ('Percentage of variance explained by both components of randomData: {0:.1f}%'
        .format(variance_random_2 * 100))
 print ('\nPercentage of variance explained by the first component of correlated_data: {0:.1f}%'.
        format(variance_correlated_1 * 100))
 print ('Percentage of variance explained by both components of correlated_data: {0:.1f}%'
        .format(variance_correlated_2 * 100))
-print ('\nPercentage of variance explained by the first two components of threeD_data: {0:.1f}%'
+print ('\nPercentage of variance explained by the first two components of threeDData: {0:.1f}%'
        .format(variance_threeD_2 * 100))
 
 # COMMAND ----------
 
 # TEST Variance explained (2d)
-Test.assertTrue(np.allclose(variance_random_1, 0.588017172066), 'incorrect value for variance_random_1')
+Test.assertTrue(np.allclose(variance_random_1, 0.588017172066), 'incorrect value for varianceRandom1')
 Test.assertTrue(np.allclose(variance_correlated_1, 0.933608329586),
                 'incorrect value for varianceCorrelated1')
-Test.assertTrue(np.allclose(variance_random_2, 1.0), 'incorrect value for variance_random_2')
-Test.assertTrue(np.allclose(variance_correlated_2, 1.0), 'incorrect value for variance_correlated_2')
-Test.assertTrue(np.allclose(variance_threeD_2, 0.993967356912), 'incorrect value for variance_threeD_2')
+Test.assertTrue(np.allclose(variance_random_2, 1.0), 'incorrect value for varianceRandom2')
+Test.assertTrue(np.allclose(variance_correlated_2, 1.0), 'incorrect value for varianceCorrelated2')
+Test.assertTrue(np.allclose(variance_threeD_2, 0.993967356912), 'incorrect value for varianceThreeD2')
 
 # COMMAND ----------
 
@@ -615,7 +619,7 @@ Test.assertTrue(np.allclose(variance_threeD_2, 0.993967356912), 'incorrect value
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### (3a) Load neuroscience data
+# MAGIC **(3a) Load neuroscience data**
 # MAGIC 
 # MAGIC In the next sections we will use PCA to capture structure in neural datasets. Before doing the analysis, we will load and do some basic inspection of the data. The raw data are currently stored as a text file. Every line in the file contains the time series of image intensity for a single pixel in a time-varying image (i.e. a movie). The first two numbers in each line are the spatial coordinates of the pixel, and the remaining numbers are the time series. We'll use `first()` to inspect a single row, and print just the first 100 characters.
 
@@ -665,7 +669,7 @@ raw_data.cache()
 entry = raw_data.first()
 print 'Length of movie is {0} seconds'.format(len(entry[1]))
 print 'Number of pixels in movie is {0:,}'.format(raw_data.count())
-print ('\nFirst entry of raw_data (with only the first five values of the NumPy array):\n({0}, {1})'
+print ('\nFirst entry of rawData (with only the first five values of the NumPy array):\n({0}, {1})'
        .format(entry[0], entry[1][:5]))
 
 # COMMAND ----------
@@ -753,8 +757,8 @@ print mn_scaled, mx_scaled
 
 # TEST Fractional signal change (3d)
 Test.assertTrue(isinstance(scaled_data.first()[1], np.ndarray), 'incorrect type returned by rescale')
-Test.assertTrue(np.allclose(mn_scaled, -0.27151288), 'incorrect value for mn_scaled')
-Test.assertTrue(np.allclose(mx_scaled, 0.90544876), 'incorrect value for mx_scaled')
+Test.assertTrue(np.allclose(mn_scaled, -0.27151288), 'incorrect value for mnScaled')
+Test.assertTrue(np.allclose(mx_scaled, 0.90544876), 'incorrect value for mxScaled')
 
 # COMMAND ----------
 
@@ -781,13 +785,13 @@ display(fig)
 # MAGIC 
 # MAGIC We now have a preprocessed dataset with \\(\scriptsize n = 46460\\) pixels and \\(\scriptsize d = 240\\) seconds of time series data for each pixel.  We can interpret the pixels as our observations and each pixel value in the time series as a feature.  We would like to find patterns in brain activity during this time series, and we expect to find correlations over time.  We can thus use PCA to find a more compact representation of our data and allow us to visualize it.
 # MAGIC 
-# MAGIC Use the `pca` function from Part (2a) to perform PCA on the preprocessed neuroscience data with \\(\scriptsize k = 3\\), resulting in a new low-dimensional 46460 by 3 dataset.  The `pca` function takes an RDD of arrays, but `scaled_data` is an RDD of key-value pairs, so you'll need to extract the values.
+# MAGIC Use the `pca` function from Part (2a) to perform PCA on the preprocessed neuroscience data with \\(\scriptsize k = 3\\), resulting in a new low-dimensional 46460 by 3 dataset.  The `pca` function takes an RDD of arrays, but `data` is an RDD of key-value pairs, so you'll need to extract the values.
 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-# Run pca using scaled_data
-components_scaled, scaled_scores, eigenvalues_scaled = <FILL IN>
+# Run pca using scaledData
+components_scaled, scaled_scores, eigenvalues_scaled = <FILL IN >
 
 # COMMAND ----------
 
@@ -824,13 +828,13 @@ display(fig)
 
 # COMMAND ----------
 
-image_two_scaled = scores_scaled[:, 1].reshape(230, 202).T
+imageTwoScaled = scores_scaled[:, 1].reshape(230, 202).T
 
 # generate layout and plot data
 fig, ax = prepare_plot(np.arange(0, 10, 1), np.arange(0, 10, 1), figsize=(9.0, 7.2), hide_labels=True)
 ax.grid(False)
 ax.set_title('Second Principal Component', color='#888888')
-image = plt.imshow(image_two_scaled, interpolation='nearest', aspect='auto', cmap=cm.gray)
+image = plt.imshow(imageTwoScaled,interpolation='nearest', aspect='auto', cmap=cm.gray)
 display(fig)
 
 # COMMAND ----------
@@ -872,7 +876,7 @@ def polar_transform(scale, img):
 
 # Show the polar mapping from principal component coordinates to colors.
 x1_abs_max = np.max(np.abs(image_one_scaled))
-x2_abs_max = np.max(np.abs(image_two_scaled))
+x2_abs_max = np.max(np.abs(imageTwoScaled))
 
 num_of_pixels = 300
 x1_vals = np.arange(-x1_abs_max, x1_abs_max, (2 * x1_abs_max) / num_of_pixels)
@@ -901,7 +905,7 @@ display(fig)
 
 # Use the same transformation on the image data
 # Try changing the first parameter to lower values
-brainmap = polar_transform(2.0, [image_one_scaled, image_two_scaled])
+brainmap = polar_transform(2.0, [image_one_scaled, imageTwoScaled])
 
 # generate layout and plot data
 fig, ax = prepare_plot(np.arange(0, 10, 1), np.arange(0, 10, 1), figsize=(9.0, 7.2), hide_labels=True)
@@ -940,26 +944,26 @@ vector = np.array([0., 1., 2., 3., 4., 5.])
 # a two element array where the first element is the sum of the 0, 2, and 4 indexed elements of
 # vector and the second element is the sum of the 1, 3, and 5 indexed elements of vector.
 # This should be a 2 row by 6 column array
-sum_every_other = np.array(<FILL IN>)
+sum_every_other = np.array( < FILL IN >)
 
 # Create a multi-dimensional array that when multiplied (using .dot) against vector, results in a
 # three element array where the first element is the sum of the 0 and 3 indexed elements of vector,
 # the second element is the sum of the 1 and 4 indexed elements of vector, and the third element is
 # the sum of the 2 and 5 indexed elements of vector.
 # This should be a 3 row by 6 column array
-sum_every_third = np.array(<FILL IN>)
+sum_every_third = np.array( < FILL IN >)
 
 # Create a multi-dimensional array that can be used to sum the first three elements of vector and
 # the last three elements of vector, which returns a two element array with those values when dotted
 # with vector.
 # This should be a 2 row by 6 column array
-sum_by_three = np.array(<FILL IN>)
+sum_by_three = np.array( < FILL IN >)
 
 # Create a multi-dimensional array that sums the first two elements, second two elements, and
 # last two elements of vector, which returns a three element array with those values when dotted
 # with vector.
 # This should be a 3 row by 6 column array
-sum_by_two = np.array(<FILL IN>)
+sum_by_two = np.array( < FILL IN >)
 
 print 'sum_every_other.dot(vector):\t{0}'.format(sum_every_other.dot(vector))
 print 'sum_every_third.dot(vector):\t{0}'.format(sum_every_third.dot(vector))
@@ -1004,8 +1008,8 @@ print '\nsum_every_third: \n{0}'.format(sum_every_third)
 
 # TODO: Replace <FILL IN> with appropriate code
 # Use np.tile and np.eye to recreate the arrays
-sum_every_other_tile = <FILL IN>
-sum_every_third_tile = <FILL IN>
+sum_every_other_tile = <FILL IN >
+sum_every_third_tile = <FILL IN >
 
 print sum_every_other_tile
 print 'sum_every_other_tile.dot(vector): {0}'.format(sum_every_other_tile.dot(vector))
@@ -1026,7 +1030,7 @@ Test.assertTrue(np.allclose(sum_every_third_tile.dot(vector), [3, 5, 7]),
 
 # MAGIC %md
 # MAGIC ### (4c) Recreate with `np.kron`
-# MAGIC The Kronecker product is the generalization of outer products involving matrices, and we've included some examples below to illustrate the idea.  Please refer to the [Wikipedia page](https://en.wikipedia.org/wiki/Kronecker_product) for a detailed definition.  We can use [np.kron](http://docs.scipy.org/doc/numpy/reference/generated/numpy.kron.html) to compute Kronecker products and recreate the `sum_by` arrays.  Note that \\( \otimes \\) indicates a Kronecker product.
+# MAGIC The Kronecker product is the generalization of outer products involving matrices, and we've included some examples below to illustrate the idea.  Please refer to the [Wikipedia page](https://en.wikipedia.org/wiki/Kronecker_product) for a detailed definition.  We can use [np.kron](http://docs.scipy.org/doc/numpy/reference/generated/numpy.kron.html) to compute Kronecker products and recreate the `sumBy` arrays.  Note that \\( \otimes \\) indicates a Kronecker product.
 # MAGIC 
 # MAGIC \\[ \begin{bmatrix} 1 & 2 \\\ 3 & 4 \end{bmatrix} \otimes \begin{bmatrix} 1 & 2 \end{bmatrix}  = \begin{bmatrix} 1 \cdot 1 & 1 \cdot 2 & 2 \cdot 1 & 2 \cdot 2 \\\ 3 \cdot 1 & 3 \cdot 2 & 4 \cdot 1 & 4 \cdot 2 \end{bmatrix} = \begin{bmatrix} 1 & 2 & 2 & 4 \\\ 3 & 6 & 4 & 8 \end{bmatrix}  \\]
 # MAGIC 
@@ -1046,8 +1050,8 @@ print '\nsum_by_two: \n{0}'.format(sum_by_two)
 
 # TODO: Replace <FILL IN> with appropriate code
 # Use np.kron, np.eye, and np.ones to recreate the arrays
-sum_by_three_kron = <FILL IN>
-sum_by_two_kron = <FILL IN>
+sum_by_three_kron = <FILL IN >
+sum_by_two_kron = <FILL IN >
 
 print sum_by_three_kron
 print 'sum_by_three_kron.dot(vector): {0}'.format(sum_by_three_kron.dot(vector))
@@ -1079,8 +1083,8 @@ Test.assertTrue(np.allclose(sum_by_two_kron.dot(vector), [1, 5, 9]),
 # Create a multi-dimensional array to perform the aggregation
 T = <FILL IN>
 
-# Transform scaled_data using T.  Make sure to retain the keys.
-time_data = scaled_data. <FILL IN>
+# Transform scaledData using T.  Make sure to retain the keys.
+time_data = scaled_data. < FILL IN >
 
 time_data.cache()
 print time_data.count()
@@ -1090,14 +1094,14 @@ print time_data.first()
 
 # TEST Aggregate by time (4d)
 Test.assertEquals(T.shape, (20, 240), 'incorrect shape for T')
-time_data_first = time_data.values().first()
-time_data_fifth = time_data.values().take(5)[4]
+timeDataFirst = time_data.values().first()
+timeDataFifth = time_data.values().take(5)[4]
 Test.assertEquals(time_data.count(), 46460, 'incorrect length of time_data')
-Test.assertEquals(time_data_first.size, 20, 'incorrect value length of time_data')
+Test.assertEquals(timeDataFirst.size, 20, 'incorrect value length of time_data')
 Test.assertEquals(time_data.keys().first(), (0, 0), 'incorrect keys in time_data')
-Test.assertTrue(np.allclose(time_data_first[:2], [0.00802155, 0.00607693]),
+Test.assertTrue(np.allclose(timeDataFirst[:2], [0.00802155, 0.00607693]),
                 'incorrect values in time_data')
-Test.assertTrue(np.allclose(time_data_fifth[-2:], [-0.00636676, -0.0179427]),
+Test.assertTrue(np.allclose(timeDataFifth[-2:],[-0.00636676, -0.0179427]),
                 'incorrect values in time_data')
 
 # COMMAND ----------
@@ -1110,7 +1114,7 @@ Test.assertTrue(np.allclose(time_data_fifth[-2:], [-0.00636676, -0.0179427]),
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-components_time, time_scores, eigenvalues_time = <FILL IN>
+components_time, time_scores, eigenvalues_time = <FILL IN >
 
 print 'components_time: (first five) \n{0}'.format(components_time[:5, :])
 print ('\ntime_scores (first three): \n{0}'
@@ -1164,8 +1168,8 @@ display(fig)
 # Create a multi-dimensional array to perform the aggregation
 D = <FILL IN>
 
-# Transform scaled_data using D.  Make sure to retain the keys.
-direction_data = scaled_data. <FILL IN>
+# Transform scaledData using D.  Make sure to retain the keys.
+direction_data = scaled_data. < FILL IN >
 
 direction_data.cache()
 print direction_data.count()
@@ -1175,14 +1179,14 @@ print direction_data.first()
 
 # TEST Aggregate by direction (4f)
 Test.assertEquals(D.shape, (12, 240), 'incorrect shape for D')
-direction_data_first = direction_data.values().first()
-direction_data_fifth = direction_data.values().take(5)[4]
+directionDataFirst = direction_data.values().first()
+directionDataFifth = direction_data.values().take(5)[4]
 Test.assertEquals(direction_data.count(), 46460, 'incorrect length of direction_data')
-Test.assertEquals(direction_data_first.size, 12, 'incorrect value length of direction_data')
+Test.assertEquals(directionDataFirst.size, 12, 'incorrect value length of direction_data')
 Test.assertEquals(direction_data.keys().first(), (0, 0), 'incorrect keys in direction_data')
-Test.assertTrue(np.allclose(direction_data_first[:2], [0.03346365, 0.03638058]),
+Test.assertTrue(np.allclose(directionDataFirst[:2], [ 0.03346365,  0.03638058]),
                 'incorrect values in direction_data')
-Test.assertTrue(np.allclose(direction_data_fifth[:2], [0.01479147, -0.02090099]),
+Test.assertTrue(np.allclose(directionDataFifth[:2], [ 0.01479147, -0.02090099]),
                 'incorrect values in direction_data')
 
 # COMMAND ----------
@@ -1195,7 +1199,7 @@ Test.assertTrue(np.allclose(direction_data_fifth[:2], [0.01479147, -0.02090099])
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-components_direction, direction_scores, eigenvalues_direction = <FILL IN>
+components_direction, direction_scores, eigenvalues_direction = <FILL IN >
 
 print 'components_direction: (first five) \n{0}'.format(components_direction[:5, :])
 print ('\ndirection_scores (first three): \n{0}'
@@ -1242,86 +1246,3 @@ display(fig)
 # MAGIC In the analyses above we have successfully identified regions of the brain that encode particular properties, e.g., a particular temporal pattern or selectivity to a stimulus. However, this is only the first step! These exploratory analyses are typically followed with more targeted investigation, both through analysis and experiment. For example, we might find all neurons that prefer one stimulus direction, and then do an experiment in which we stimulate or inactivate only those neurons and look at the effect on the animal's behavior.
 # MAGIC 
 # MAGIC Alternatively, we might subdivide neurons into groups based on simple forms of stimulus selectivity like the ones analyzed here, and then estimate coupling across different neuronal populations, i.e. can we predict one population's response as a function of another. This can  be framed as a massive pair-wise regression problem, related to techniques you learned earlier in the course, and demanding large-scale implementations.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
-# MAGIC 
-# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
-# MAGIC 
-# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
-# MAGIC 
-# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
-# MAGIC 
-# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
-# MAGIC 
-# MAGIC This step will take some time.
-# MAGIC 
-# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(c): Publish this notebook
-# MAGIC 
-# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
-# MAGIC 
-# MAGIC When you click on the button, you will see the following popup.
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
-# MAGIC 
-# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
-# MAGIC 
-# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
-# MAGIC 
-# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
-# MAGIC 
-# MAGIC ```
-# MAGIC notebook_url = "..." # put your URL here
-# MAGIC ```
-# MAGIC 
-# MAGIC Then, find the line that looks like this:
-# MAGIC 
-# MAGIC ```
-# MAGIC lab = <FILL IN>
-# MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS120x-lab4":
-# MAGIC 
-# MAGIC ```
-# MAGIC lab = "CS120x-lab4"
-# MAGIC ```
-# MAGIC 
-# MAGIC Then, run the Autograder notebook to submit your lab.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
-# MAGIC 
-# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
-
-# COMMAND ----------
-
-
