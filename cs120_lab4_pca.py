@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 25 Jul 2016 15:37:31 UTC
+# Databricks notebook source exported at Sat, 30 Jul 2016 02:42:14 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -353,11 +353,13 @@ Test.assertTrue(np.allclose(eigenvalues_test, [128, 0, 0, 0]), 'incorrect value 
 # MAGIC ### (2b) PCA on `data_random`
 # MAGIC 
 # MAGIC Next, use the PCA function we just developed to find the top two principal components of the spherical `data_random` we created in Visualization 1.
+# MAGIC 
+# MAGIC First, we need to convert `data_random` to the RDD `random_data_rdd`, and do all subsequent operations on `random_data_rdd`.
 
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-random_data_df = sc.parallelize(data_random)
+random_data_rdd = sc.parallelize(data_random)
 
 # Use pca on data_random
 top_components_random, random_data_scores_auto, eigenvalues_random = <FILL IN>
@@ -428,7 +430,7 @@ display(fig)
 # COMMAND ----------
 
 ((x1, x2), (line1X1, line1X2), (line2X1, line2X2)) = \
-    project_points_and_get_lines(random_data_df, top_components_random, 5)
+    project_points_and_get_lines(random_data_rdd, top_components_random, 5)
 
 # generate layout and plot data
 fig, ax = prepare_plot(np.arange(46, 55, 2), np.arange(46, 55, 2), figsize=(7, 7))
@@ -572,14 +574,14 @@ def variance_explained(data, k=1):
     components, scores, eigenvalues = <FILL IN>
     <FILL IN>
 
-variance_random_1 = variance_explained(random_data_df, 1)
+variance_random_1 = variance_explained(random_data_rdd, 1)
 variance_correlated_1 = variance_explained(correlated_data, 1)
-variance_random_2 = variance_explained(random_data_df, 2)
+variance_random_2 = variance_explained(random_data_rdd, 2)
 variance_correlated_2 = variance_explained(correlated_data, 2)
 variance_threeD_2 = variance_explained(threeD_data, 2)
-print ('Percentage of variance explained by the first component of random_data_df: {0:.1f}%'
+print ('Percentage of variance explained by the first component of random_data_rdd: {0:.1f}%'
        .format(variance_random_1 * 100))
-print ('Percentage of variance explained by both components of random_data_df: {0:.1f}%'
+print ('Percentage of variance explained by both components of random_data_rdd: {0:.1f}%'
        .format(variance_random_2 * 100))
 print ('\nPercentage of variance explained by the first component of correlated_data: {0:.1f}%'.
        format(variance_correlated_1 * 100))
@@ -680,6 +682,7 @@ Test.assertTrue(isinstance(entry[1][0], np.float), 'the np.ndarray should consis
 Test.assertEquals(entry[0], (0, 0), 'incorrect key for entry')
 Test.assertEquals(entry[1].size, 240, 'incorrect length of entry array')
 Test.assertTrue(np.allclose(np.sum(entry[1]), 24683.5), 'incorrect values in entry array')
+Test.assertTrue(raw_data.is_cached, 'raw_data is not cached')
 
 # COMMAND ----------
 
@@ -805,7 +808,7 @@ Test.assertTrue(np.allclose(np.sum(eigenvalues_scaled[:5]), 0.206987501564),
 # MAGIC %md
 # MAGIC ### Visualization 7: Top two components as images
 # MAGIC 
-# MAGIC Now, we'll view the scores for the top two component as images.  Note that we reshape the vectors by the dimensions of the original image, 230 x 202.
+# MAGIC Now, we'll view the scores for the top two components as images.  Note that we reshape the vectors by the dimensions of the original image, 230 x 202.
 # MAGIC These graphs map the values for the single component to a grayscale image.  This provides us with a visual representation which we can use to see the overall structure of the zebrafish brain and to identify where high and low values occur.  However, using this representation, there is a substantial amount of useful information that is difficult to interpret.  In the next visualization, we'll see how we can improve interpretability by combining the two principal components into a single image using a color mapping.
 
 # COMMAND ----------
@@ -1134,7 +1137,7 @@ Test.assertTrue(np.allclose(np.sum(eigenvalues_time[:5]), 0.844764792),
 # MAGIC %md
 # MAGIC ### Visualization 9: Top two components by time
 # MAGIC 
-# MAGIC Let's view the scores from the first two PCs as a composite image. When we preprocess by aggregating by time and then perform PCA, we are only looking at variability related to temporal dynamics. As a result, if neurons appear similar -- have similar colors -- in the resulting image, it means that their responses vary similarly over time, regardless of how they might be encoding direction. In the image below, we can define the midline as the horizontal line across the middle of the brain.  We see clear patterns of neural activity in different parts of the brain, and crucially note that the regions on either side of the midline are similar, which suggests that temporal dynamics do not differ across the two sides of the brain.
+# MAGIC Let's view the scores from the first two principal components as a composite image. When we preprocess by aggregating by time and then perform PCA, we are only looking at variability related to temporal dynamics. As a result, if neurons appear similar -- have similar colors -- in the resulting image, it means that their responses vary similarly over time, regardless of how they might be encoding direction. In the image below, we can define the midline as the horizontal line across the middle of the brain.  We see clear patterns of neural activity in different parts of the brain, and crucially note that the regions on either side of the midline are similar, which suggests that temporal dynamics do not differ across the two sides of the brain.
 
 # COMMAND ----------
 
@@ -1218,7 +1221,7 @@ Test.assertTrue(np.allclose(np.sum(eigenvalues_direction[:5]), 2.0089720377),
 # MAGIC %md
 # MAGIC ### Visualization 10: Top two components by direction
 # MAGIC 
-# MAGIC Again, let's view the scores from the first two PCs as a composite image.  When we preprocess by averaging across time (group by direction), and then perform PCA, we are only looking at variability related to stimulus direction. As a result, if neurons appear similar -- have similar colors -- in the image, it means that their responses vary similarly across directions, regardless of how they evolve over time. In the image below, we see a different pattern of similarity across regions of the brain.  Moreover, regions on either side of the midline are colored differently, which suggests that we are looking at a property, direction selectivity, that has a different representation across the two sides of the brain.
+# MAGIC Again, let's view the scores from the first two principal components as a composite image.  When we preprocess by averaging across time (group by direction), and then perform PCA, we are only looking at variability related to stimulus direction. As a result, if neurons appear similar -- have similar colors -- in the image, it means that their responses vary similarly across directions, regardless of how they evolve over time. In the image below, we see a different pattern of similarity across regions of the brain.  Moreover, regions on either side of the midline are colored differently, which suggests that we are looking at a property, direction selectivity, that has a different representation across the two sides of the brain.
 
 # COMMAND ----------
 
@@ -1323,5 +1326,4 @@ display(fig)
 # MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
 
 # COMMAND ----------
-
 
