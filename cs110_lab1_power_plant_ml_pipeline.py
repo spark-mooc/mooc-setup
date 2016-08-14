@@ -120,7 +120,7 @@ dbutils.fs.help()
 # COMMAND ----------
 
 # TODO: Load the data and print the first five lines.
-rawTextRdd = None
+rawTextRdd = <FILL_IN>
 
 # COMMAND ----------
 
