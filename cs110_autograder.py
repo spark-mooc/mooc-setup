@@ -186,7 +186,7 @@ else:
 # MAGIC 
 # MAGIC When the queue is empty for you, it means all your submissions have been graded by the autograder, and you can move on to submitting to edX.
 # MAGIC 
-# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](https://piazza.com/class/iqfbu516yuj5t3) to contact the TAs for support.
+# MAGIC **Note:** It will typically take a few minutes before you receive autograder feedback. If you do not receive feedback within one hour, please use the [Piazza discussion group](http://piazza.com/edx_berkeley/fall2016/cs110x/home) to contact the TAs for support.
 
 # COMMAND ----------
 
