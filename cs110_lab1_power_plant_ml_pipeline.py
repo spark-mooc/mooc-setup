@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 14 Aug 2016 00:02:32 UTC
+# Databricks notebook source exported at Sun, 14 Aug 2016 13:23:37 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -296,7 +296,18 @@ sqlContext.registerDataFrameAsTable(powerPlantDF, "power_plant")
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC -- We can use %sql to query the rows
+# MAGIC SELECT * FROM power_plant
+
+# COMMAND ----------
+
 # MAGIC %md
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC desc power_plant
 
 # COMMAND ----------
 
@@ -351,6 +362,11 @@ display(df.describe())
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC select AT as Temperature, PE as Power from power_plant
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC ** ASIDE: A quick physics lesson**: This correlation is to be expected as the second law of thermodynamics puts a fundamental limit on the [thermal efficiency](https://en.wikipedia.org/wiki/Thermal_efficiency) of all heat-based engines. The limiting factors are:
@@ -370,6 +386,11 @@ display(df.describe())
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC -- TO DO: Replace <FILL_IN> with the appropriate SQL command.
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC Let's continue exploring the relationships (if any) between the variables and Power Output.
 # MAGIC 
@@ -378,9 +399,21 @@ display(df.describe())
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC -- TO DO: Replace <FILL_IN> with the appropriate SQL command.
+# MAGIC <FILL_IN>
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC **ToDo:** Use SQL to create a scatter plot of Power(PE) as a function of Humidity (RH).
 # MAGIC Name the y-axis "Power" and the x-axis "Humidity"
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC -- TO DO: Replace <FILL_IN> with the appropriate SQL command.
+# MAGIC <FILL_IN>
 
 # COMMAND ----------
 
@@ -556,14 +589,6 @@ print("Linear Regression Equation: " + equation)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** Add quiz questions about correlations:  **
-# MAGIC - strong negative correlation between Atmospheric Temperature (AT) and Power Output.
-# MAGIC - But our other dimenensions seem to have little to no correlation with Power Output.
-# MAGIC - only the temperature variable seemed to have a linear correlation with Power Output.
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC Recall **Part 4: Visualize Your Data** when we visualized each predictor against Power Output using a Scatter Plot, does the final equation seems logical given those visualizations?
 # MAGIC 
 # MAGIC **ToDo**: Answer the quiz questions about correlations
@@ -655,6 +680,11 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT * from Power_Plant_RMSE_Evaluation
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC Now we can display the RMSE as a Histogram.
 # MAGIC 
@@ -678,6 +708,12 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC -- Now we can display the RMSE as a Histogram
+# MAGIC SELECT Within_RSME  from Power_Plant_RMSE_Evaluation
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC Using a complex SQL SELECT statement, we can count the number of predictions within + or - 1.0 and + or - 2.0 and then display the results as a pie chart.
 # MAGIC 
@@ -685,6 +721,15 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 # MAGIC   - Run the following cell
 # MAGIC   - Click on the drop down next to the "Bar chart" icon a select "Pie" to turn the table into a Pie Chart plot
 # MAGIC   - Increase the size of the graph by clicking and dragging the size control
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT case when Within_RSME <= 1.0 AND Within_RSME >= -1.0 then 1
+# MAGIC             when  Within_RSME <= 2.0 AND Within_RSME >= -2.0 then 2 else 3
+# MAGIC        end RSME_Multiple, COUNT(*) AS count
+# MAGIC FROM Power_Plant_RMSE_Evaluation
+# MAGIC GROUP BY case when Within_RSME <= 1.0 AND Within_RSME >= -1.0 then 1  when  Within_RSME <= 2.0 AND Within_RSME >= -2.0 then 2 else 3 end
 
 # COMMAND ----------
 
