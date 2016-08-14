@@ -1,0 +1,15 @@
+# List of labs to copy for course. Format:
+#
+# source | target
+#
+# source is relative to the top of the training directory, which is
+#     passed as an argument to build-labs.
+# target is relative to wherever build-labs is run (which should be the
+#     top-level spark_mooc directory.
+#
+# Blank lines and comment lines are ignored.
+
+mooc/Notebooks/cs110x/Power-Plant-ML-Pipeline.py|cs110_lab1_power_plant_ml_pipeline.py
+mooc/Notebooks/Autograder_register.py|cs110_autograder_register.py
+mooc/Notebooks/Autograder_simple.py|cs110_autograder.py
+mooc/Notebooks/Autograder_complete.py|cs110_autograder_complete.py
