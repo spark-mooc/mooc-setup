@@ -583,7 +583,7 @@ featuresNoLabel = [col for col in datasetDF.columns if col != "PE"]
 # Merge the weights and labels
 coefficents = zip(weights, featuresNoLabel)
 
-# Now let's sort the coeffecients from greatest absolute weight most to the least absolute weight
+# Now let's sort the coefficients from greatest absolute weight most to the least absolute weight
 coefficents.sort(key=lambda tup: abs(tup[0]), reverse=True)
 
 equation = "y = {intercept}".format(intercept=intercept)
