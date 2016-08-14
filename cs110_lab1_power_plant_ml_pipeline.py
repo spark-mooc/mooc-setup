@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 14 Aug 2016 18:35:51 UTC
+# Databricks notebook source exported at Sun, 14 Aug 2016 18:37:47 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -339,7 +339,7 @@ sqlContext.registerDataFrameAsTable(powerPlantDF, "power_plant")
 # MAGIC %md
 # MAGIC **Schema Definition**
 # MAGIC 
-# MAGIC Our schema definition from UCI appears below:
+# MAGIC Once again, here's our schema definition:
 # MAGIC 
 # MAGIC - AT = Atmospheric Temperature in C
 # MAGIC - V = Exhaust Vacuum Speed
