@@ -22,7 +22,7 @@
 # MAGIC 
 # MAGIC **You _must_ register with the autograder first.**
 # MAGIC 
-# MAGIC If you have not yet registered with the autograder, download a copy of [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_register.dbc) and follow the instructions.
+# MAGIC If you have not yet registered with the autograder, download a copy of [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs110_autograder_register.dbc) and follow the instructions.
 # MAGIC 
 # MAGIC ## A note on running this notebook
 # MAGIC 
@@ -34,7 +34,7 @@
 # MAGIC ## Section A: Put your registration token in the following cell
 # MAGIC 
 # MAGIC This notebook _will not work_ unless the following cell is filled properly. See
-# MAGIC [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_register.dbc)
+# MAGIC [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs110_autograder_register.dbc)
 # MAGIC for details.
 
 # COMMAND ----------
@@ -70,7 +70,7 @@ notebook_url = <FILL_IN>
 # MAGIC %md
 # MAGIC ### Step B-3: Add your user name
 # MAGIC 
-# MAGIC Put your user name (the email address you used in the [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_register.dbc)) in the cell below.
+# MAGIC Put your user name (the email address you used in the [the autograder registration notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs110_autograder_register.dbc)) in the cell below.
 
 # COMMAND ----------
 
@@ -88,7 +88,7 @@ username = <FILL IN>
 
 # COMMAND ----------
 
-# Set lab variable (e.g., lab = "CS120x-lab1a")
+# Set lab variable (e.g., lab = "CS110x-lab1")
 lab = <FILL_IN>
 
 # COMMAND ----------
