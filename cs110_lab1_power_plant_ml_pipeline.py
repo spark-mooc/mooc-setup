@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 14 Aug 2016 18:18:32 UTC
+# Databricks notebook source exported at Sun, 14 Aug 2016 18:35:51 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -203,7 +203,7 @@ display(powerPlantDF)
 # MAGIC 
 # MAGIC You can find a list of types in the [pyspark.sql.types](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#module-pyspark.sql.types) module. For our data, we will use [DoubleType()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.DoubleType).
 # MAGIC 
-# MAGIC For example, to specify that a column's name and type, we use: `StructField(`_name_`,` _type_`, True)`
+# MAGIC For example, to specify that a column's name and type, we use: `StructField(`_name_`,` _type_`, True)`. (The third parameter, `True`, signifies that the column is nullable.)
 # MAGIC 
 # MAGIC ### Exercise 2(c)
 # MAGIC 
