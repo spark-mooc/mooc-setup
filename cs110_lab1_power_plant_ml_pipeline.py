@@ -53,6 +53,7 @@ labVersion = 'cs110x-power-plant-1.0.0'
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Part 1: Business Understanding
 # MAGIC The first step in any machine learning task is to understand the business need.
 # MAGIC 
 # MAGIC As described in the overview we are trying to predict power output given a set of readings from various sensors in a gas-fired power generation plant.
@@ -62,6 +63,7 @@ labVersion = 'cs110x-power-plant-1.0.0'
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Part 2: Extract-Transform-Load (ETL) Your Data
 # MAGIC 
 # MAGIC Now that we understand what we are trying to do, the first step is to load our data into a format we can query and use.  This is known as ETL or "Extract-Transform-Load".  We will load our file from Amazon S3.
 # MAGIC 
@@ -259,6 +261,7 @@ display(altPowerPlantDF)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Part 3: Explore Your Data
 # MAGIC Now that your data is loaded, the next step is to explore it and perform some basic analysis and visualizations.
 # MAGIC 
 # MAGIC This is a step that you should always perform **before** trying to fit a model to the data, as this step will often lead to important insights about your data.
@@ -303,6 +306,7 @@ sqlContext.registerDataFrameAsTable(powerPlantDF, "power_plant")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC We can use the SQL desc command to describe the schema
 
 # COMMAND ----------
 
@@ -312,6 +316,7 @@ sqlContext.registerDataFrameAsTable(powerPlantDF, "power_plant")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC **Schema Definition**
 # MAGIC 
 # MAGIC Our schema definition from UCI appears below:
 # MAGIC 
@@ -328,6 +333,7 @@ sqlContext.registerDataFrameAsTable(powerPlantDF, "power_plant")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Let's perform some basic statistical analyses of all the columns.
 # MAGIC 
 # MAGIC We can get the DataFrame associated with a SQL table by using the [sqlContext.table()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.table) method and passing in the name of the SQL table. Then, we can use the DataFrame [describe()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.describe) method with no arguments to compute some basic statistics for each column like count, mean, max, min and standard deviation.
 
@@ -339,6 +345,7 @@ display(df.describe())
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##Part 4: Visualize Your Data
 # MAGIC 
 # MAGIC To understand our data, we will look for correlations between features and the label.  This can be important when choosing a model.  E.g., if features and a label are linearly correlated, a linear model like Linear Regression can do well; if the relationship is very non-linear, more complex models such as Decision Trees can be better. We can use Databrick's built in visualization to view each of our predictors in relation to the label column as a scatter plot to see the correlation between the predictors and the label.
 # MAGIC 
@@ -368,6 +375,7 @@ display(df.describe())
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC It looks like there is strong linear correlation between Temperature and Power Output.
 # MAGIC 
 # MAGIC ** ASIDE: A quick physics lesson**: This correlation is to be expected as the second law of thermodynamics puts a fundamental limit on the [thermal efficiency](https://en.wikipedia.org/wiki/Thermal_efficiency) of all heat-based engines. The limiting factors are:
 # MAGIC  - The temperature at which the heat enters the engine \\( T_{H} \\)
@@ -418,6 +426,7 @@ display(df.describe())
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##Part 5: Data Preparation
 # MAGIC 
 # MAGIC The next step is to prepare the data for machine learning. Since all of this data is numeric and consistent this is a simple and straightforward task.
 # MAGIC 
@@ -453,6 +462,7 @@ Test.assertEquals(vectorizer.getOutputCol(), "features", "Incorrect vectorizer o
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##Part 6: Data Modeling
 # MAGIC Now let's model our data to predict what the power output will be given a set of sensor readings
 # MAGIC 
 # MAGIC Our first model will be based on simple linear regression since we saw some linear patterns in our data based on the scatter plots during the exploration stage.
@@ -481,6 +491,7 @@ Test.assertEquals(testSetDF.count(), 9597, "Incorrect size for test data set")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Next we'll create a Linear Regression Model and use the built in help to identify how to train it. See API details for [Linear Regression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression) in the ML guide.
 # MAGIC 
 # MAGIC **ToDo**: Read the documentation and examples for [Linear Regression](https://spark.apache.org/docs/latest/ml-classification-regression.html#linear-regression)
 # MAGIC 
@@ -503,6 +514,7 @@ print(lr.explainParams())
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC The cell below is based on the [Spark ML Pipeline API for Linear Regression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression).
 # MAGIC 
 # MAGIC The first step is to set the parameters for the method:
 # MAGIC - Set the name of the prediction column to "Predicted_PE"
@@ -655,6 +667,7 @@ print("r2: %.2f" % r2)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Generally, assuming a Gaussian distribution of errors, a good model will have 68% of predictions within 1 RMSE and 95% within 2 RMSE of the actual value (see http://statweb.stanford.edu/~susan/courses/s60/split/node60.html).
 # MAGIC 
 # MAGIC Let's examine the predictions and see if a RMSE of 4.59 meets this criteria.
 # MAGIC 
@@ -739,6 +752,7 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ##Part 7: Tuning and Evaluation
 # MAGIC 
 # MAGIC Now that we have a model with all of the data let's try to make a better model by tuning over several parameters. The process of tuning a model is known as [Model Selection](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning), and Spark ML Pipeline makes the tuning process very simple and easy.
 # MAGIC 
@@ -918,6 +932,7 @@ Test.assertEqualsHashed(str(dtModel.stages[1].__class__.__name__), 'a2bf7b0c1a0f
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Now let's see how our tuned DecisionTreeRegressor model's RMSE and \\(r^2\\) values compare to our tuned LinearRegression model.
 # MAGIC 
 # MAGIC **ToDo**: Complete and run the next cell
 
@@ -948,6 +963,7 @@ Test.assertEquals(round(r2DT, 2), 0.91, "Incorrect value for r2DT")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC The line below will pull the Decision Tree model from the Pipeline as display it as an if-then-else string. Again, we have to "reach through" to the JVM API to make this one work.
 # MAGIC 
 # MAGIC **ToDo**: Run the next cell
 
@@ -958,6 +974,7 @@ print dtModel.stages[-1]._java_obj.toDebugString()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC So our DecisionTree has slightly worse RMSE than our LinearRegression model (LR: 4.59 vs DT: 5.19). Maybe we can try an [Ensemble Learning](https://en.wikipedia.org/wiki/Ensemble_learning) method such as [Gradient-Boosted Decision Trees](https://en.wikipedia.org/wiki/Gradient_boosting) to see if we can strengthen our model by using an ensemble of weaker trees with weighting to reduce the error in our model.
 # MAGIC 
 # MAGIC [Random forests](https://en.wikipedia.org/wiki/Random_forest) or random decision tree forests are an ensemble learning method for regression that operate by constructing a multitude of decision trees at training time and outputting the class that is the mean prediction (regression) of the individual trees. Random decision forests correct for decision trees' habit of overfitting to their training set.
 # MAGIC 
@@ -1043,6 +1060,7 @@ Test.assertEqualsHashed(rfModel.stages[1].__class__, '0ed43512ea7e35ebeebeed3dda
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Now let's see how our tuned RandomForestRegressor model's RMSE and \\(r^2\\) values compare to our tuned LinearRegression and tuned DecisionTreeRegressor models.
 # MAGIC 
 # MAGIC **ToDo**: Complete and run the next cell
 
@@ -1075,6 +1093,7 @@ Test.assertEquals(round(r2RF, 2), 0.96, "Incorrect value for r2RF")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC The line below will pull the Random Forest model from the Pipeline as display it as an if-then-else string.
 # MAGIC 
 # MAGIC **ToDo**: Run the next cell
 
@@ -1085,6 +1104,7 @@ print rfModel.stages[-1]._java_obj.toDebugString()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ### Conclusion
 # MAGIC 
 # MAGIC Wow! So our best model is in fact our Random Forest tree model which uses an ensemble of 30 Trees with a depth of 8 to construct a better model than the single decision tree.
 
