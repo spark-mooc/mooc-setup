@@ -199,7 +199,7 @@ display(powerPlantDF)
 
 # MAGIC %md
 # MAGIC ### Part 2: Alternative Method to Load your Data
-# MAGIC Insted of having [spark-csv](https://spark-packages.org/package/databricks/spark-csv) infer the types of the columns, we can specify the schema as a [DataType](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.DataType), which is a list of [StructField](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.StructType).
+# MAGIC Instead of having [spark-csv](https://spark-packages.org/package/databricks/spark-csv) infer the types of the columns, we can specify the schema as a [DataType](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.DataType), which is a list of [StructField](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.StructType).
 # MAGIC 
 # MAGIC You can find a list of types in the [pyspark.sql.types](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#module-pyspark.sql.types) module. For our data, we will use [DoubleType()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.DoubleType).
 # MAGIC 
@@ -405,7 +405,7 @@ display(df.describe())
 # MAGIC  - The temperature at which the heat enters the engine \\( T_{H} \\)
 # MAGIC  - The temperature of the environment into which the engine exhausts its waste heat \\( T_C \\)
 # MAGIC 
-# MAGIC Our temperature measurements are the temperature of the environment. From [Carnot's theorem](https://en.wikipedia.org/wiki/Carnot%27s_theorem_%40thermodynamics%41), no heat engine working between these two temperatures can exceed the Carnot Cycle efficiency:
+# MAGIC Our temperature measurements are the temperature of the environment. From [Carnot's theorem](https://en.wikipedia.org/wiki/Carnot%27s_theorem_%28thermodynamics%29), no heat engine working between these two temperatures can exceed the Carnot Cycle efficiency:
 # MAGIC \\[ n_{th} \le 1 - \frac{T_C}{T_H}  \\]
 # MAGIC 
 # MAGIC Note that as the environmental temperature increases, the efficiency decreases -- _this is the effect that we see in the above graph._
