@@ -502,7 +502,7 @@ Test.assertEquals(vectorizer.getOutputCol(), "features", "Incorrect vectorizer o
 # MAGIC 
 # MAGIC ### Exercise 6(a)
 # MAGIC 
-# MAGIC Use the [randomSplit()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) method to divide up `datasetDF` into a trainingSetDF (20% of the input DataFrame) and a testSetDF (80% of the input DataFrame), and for reproducibility, use the seed 1800009193L. Then cache each DataFrame in memory to maximize performance.
+# MAGIC Use the [randomSplit()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) method to divide up `datasetDF` into a trainingSetDF (80% of the input DataFrame) and a testSetDF (20% of the input DataFrame), and for reproducibility, use the seed 1800009193L. Then cache each DataFrame in memory to maximize performance.
 
 # COMMAND ----------
 
