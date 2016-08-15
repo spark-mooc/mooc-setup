@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 14 Aug 2016 18:37:47 UTC
+# Databricks notebook source exported at Mon, 15 Aug 2016 01:10:36 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -704,7 +704,7 @@ print("Root Mean Squared Error: %.2f" % rmse)
 # Now let's compute another evaluation metric for our test dataset
 r2 = regEval.evaluate(predictionsAndLabelsDF, {regEval.metricName: "r2"})
 
-print("r2: %.2f" % r2)
+print("r2: {0:.2f}".format(r2))
 
 # COMMAND ----------
 
@@ -1152,6 +1152,11 @@ print("RF r2: {0:.2f}".format(r2RF))
 # TEST
 Test.assertEquals(round(rmseRF, 2), 3.55, "Incorrect value for rmseRF")
 Test.assertEquals(round(r2RF, 2), 0.96, "Incorrect value for r2RF")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Note that the Decision Tree and Random Forest values for `r2` are identical. However, the RMSE for the Random Forest model is better.
 
 # COMMAND ----------
 
