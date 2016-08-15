@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 15 Aug 2016 14:52:40 UTC
+# Databricks notebook source exported at Mon, 15 Aug 2016 16:13:23 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -38,13 +38,13 @@
 # MAGIC 
 # MAGIC The power output of a peaker power plant varies depending on environmental conditions, so the business problem is _predicting the power output of a peaker power plant as a function of the environmental conditions_ -- since this would enable the grid operator to make economic tradeoffs about the number of peaker plants to turn on (or whether to buy expensive power from another grid).
 # MAGIC 
-# MAGIC Given this business problem, we need to first perform Exploratory Data Analysis to understand the data and then translate the business problem (predicting power output as a function of envionmental conditions) into a Machine Learning task.  In this instance, the ML task is regression since the label (or target) we are trying to predict is numeric. We will use an [Apache Spark ML Pipeline](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark-ml-package) to perform the regression.
+# MAGIC Given this business problem, we need to first perform Exploratory Data Analysis to understand the data and then translate the business problem (predicting power output as a function of envionmental conditions) into a Machine Learning task.  In this instance, the ML task is regression since the label (or target) we are trying to predict is numeric. We will use an [Apache Spark ML Pipeline](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark-ml-package) to perform the regression.
 # MAGIC 
 # MAGIC The real-world data we are using in this notebook consists of 9,568 data points, each with 4 environmental attributes collected from a Combined Cycle Power Plant over 6 years (2006-2011), and is provided by the University of California, Irvine at [UCI Machine Learning Repository Combined Cycle Power Plant Data Set](https://archive.ics.uci.edu/ml/datasets/Combined+Cycle+Power+Plant). You can find more details about the dataset on the UCI page, including the following background publications:
 # MAGIC * Pinar Tüfekci, [Prediction of full load electrical power output of a base load operated combined cycle power plant using machine learning methods](http://www.journals.elsevier.com/international-journal-of-electrical-power-and-energy-systems/), International Journal of Electrical Power & Energy Systems, Volume 60, September 2014, Pages 126-140, ISSN 0142-0615.
 # MAGIC * Heysem Kaya, Pinar Tüfekci and Fikret S. Gürgen: [Local and Global Learning Methods for Predicting Power of a Combined Gas & Steam Turbine](http://www.cmpe.boun.edu.tr/~kaya/kaya2012gasturbine.pdf), Proceedings of the International Conference on Emerging Trends in Computer and Electronics Engineering ICETCEE 2012, pp. 13-18 (Mar. 2012, Dubai).
 # MAGIC 
-# MAGIC **To Do**: Read the documentation and examples for [Spark Machine Learning Pipeline](https://spark.apache.org/docs/latest/ml-pipeline.html)
+# MAGIC **To Do**: Read the documentation and examples for [Spark Machine Learning Pipeline](https://spark.apache.org/docs/1.6.2/ml-guide.html#main-concepts-in-pipelines).
 
 # COMMAND ----------
 
@@ -113,9 +113,9 @@ dbutils.fs.help()
 # MAGIC 
 # MAGIC Now, let's use PySpark instead to print the first 5 lines of the data.
 # MAGIC 
-# MAGIC *Hint*: First create an RDD from the data by using [`sc.textFile("dbfs:/databricks-datasets/power-plant/data")`](https://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.SparkContext.textFile) to read the data into an RDD.
+# MAGIC *Hint*: First create an RDD from the data by using [`sc.textFile("dbfs:/databricks-datasets/power-plant/data")`](https://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.SparkContext.textFile) to read the data into an RDD.
 # MAGIC 
-# MAGIC *Hint*: Then figure out how to use the RDD [`take()`](https://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.take) method to extract the first 5 lines of the RDD and print each line.
+# MAGIC *Hint*: Then figure out how to use the RDD [`take()`](https://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.take) method to extract the first 5 lines of the RDD and print each line.
 
 # COMMAND ----------
 
@@ -142,9 +142,9 @@ rawTextRdd = <FILL_IN>
 # MAGIC 
 # MAGIC (**Note**: In Spark 2.0, the CSV package is built into the DataFrame API.)
 # MAGIC 
-# MAGIC To use the [spark-csv](https://spark-packages.org/package/databricks/spark-csv) package, we use the [sqlContext.read.format()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.format) method to specify the input data source format: `'com.databricks.spark.csv'`
+# MAGIC To use the [spark-csv](https://spark-packages.org/package/databricks/spark-csv) package, we use the [sqlContext.read.format()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.format) method to specify the input data source format: `'com.databricks.spark.csv'`
 # MAGIC 
-# MAGIC We can provide the [spark-csv](https://spark-packages.org/package/databricks/spark-csv) package with options using the [options()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.options) method. The available options are listed in the GitHub documentation [here](https://github.com/databricks/spark-csv#features).
+# MAGIC We can provide the [spark-csv](https://spark-packages.org/package/databricks/spark-csv) package with options using the [options()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.options) method. The available options are listed in the GitHub documentation [here](https://github.com/databricks/spark-csv#features).
 # MAGIC 
 # MAGIC We will use the following three options:
 # MAGIC - `delimiter='\t'` because our data is tab delimited
@@ -152,7 +152,7 @@ rawTextRdd = <FILL_IN>
 # MAGIC - `inferschema='true'` because we believe that all of the data is double values, so the package can dynamically infer the type of each column. *Note that this will require two pass over the data.*
 # MAGIC 
 # MAGIC 
-# MAGIC The last component of creating the DataFrame is to specify the location of the data source using the [load()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.load) method: `"/databricks-datasets/power-plant/data"`
+# MAGIC The last component of creating the DataFrame is to specify the location of the data source using the [load()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.load) method: `"/databricks-datasets/power-plant/data"`
 # MAGIC 
 # MAGIC Putting everything together, we will use an operation of the following form:
 # MAGIC 
@@ -180,7 +180,7 @@ Test.assertEquals(expected, set(powerPlantDF.dtypes), "Incorrect schema for powe
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Check the names and types of the columns using the [dtypes](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dtypes) method.
+# MAGIC Check the names and types of the columns using the [dtypes](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dtypes) method.
 
 # COMMAND ----------
 
@@ -199,9 +199,9 @@ display(powerPlantDF)
 
 # MAGIC %md
 # MAGIC ### Part 2: Alternative Method to Load your Data
-# MAGIC Insted of having [spark-csv](https://spark-packages.org/package/databricks/spark-csv) infer the types of the columns, we can specify the schema as a [DataType](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.DataType), which is a list of [StructField](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.StructType).
+# MAGIC Insted of having [spark-csv](https://spark-packages.org/package/databricks/spark-csv) infer the types of the columns, we can specify the schema as a [DataType](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.DataType), which is a list of [StructField](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.StructType).
 # MAGIC 
-# MAGIC You can find a list of types in the [pyspark.sql.types](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#module-pyspark.sql.types) module. For our data, we will use [DoubleType()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.DoubleType).
+# MAGIC You can find a list of types in the [pyspark.sql.types](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#module-pyspark.sql.types) module. For our data, we will use [DoubleType()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.types.DoubleType).
 # MAGIC 
 # MAGIC For example, to specify that a column's name and type, we use: `StructField(`_name_`,` _type_`, True)`. (The third parameter, `True`, signifies that the column is nullable.)
 # MAGIC 
@@ -254,7 +254,7 @@ Test.assertEquals(expected, set(altPowerPlantDF.dtypes), "Incorrect schema for p
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Note that no Spark jobs are launched this time. That is because we specified the schema, so the [spark-csv](https://spark-packages.org/package/databricks/spark-csv) package does not have to read the data to infer the schema. We can use the [dtypes](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dtypes) method to examine the names and types of the columns. They should be identical to the names and types of the columns that were earlier inferred from the data.
+# MAGIC Note that no Spark jobs are launched this time. That is because we specified the schema, so the [spark-csv](https://spark-packages.org/package/databricks/spark-csv) package does not have to read the data to infer the schema. We can use the [dtypes](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.dtypes) method to examine the names and types of the columns. They should be identical to the names and types of the columns that were earlier inferred from the data.
 # MAGIC 
 # MAGIC When you run the following cell, data would not be read.
 
@@ -287,7 +287,7 @@ display(altPowerPlantDF)
 # MAGIC 
 # MAGIC We can delete any existing `power_plant` SQL table using the SQL command: `DROP TABLE IF EXISTS power_plant` (we also need to to delete any Hive data associated with the table, which we can do with a Databricks file system operation).
 # MAGIC 
-# MAGIC Once any prior table is removed, we can register our DataFrame as a SQL table using [sqlContext.registerDataFrameAsTable()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.SQLContext.registerDataFrameAsTable).
+# MAGIC Once any prior table is removed, we can register our DataFrame as a SQL table using [sqlContext.registerDataFrameAsTable()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.SQLContext.registerDataFrameAsTable).
 # MAGIC 
 # MAGIC ### 3(a)
 # MAGIC 
@@ -356,7 +356,7 @@ sqlContext.registerDataFrameAsTable(powerPlantDF, "power_plant")
 # MAGIC %md
 # MAGIC Let's perform some basic statistical analyses of all the columns.
 # MAGIC 
-# MAGIC We can get the DataFrame associated with a SQL table by using the [sqlContext.table()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.table) method and passing in the name of the SQL table. Then, we can use the DataFrame [describe()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.describe) method with no arguments to compute some basic statistics for each column like count, mean, max, min and standard deviation.
+# MAGIC We can get the DataFrame associated with a SQL table by using the [sqlContext.table()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrameReader.table) method and passing in the name of the SQL table. Then, we can use the DataFrame [describe()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.describe) method with no arguments to compute some basic statistics for each column like count, mean, max, min and standard deviation.
 
 # COMMAND ----------
 
@@ -462,13 +462,13 @@ display(df.describe())
 # MAGIC 
 # MAGIC The next step is to prepare the data for machine learning. Since all of this data is numeric and consistent this is a simple and straightforward task.
 # MAGIC 
-# MAGIC The goal is to use machine learning to determine a function that yields the output power as a function of a set of predictor features. The first step in building our ML pipeline is to convert the predictor features from DataFrame columns to Feature Vectors using the [pyspark.ml.feature.VectorAssembler()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.feature.VectorAssembler) method.
+# MAGIC The goal is to use machine learning to determine a function that yields the output power as a function of a set of predictor features. The first step in building our ML pipeline is to convert the predictor features from DataFrame columns to Feature Vectors using the [pyspark.ml.feature.VectorAssembler()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.feature.VectorAssembler) method.
 # MAGIC 
 # MAGIC The VectorAssembler is a transformer that combines a given list of columns into a single vector column. It is useful for combining raw features and features generated by different feature transformers into a single feature vector, in order to train ML models like logistic regression and decision trees. VectorAssembler takes a list of input column names (each is a string) and the name of the output column (as a string).
 # MAGIC 
 # MAGIC ### Exercise 5(a)
 # MAGIC 
-# MAGIC - Read the Spark documentation and useage examples for [VectorAssembler](https://spark.apache.org/docs/latest/ml-features.html#vectorassembler)
+# MAGIC - Read the Spark documentation and useage examples for [VectorAssembler](https://spark.apache.org/docs/1.6.2/ml-features.html#vectorassembler)
 # MAGIC - Convert the `power_plant` SQL table into a DataFrame named `dataset`
 # MAGIC - Set the vectorizer's input columns to a list of the four columns of the input DataFrame: `["AT", "V", "AP", "RH"]`
 # MAGIC - Set the vectorizer's output column name to `"features"`
@@ -498,11 +498,11 @@ Test.assertEquals(vectorizer.getOutputCol(), "features", "Incorrect vectorizer o
 # MAGIC 
 # MAGIC Our first model will be based on simple linear regression since we saw some linear patterns in our data based on the scatter plots during the exploration stage.
 # MAGIC 
-# MAGIC We need a way of evaluating how well our linear regression model predicts power output as a function of input parameters. We can do this by splitting up our initial data set into a _Training Set_ used to train our model and a _Test Set_ used to evaluate the model's performance in giving predictions. We can use a DataFrame's [randomSplit()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) method to split our dataset. The method takes a list of weights and an optional random seed. The seed is used to initialize the random number generator used by the splitting function.
+# MAGIC We need a way of evaluating how well our linear regression model predicts power output as a function of input parameters. We can do this by splitting up our initial data set into a _Training Set_ used to train our model and a _Test Set_ used to evaluate the model's performance in giving predictions. We can use a DataFrame's [randomSplit()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) method to split our dataset. The method takes a list of weights and an optional random seed. The seed is used to initialize the random number generator used by the splitting function.
 # MAGIC 
 # MAGIC ### Exercise 6(a)
 # MAGIC 
-# MAGIC Use the [randomSplit()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) method to divide up `datasetDF` into a trainingSetDF (20% of the input DataFrame) and a testSetDF (80% of the input DataFrame), and for reproducibility, use the seed 1800009193L. Then cache each DataFrame in memory to maximize performance.
+# MAGIC Use the [randomSplit()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) method to divide up `datasetDF` into a trainingSetDF (20% of the input DataFrame) and a testSetDF (80% of the input DataFrame), and for reproducibility, use the seed 1800009193L. Then cache each DataFrame in memory to maximize performance.
 
 # COMMAND ----------
 
@@ -524,11 +524,11 @@ Test.assertEquals(testSetDF.count(), 9597, "Incorrect size for test data set")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Next we'll create a Linear Regression Model and use the built in help to identify how to train it. See API details for [Linear Regression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression) in the ML guide.
+# MAGIC Next we'll create a Linear Regression Model and use the built in help to identify how to train it. See API details for [Linear Regression](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression) in the ML guide.
 # MAGIC 
 # MAGIC ### Exercise 6(b)
 # MAGIC 
-# MAGIC - Read the documentation and examples for [Linear Regression](https://spark.apache.org/docs/latest/ml-classification-regression.html#linear-regression)
+# MAGIC - Read the documentation and examples for [Linear Regression](https://spark.apache.org/docs/1.6.2/ml-classification-regression.html#linear-regression)
 # MAGIC - Run the next cell
 
 # COMMAND ----------
@@ -548,7 +548,7 @@ print(lr.explainParams())
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC The cell below is based on the [Spark ML Pipeline API for Linear Regression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression).
+# MAGIC The cell below is based on the [Spark ML Pipeline API for Linear Regression](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression).
 # MAGIC 
 # MAGIC The first step is to set the parameters for the method:
 # MAGIC - Set the name of the prediction column to "Predicted_PE"
@@ -556,13 +556,13 @@ print(lr.explainParams())
 # MAGIC - Set the maximum number of iterations to 100
 # MAGIC - Set the regularization parameter to 0.1
 # MAGIC 
-# MAGIC Next, we create the [ML Pipeline](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline) and set the stages to the Vectorizer and Linear Regression learner we created earlier.
+# MAGIC Next, we create the [ML Pipeline](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Pipeline) and set the stages to the Vectorizer and Linear Regression learner we created earlier.
 # MAGIC 
 # MAGIC Finally, we create a model by training on `trainingSetDF`.
 # MAGIC 
 # MAGIC ### Exercise 6(c)
 # MAGIC 
-# MAGIC - Read the [Linear Regression](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression) documentation
+# MAGIC - Read the [Linear Regression](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression) documentation
 # MAGIC - Run the next cell, and be sure you understand what's going on.
 
 # COMMAND ----------
@@ -667,9 +667,9 @@ display(predictionsAndLabelsDF)
 # MAGIC 
 # MAGIC RMSE is a frequently used measure of the differences between values predicted by a model or an estimator and the values actually observed. The lower the RMSE, the better our model.
 # MAGIC 
-# MAGIC Spark ML Pipeline provides several regression analysis metrics, including [RegressionEvaluator()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator).
+# MAGIC Spark ML Pipeline provides several regression analysis metrics, including [RegressionEvaluator()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator).
 # MAGIC 
-# MAGIC After we create an instance of [RegressionEvaluator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator), we set the label column name to "PE" and set the prediction column name to "Predicted_PE". We then invoke the evaluator on the predictions.
+# MAGIC After we create an instance of [RegressionEvaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator), we set the label column name to "PE" and set the prediction column name to "Predicted_PE". We then invoke the evaluator on the predictions.
 # MAGIC 
 # MAGIC ### Exercise 6(f)
 # MAGIC 
@@ -713,7 +713,7 @@ print("r2: {0:.2f}".format(r2))
 # MAGIC 
 # MAGIC Let's examine the predictions and see if a RMSE of 4.59 meets this criteria.
 # MAGIC 
-# MAGIC We create a new DataFrame using [selectExpr()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.selectExpr) to project a set of SQL expressions, and register the DataFrame as a SQL table using [registerTempTable()](https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.registerTempTable).
+# MAGIC We create a new DataFrame using [selectExpr()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.selectExpr) to project a set of SQL expressions, and register the DataFrame as a SQL table using [registerTempTable()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.registerTempTable).
 # MAGIC 
 # MAGIC ### Exercise 6(h)
 # MAGIC 
@@ -806,34 +806,34 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 # MAGIC %md
 # MAGIC ##Part 7: Tuning and Evaluation
 # MAGIC 
-# MAGIC Now that we have a model with all of the data let's try to make a better model by tuning over several parameters. The process of tuning a model is known as [Model Selection](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning), and Spark ML Pipeline makes the tuning process very simple and easy.
+# MAGIC Now that we have a model with all of the data let's try to make a better model by tuning over several parameters. The process of tuning a model is known as [Model Selection](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning), and Spark ML Pipeline makes the tuning process very simple and easy.
 # MAGIC 
-# MAGIC An important task in ML is model selection, or using data to find the best model or parameters for a given task. This is also called tuning. Tuning may be done for individual Estimators such as [LinearRegression](https://spark.apache.org/docs/latest/ml-classification-regression.html#linear-regression), or for entire Pipelines which include multiple algorithms, featurization, and other steps. Users can tune an entire Pipeline at once, rather than tuning each element in the Pipeline separately.
+# MAGIC An important task in ML is model selection, or using data to find the best model or parameters for a given task. This is also called tuning. Tuning may be done for individual Estimators such as [LinearRegression](https://spark.apache.org/docs/1.6.2/ml-classification-regression.html#linear-regression), or for entire Pipelines which include multiple algorithms, featurization, and other steps. Users can tune an entire Pipeline at once, rather than tuning each element in the Pipeline separately.
 # MAGIC 
-# MAGIC Spark ML Pipeline supports model selection using tools such as [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation), which requires the following items:
-# MAGIC   - [Estimator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Estimator): algorithm or Pipeline to tune
-# MAGIC   - [Set of ParamMaps](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder): parameters to choose from, sometimes called a ?parameter grid? to search over
-# MAGIC   - [Evaluator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator): metric to measure how well a fitted Model does on held-out test data
+# MAGIC Spark ML Pipeline supports model selection using tools such as [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation), which requires the following items:
+# MAGIC   - [Estimator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Estimator): algorithm or Pipeline to tune
+# MAGIC   - [Set of ParamMaps](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder): parameters to choose from, sometimes called a _parameter grid_ to search over
+# MAGIC   - [Evaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator): metric to measure how well a fitted Model does on held-out test data
 # MAGIC 
-# MAGIC At a high level, model selection tools such as [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) work as follows:
+# MAGIC At a high level, model selection tools such as [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) work as follows:
 # MAGIC   - They split the input data into separate training and test datasets.
 # MAGIC   - For each (training, test) pair, they iterate through the set of ParamMaps:
-# MAGIC     - For each [ParamMap](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder), they fit the [Estimator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Estimator) using those parameters, get the fitted Model, and evaluate the Model?s performance using the [Evaluator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator).
+# MAGIC     - For each [ParamMap](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder), they fit the [Estimator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Estimator) using those parameters, get the fitted Model, and evaluate the Model?s performance using the [Evaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator).
 # MAGIC   - They select the Model produced by the best-performing set of parameters.
 # MAGIC 
-# MAGIC The [Evaluator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator) can be a [RegressionEvaluator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) for regression problems. To help construct the parameter grid, users can use the [ParamGridBuilder](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) utility.
+# MAGIC The [Evaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator) can be a [RegressionEvaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) for regression problems. To help construct the parameter grid, users can use the [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) utility.
 # MAGIC 
-# MAGIC Note that cross-validation over a grid of parameters is expensive. For example, in the next cell, the parameter grid has 10 values for [lr.regParam](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression.regParam), and [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) uses 3 folds. This multiplies out to (10 x 3) = 30 different models being trained. In realistic settings, it can be common to try many more parameters (e.g., multiple values for multiple parameters) and use more folds (_k_ = 3 and _k_ = 10 are common). In other words, using [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) can be very expensive. However, it is also a well-established method for choosing parameters which is more statistically sound than heuristic hand-tuning.
+# MAGIC Note that cross-validation over a grid of parameters is expensive. For example, in the next cell, the parameter grid has 10 values for [lr.regParam](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression.regParam), and [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) uses 3 folds. This multiplies out to (10 x 3) = 30 different models being trained. In realistic settings, it can be common to try many more parameters (e.g., multiple values for multiple parameters) and use more folds (_k_ = 3 and _k_ = 10 are common). In other words, using [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) can be very expensive. However, it is also a well-established method for choosing parameters which is more statistically sound than heuristic hand-tuning.
 # MAGIC 
 # MAGIC We perform the following steps:
-# MAGIC   - Create a [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) using the Pipeline and [RegressionEvaluator](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) that we created earlier, and set the number of folds to 3
+# MAGIC   - Create a [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) using the Pipeline and [RegressionEvaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) that we created earlier, and set the number of folds to 3
 # MAGIC   - Create a list of 10 regularization parameters
-# MAGIC   - Use [ParamGridBuilder](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the regularization parameters and add the grid to the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation)
-# MAGIC   - Run the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
+# MAGIC   - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the regularization parameters and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation)
+# MAGIC   - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
 # MAGIC 
 # MAGIC ### Exercise 7(a)
 # MAGIC 
-# MAGIC Run the next cell. _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) as it will run almost 200 Spark jobs_
+# MAGIC Run the next cell. _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) as it will run almost 200 Spark jobs_
 
 # COMMAND ----------
 
@@ -892,7 +892,7 @@ Test.assertEquals(round(r2New, 2), 0.93, "Incorrect value for r2New")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC So our initial untuned and tuned linear regression models are statistically identical. Let's look at the regularization parameter that the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) has selected.
+# MAGIC So our initial untuned and tuned linear regression models are statistically identical. Let's look at the regularization parameter that the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) has selected.
 # MAGIC 
 # MAGIC Recall that the orginal regularization parameter we used was 0.01.
 # MAGIC 
@@ -905,25 +905,25 @@ print("Regularization parameter of the best model: {0:.2f}".format(cvModel.stage
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Given that the only linearly correlated variable is Temperature, it makes sense try another Machine Learning method such a [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree_learning) to handle non-linear data and see if we can improve our model.
+# MAGIC Given that the only linearly correlated variable is Temperature, it makes sense try another Machine Learning method such as [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree_learning) to handle non-linear data and see if we can improve our model.
 # MAGIC 
 # MAGIC [Decision Tree Learning](https://en.wikipedia.org/wiki/Decision_tree_learning) uses a [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree) as a predictive model which maps observations about an item to conclusions about the item's target value. It is one of the predictive modelling approaches used in statistics, data mining and machine learning. Decision trees where the target variable can take continuous values (typically real numbers) are called regression trees.
 # MAGIC 
-# MAGIC Spark ML Pipeline provides [DecisionTreeRegressor()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor) as an implementation of [Decision Tree Learning](https://en.wikipedia.org/wiki/Decision_tree_learning).
+# MAGIC Spark ML Pipeline provides [DecisionTreeRegressor()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor) as an implementation of [Decision Tree Learning](https://en.wikipedia.org/wiki/Decision_tree_learning).
 # MAGIC 
-# MAGIC The cell below is based on the [Spark ML Pipeline API for Decision Tree Regressor](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor).
+# MAGIC The cell below is based on the [Spark ML Pipeline API for Decision Tree Regressor](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor).
 # MAGIC 
 # MAGIC ### Exercise 7(c)
 # MAGIC 
-# MAGIC - Read the [Decision Tree Regressor](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor) documentation
-# MAGIC - In the next cell, create a [DecisionTreeRegressor()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor)
+# MAGIC - Read the [Decision Tree Regressor](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor) documentation
+# MAGIC - In the next cell, create a [DecisionTreeRegressor()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor)
 # MAGIC 
 # MAGIC - The next step is to set the parameters for the method (we do this for you):
 # MAGIC   - Set the name of the prediction column to "Predicted_PE"
 # MAGIC   - Set the name of the features column to "features"
 # MAGIC   - Set the maximum number of bins to 100
 # MAGIC 
-# MAGIC - Create the [ML Pipeline](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline) and set the stages to the Vectorizer we created earlier and [DecisionTreeRegressor()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor) learner we just created.
+# MAGIC - Create the [ML Pipeline](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Pipeline) and set the stages to the Vectorizer we created earlier and [DecisionTreeRegressor()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.DecisionTreeRegressor) learner we just created.
 
 # COMMAND ----------
 
@@ -954,16 +954,16 @@ Test.assertEqualsHashed(str(dtPipeline.getStages()[1].__class__.__name__), '46b1
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
+# MAGIC Instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
 # MAGIC 
-# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) by replacing the Estimator with our new `dtPipeline` (the number of folds remains 3).
+# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) by replacing the Estimator with our new `dtPipeline` (the number of folds remains 3).
 # MAGIC 
 # MAGIC ### Exercise 7(d)
 # MAGIC 
-# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `dt.maxDepth` and a list of the values 2 and 3, and add the grid to the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation)
-# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
+# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `dt.maxDepth` and a list of the values 2 and 3, and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation)
+# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
 # MAGIC 
-# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) as it will run almost 50 Spark jobs_
+# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) as it will run almost 50 Spark jobs_
 
 # COMMAND ----------
 
@@ -1039,21 +1039,21 @@ print dtModel.stages[-1]._java_obj.toDebugString()
 # MAGIC 
 # MAGIC [Random forests](https://en.wikipedia.org/wiki/Random_forest) or random decision tree forests are an ensemble learning method for regression that operate by constructing a multitude of decision trees at training time and outputting the class that is the mean prediction (regression) of the individual trees. Random decision forests correct for decision trees' habit of overfitting to their training set.
 # MAGIC 
-# MAGIC Spark ML Pipeline provides [RandomForestRegressor()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor) as an implementation of [Random forests](https://en.wikipedia.org/wiki/Random_forest).
+# MAGIC Spark ML Pipeline provides [RandomForestRegressor()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor) as an implementation of [Random forests](https://en.wikipedia.org/wiki/Random_forest).
 # MAGIC 
-# MAGIC The cell below is based on the [Spark ML Pipeline API for Random Forest Regressor](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor).
+# MAGIC The cell below is based on the [Spark ML Pipeline API for Random Forest Regressor](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor).
 # MAGIC 
 # MAGIC ### Exercise 7(f)
 # MAGIC 
-# MAGIC - Read the [Random Forest Regressor](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor) documentation
-# MAGIC - In the next cell, create a [RandomForestRegressor()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor)
+# MAGIC - Read the [Random Forest Regressor](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor) documentation
+# MAGIC - In the next cell, create a [RandomForestRegressor()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor)
 # MAGIC - The next step is to set the parameters for the method (we do this for you):
 # MAGIC   - Set the name of the prediction column to "Predicted_PE"
 # MAGIC   - Set the name of the features column to "features"
 # MAGIC   - Set the random number generator seed to 100088121L
 # MAGIC   - Set the maximum depth to 8
 # MAGIC   - Set the number of trees to 30
-# MAGIC - Create the [ML Pipeline](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.Pipeline) and set the stages to the Vectorizer we created earlier and [RandomForestRegressor()](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor) learner we just created.
+# MAGIC - Create the [ML Pipeline](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Pipeline) and set the stages to the Vectorizer we created earlier and [RandomForestRegressor()](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.RandomForestRegressor) learner we just created.
 
 # COMMAND ----------
 
@@ -1086,16 +1086,16 @@ Test.assertEqualsHashed(rfPipeline.getStages()[1].__class__.__name__, 'ecdcce2d0
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC As with Decision Trees, instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
+# MAGIC As with Decision Trees, instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
 # MAGIC 
-# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) by replacing the Estimator with our new `rfPipeline` (the number of folds remains 3).
+# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) by replacing the Estimator with our new `rfPipeline` (the number of folds remains 3).
 # MAGIC 
 # MAGIC ### Exercise 7(g)
 # MAGIC 
-# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `rf.maxBins` and a list of the values 50 and 100, and add the grid to the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation)
-# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
+# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `rf.maxBins` and a list of the values 50 and 100, and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation)
+# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
 # MAGIC 
-# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) as it will run almost 100 Spark jobs, and each job takes longer to run than the prior CrossValidator runs._
+# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) as it will run almost 100 Spark jobs, and each job takes longer to run than the prior CrossValidator runs._
 
 # COMMAND ----------
 
