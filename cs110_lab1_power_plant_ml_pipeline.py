@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 15 Aug 2016 01:10:36 UTC
+# Databricks notebook source exported at Mon, 15 Aug 2016 14:52:40 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -220,7 +220,7 @@ customSchema = StructType([ \
     <FILL_IN>, \
     <FILL_IN>, \
     <FILL_IN>, \
-    <FILL_IN>, \
+    <FILL_IN> \
                           ])
 
 # COMMAND ----------
@@ -1088,7 +1088,7 @@ Test.assertEqualsHashed(rfPipeline.getStages()[1].__class__.__name__, 'ecdcce2d0
 # MAGIC %md
 # MAGIC As with Decision Trees, instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/latest/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
 # MAGIC 
-# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) by replacing the Estimator with our new `dtPipeline` (the number of folds remains 3).
+# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/latest/ml-tuning.html#cross-validation) by replacing the Estimator with our new `rfPipeline` (the number of folds remains 3).
 # MAGIC 
 # MAGIC ### Exercise 7(g)
 # MAGIC 
