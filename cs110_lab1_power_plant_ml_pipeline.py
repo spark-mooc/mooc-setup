@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Mon, 15 Aug 2016 16:13:23 UTC
+# Databricks notebook source exported at Tue, 16 Aug 2016 13:14:29 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -379,7 +379,7 @@ display(df.describe())
 # MAGIC Perform the following steps:
 # MAGIC 
 # MAGIC - Run the following cell
-# MAGIC - Click on the drop down next to the "Bar chart" icon a select "Scatter" to turn the table into a Scatter plot
+# MAGIC - Click on the drop down next to the "Bar chart" icon and select "Scatter" to turn the table into a Scatter plot
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/cs110x/change-plot-type-scatter.png" style="border: 1px solid #999999"/>
 # MAGIC 
@@ -806,16 +806,16 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 # MAGIC %md
 # MAGIC ##Part 7: Tuning and Evaluation
 # MAGIC 
-# MAGIC Now that we have a model with all of the data let's try to make a better model by tuning over several parameters. The process of tuning a model is known as [Model Selection](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning), and Spark ML Pipeline makes the tuning process very simple and easy.
+# MAGIC Now that we have a model with all of the data let's try to make a better model by tuning over several parameters. The process of tuning a model is known as [Model Selection](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#module-pyspark.ml.tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#module-pyspark.ml.tuning), and Spark ML Pipeline makes the tuning process very simple and easy.
 # MAGIC 
 # MAGIC An important task in ML is model selection, or using data to find the best model or parameters for a given task. This is also called tuning. Tuning may be done for individual Estimators such as [LinearRegression](https://spark.apache.org/docs/1.6.2/ml-classification-regression.html#linear-regression), or for entire Pipelines which include multiple algorithms, featurization, and other steps. Users can tune an entire Pipeline at once, rather than tuning each element in the Pipeline separately.
 # MAGIC 
-# MAGIC Spark ML Pipeline supports model selection using tools such as [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation), which requires the following items:
+# MAGIC Spark ML Pipeline supports model selection using tools such as [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator), which requires the following items:
 # MAGIC   - [Estimator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Estimator): algorithm or Pipeline to tune
 # MAGIC   - [Set of ParamMaps](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder): parameters to choose from, sometimes called a _parameter grid_ to search over
 # MAGIC   - [Evaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator): metric to measure how well a fitted Model does on held-out test data
 # MAGIC 
-# MAGIC At a high level, model selection tools such as [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) work as follows:
+# MAGIC At a high level, model selection tools such as [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) work as follows:
 # MAGIC   - They split the input data into separate training and test datasets.
 # MAGIC   - For each (training, test) pair, they iterate through the set of ParamMaps:
 # MAGIC     - For each [ParamMap](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder), they fit the [Estimator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.Estimator) using those parameters, get the fitted Model, and evaluate the Model's performance using the [Evaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator).
@@ -823,17 +823,17 @@ predictionsAndLabelsDF.selectExpr("PE", "Predicted_PE", "PE - Predicted_PE Resid
 # MAGIC 
 # MAGIC The [Evaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.Evaluator) can be a [RegressionEvaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) for regression problems. To help construct the parameter grid, users can use the [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) utility.
 # MAGIC 
-# MAGIC Note that cross-validation over a grid of parameters is expensive. For example, in the next cell, the parameter grid has 10 values for [lr.regParam](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression.regParam), and [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) uses 3 folds. This multiplies out to (10 x 3) = 30 different models being trained. In realistic settings, it can be common to try many more parameters (e.g., multiple values for multiple parameters) and use more folds (_k_ = 3 and _k_ = 10 are common). In other words, using [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) can be very expensive. However, it is also a well-established method for choosing parameters which is more statistically sound than heuristic hand-tuning.
+# MAGIC Note that cross-validation over a grid of parameters is expensive. For example, in the next cell, the parameter grid has 10 values for [lr.regParam](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.regression.LinearRegression.regParam), and [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) uses 3 folds. This multiplies out to (10 x 3) = 30 different models being trained. In realistic settings, it can be common to try many more parameters (e.g., multiple values for multiple parameters) and use more folds (_k_ = 3 and _k_ = 10 are common). In other words, using [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) can be very expensive. However, it is also a well-established method for choosing parameters which is more statistically sound than heuristic hand-tuning.
 # MAGIC 
 # MAGIC We perform the following steps:
-# MAGIC   - Create a [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) using the Pipeline and [RegressionEvaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) that we created earlier, and set the number of folds to 3
+# MAGIC   - Create a [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) using the Pipeline and [RegressionEvaluator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.RegressionEvaluator) that we created earlier, and set the number of folds to 3
 # MAGIC   - Create a list of 10 regularization parameters
-# MAGIC   - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the regularization parameters and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation)
-# MAGIC   - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
+# MAGIC   - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the regularization parameters and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator)
+# MAGIC   - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
 # MAGIC 
 # MAGIC ### Exercise 7(a)
 # MAGIC 
-# MAGIC Run the next cell. _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) as it will run almost 200 Spark jobs_
+# MAGIC Run the next cell. _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) as it will run almost 200 Spark jobs_
 
 # COMMAND ----------
 
@@ -892,7 +892,7 @@ Test.assertEquals(round(r2New, 2), 0.93, "Incorrect value for r2New")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC So our initial untuned and tuned linear regression models are statistically identical. Let's look at the regularization parameter that the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) has selected.
+# MAGIC So our initial untuned and tuned linear regression models are statistically identical. Let's look at the regularization parameter that the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) has selected.
 # MAGIC 
 # MAGIC Recall that the orginal regularization parameter we used was 0.01.
 # MAGIC 
@@ -954,16 +954,16 @@ Test.assertEqualsHashed(str(dtPipeline.getStages()[1].__class__.__name__), '46b1
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
+# MAGIC Instead of guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#module-pyspark.ml.tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#module-pyspark.ml.tuning) to create the best model.
 # MAGIC 
-# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) by replacing the Estimator with our new `dtPipeline` (the number of folds remains 3).
+# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) by replacing the Estimator with our new `dtPipeline` (the number of folds remains 3).
 # MAGIC 
 # MAGIC ### Exercise 7(d)
 # MAGIC 
-# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `dt.maxDepth` and a list of the values 2 and 3, and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation)
-# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
+# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `dt.maxDepth` and a list of the values 2 and 3, and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator)
+# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) to find the parameters that yield the best model (i.e. lowest RMSE) and return the best model.
 # MAGIC 
-# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) as it will run almost 50 Spark jobs_
+# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) as it will run almost 50 Spark jobs_
 
 # COMMAND ----------
 
@@ -1024,7 +1024,7 @@ Test.assertEquals(round(r2DT, 2), 0.91, "Incorrect value for r2DT")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC The line below will pull the Decision Tree model from the Pipeline as display it as an if-then-else string. Again, we have to "reach through" to the JVM API to make this one work.
+# MAGIC The line below will pull the Decision Tree model from the Pipeline and display it as an if-then-else string. Again, we have to "reach through" to the JVM API to make this one work.
 # MAGIC 
 # MAGIC **ToDo**: Run the next cell
 
@@ -1086,16 +1086,16 @@ Test.assertEqualsHashed(rfPipeline.getStages()[1].__class__.__name__, 'ecdcce2d0
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC As with Decision Trees, instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/ml-tuning.html#model-selection-aka-hyperparameter-tuning) to create the best model.
+# MAGIC As with Decision Trees, instead guessing what parameters to use, we will use [Model Selection](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#module-pyspark.ml.tuning) or [Hyperparameter Tuning](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#module-pyspark.ml.tuning) to create the best model.
 # MAGIC 
-# MAGIC We can reuse the exiting [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) by replacing the Estimator with our new `rfPipeline` (the number of folds remains 3).
+# MAGIC We can reuse the existing [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) by replacing the Estimator with our new `rfPipeline` (the number of folds remains 3).
 # MAGIC 
 # MAGIC ### Exercise 7(g)
 # MAGIC 
-# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `rf.maxBins` and a list of the values 50 and 100, and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation)
-# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
+# MAGIC - Use [ParamGridBuilder](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.ParamGridBuilder) to build a parameter grid with the parameter `rf.maxBins` and a list of the values 50 and 100, and add the grid to the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator)
+# MAGIC - Run the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) to find the parameters that yield the best model (i.e., lowest RMSE) and return the best model.
 # MAGIC 
-# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/ml-tuning.html#cross-validation) as it will run almost 100 Spark jobs, and each job takes longer to run than the prior CrossValidator runs._
+# MAGIC _Note that it will take some time to run the [CrossValidator](https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) as it will run almost 100 Spark jobs, and each job takes longer to run than the prior CrossValidator runs._
 
 # COMMAND ----------
 
@@ -1103,7 +1103,7 @@ Test.assertEqualsHashed(rfPipeline.getStages()[1].__class__.__name__, 'ecdcce2d0
 # Let's just reuse our CrossValidator with the new rfPipeline,  RegressionEvaluator regEval, and 3 fold cross validation
 crossval.setEstimator(rfPipeline)
 
-# Let's tune over our rf.maxBins parameter on the values 50 and 100, create a paramter grid using the ParamGridBuilder
+# Let's tune over our rf.maxBins parameter on the values 50 and 100, create a parameter grid using the ParamGridBuilder
 paramGrid = <FILL_IN>
 
 # Add the grid to the CrossValidator
@@ -1161,7 +1161,7 @@ Test.assertEquals(round(r2RF, 2), 0.96, "Incorrect value for r2RF")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC The line below will pull the Random Forest model from the Pipeline as display it as an if-then-else string.
+# MAGIC The line below will pull the Random Forest model from the Pipeline and display it as an if-then-else string.
 # MAGIC 
 # MAGIC **ToDo**: Run the next cell
 
