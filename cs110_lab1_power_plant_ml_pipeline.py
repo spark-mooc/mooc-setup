@@ -1156,7 +1156,7 @@ Test.assertEquals(round(r2RF, 2), 0.96, "Incorrect value for r2RF")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Note that the Decision Tree and Random Forest values for `r2` are identical. However, the RMSE for the Random Forest model is better.
+# MAGIC Note that the `r2` values are similar for all three. However, the RMSE for the Random Forest model is better.
 
 # COMMAND ----------
 
