@@ -15,13 +15,13 @@
 # MAGIC **You will only need to use this notebook once.**
 # MAGIC 
 # MAGIC This notebook will help you create an _autograder token_. You will use that token when you submit each lab for grading, but you'll submit each lab using the
-# MAGIC [autograder notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_simple.dbc).
+# MAGIC [autograder notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs110_autograder.dbc).
 # MAGIC 
-# MAGIC If you're interested in more details on the autograder, see the [Complete Autograder notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_complete.dbc).
+# MAGIC If you're interested in more details on the autograder, see the [Complete Autograder notebook](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs110_autograder_complete.dbc).
 # MAGIC 
-# MAGIC ## NOTE TO CS105x STUDENTS
+# MAGIC ## NOTE TO CS105x and CS120x STUDENTS
 # MAGIC 
-# MAGIC If you took CS105, and you already have an autograder private token, **DO NOT REGISTER FOR ANOTHER ONE.** Re-use your private token from CS105x.
+# MAGIC If you took CS105x or CS120x, and you already have an autograder private token, **DO NOT REGISTER FOR ANOTHER ONE.** Re-use your private token from CS105x.
 
 # COMMAND ----------
 
@@ -64,8 +64,8 @@ except:
 # MAGIC 
 # MAGIC Import a copy of the autograder notebook:
 # MAGIC 
-# MAGIC 1. Download [this file](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs120_autograder_simple.dbc). You'll get a file called `cs120_autograder_simple.dbc`.
-# MAGIC 2. In your Databricks Community Edition account, go to your home folder, and right click on it. Select "Import", and import `cs120_autograder_simple.dbc`.
+# MAGIC 1. Download [this file](https://raw.githubusercontent.com/spark-mooc/mooc-setup/master/cs110_autograder.dbc). You'll get a file called `cs110_autograder.dbc`.
+# MAGIC 2. In your Databricks Community Edition account, go to your home folder, and right click on it. Select "Import", and import `cs110_autograder.dbc`.
 
 # COMMAND ----------
 
@@ -76,7 +76,7 @@ except:
 # MAGIC 
 # MAGIC <img src="http://spark-mooc.github.io/web-assets/images/autograder_signup_samplemail.png" alt="Drawing" style="width: 600px;"/>
 # MAGIC 
-# MAGIC Copy the private token to the clipboard. Then, go to the `cs120_autograder_simple` notebook you uploaded in Step 2, and look for a Python cell containing:
+# MAGIC Copy the private token to the clipboard. Then, go to the `cs110_autograder` notebook you uploaded in Step 2, and look for a Python cell containing:
 # MAGIC 
 # MAGIC ```
 # MAGIC # private_token = <FILL_IN>
@@ -97,7 +97,7 @@ except:
 # MAGIC %md
 # MAGIC ## You're ready to go.
 # MAGIC 
-# MAGIC You'll use the `cs120_autograder_simple` notebook throughout the course, to submit each of your lab notebooks for grading.
+# MAGIC You'll use the `cs110_autograder` notebook throughout the course, to submit each of your lab notebooks for grading.
 
 # COMMAND ----------
 
