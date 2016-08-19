@@ -10,6 +10,7 @@
 # Blank lines and comment lines are ignored.
 
 mooc/Notebooks/cs110x/Power-Plant-ML-Pipeline.py|cs110_lab1_power_plant_ml_pipeline.py
+mooc/Notebooks/cs110x/ALS-Prediction.py|cs110_lab2_als_prediction.py
 mooc/Notebooks/Autograder_register.py|cs110_autograder_register.py
 mooc/Notebooks/Autograder_simple.py|cs110_autograder.py
 mooc/Notebooks/Autograder_complete.py|cs110_autograder_complete.py
