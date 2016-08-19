@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 19 Aug 2016 18:07:13 UTC
+# Databricks notebook source exported at Fri, 19 Aug 2016 20:13:58 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -86,7 +86,7 @@ display(dbutils.fs.ls(dbfs_dir))
 # MAGIC 
 # MAGIC Note that we have both compressed files (ending in `.gz`) and uncompressed files. We have a CPU vs. I/O tradeoff here. If I/O is the bottleneck, then we want to process the compressed files and pay the extra CPU overhead. If CPU is the bottleneck, then it makes more sense to process the uncompressed files.
 # MAGIC 
-# MAGIC We've done some experiments, and we've determined that CPU more of a bottleneck than I/O, on Community Edition. So, we're going to process the uncompressed data. In addition, we're going to speed things up further by specifying the DataFrame schema explicitly. (When the Spark CSV adapter infers the schema from a CSV file, it has to make an extra pass over the file. That'll slow things down here, and it isn't really necessary.)
+# MAGIC We've done some experiments, and we've determined that CPU is more of a bottleneck than I/O, on Community Edition. So, we're going to process the uncompressed data. In addition, we're going to speed things up further by specifying the DataFrame schema explicitly. (When the Spark CSV adapter infers the schema from a CSV file, it has to make an extra pass over the file. That'll slow things down here, and it isn't really necessary.)
 # MAGIC 
 # MAGIC **To Do**: Run the following cell, which will define the schemas.
 
@@ -107,7 +107,12 @@ movies_df_schema = StructType(
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **To Do**: Run the following cell to load the data. Please be patient: The code about 30 seconds to run.
+# MAGIC ### Load and Cache
+# MAGIC 
+# MAGIC The Databricks File System (DBFS) sits on top of S3. We're going to be accessing this data a lot. Rather than read it over and over again from S3, we'll cache both
+# MAGIC the movies DataFrame and the ratings DataFrame in memory.
+# MAGIC 
+# MAGIC **To Do**: Run the following cell to load and cache the data. Please be patient: The code about 30 seconds to run.
 
 # COMMAND ----------
 
@@ -115,10 +120,16 @@ from pyspark.sql.functions import regexp_extract
 from pyspark.sql.types import *
 
 raw_ratings_df = sqlContext.read.format('com.databricks.spark.csv').options(header=True, inferSchema=False).schema(ratings_df_schema).load(ratings_filename)
-ratings_df = raw_ratings_df.drop('Timestamp').cache()
+ratings_df = raw_ratings_df.drop('Timestamp')
 
 raw_movies_df = sqlContext.read.format('com.databricks.spark.csv').options(header=True, inferSchema=False).schema(movies_df_schema).load(movies_filename)
-movies_df = raw_movies_df.drop('Genres').withColumnRenamed('movieId', 'ID').cache()
+movies_df = raw_movies_df.drop('Genres').withColumnRenamed('movieId', 'ID')
+
+ratings_df.cache()
+movies_df.cache()
+
+assert ratings_df.is_cached
+assert movies_df.is_cached
 
 raw_ratings_count = raw_ratings_df.count()
 ratings_count = ratings_df.count()
@@ -134,24 +145,6 @@ movies_df.show(3, truncate=False)
 assert raw_ratings_count == ratings_count
 assert raw_movies_count == movies_count
 
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Caching
-# MAGIC 
-# MAGIC The Databricks File System (DBFS) sits on top of S3. We're going to be accessing this data a lot. Rather than read it over and over again from S3, let's cache both
-# MAGIC the movies DataFrame and the ratings DataFrame in memory.
-# MAGIC 
-# MAGIC **To Do**: Run the following cell.
-
-# COMMAND ----------
-
-ratings_df.cache()
-movies_df.cache()
-
-assert ratings_df.is_cached
-assert movies_df.is_cached
 
 # COMMAND ----------
 
@@ -250,11 +243,13 @@ movie_ids_with_avg_ratings_df = ratings_df.groupBy('movieId').agg(F.count(rating
 print 'movie_ids_with_avg_ratings_df:'
 movie_ids_with_avg_ratings_df.show(3, truncate=False)
 
-movie_name_df = movie_ids_with_avg_ratings_df.<FILL_IN>
-movie_name_with_avg_ratings_df = movie_name_df.<FILL_IN>
+# Note: movie_names_df is a temporary variable, used only to separate the steps necessary
+# to create the movie_names_with_avg_ratings_df DataFrame.
+movie_names_df = movie_ids_with_avg_ratings_df.<FILL_IN>
+movie_names_with_avg_ratings_df = movie_names_df.<FILL_IN>
 
-print 'movie_name_with_avg_ratings_df:'
-movie_name_with_avg_ratings_df.show(3, truncate=False)
+print 'movie_names_with_avg_ratings_df:'
+movie_names_with_avg_ratings_df.show(3, truncate=False)
 
 # COMMAND ----------
 
@@ -309,8 +304,8 @@ movies_with_500_ratings_or_more.show(20, truncate=False)
 
 # TEST Movies with Highest Average Ratings and more than 500 Reviews (1c)
 
-Test.assertEquals(movies_with_500_ratings_or_more.count(), 4483,
-                  'incorrect movies_with_500_ratings_or_more.count(). Expected 4483.')
+Test.assertEquals(movies_with_500_ratings_or_more.count(), 4489,
+                  'incorrect movies_with_500_ratings_or_more.count(). Expected 4489.')
 top_20_results = [(r['average'], r['title'], r['count']) for r in movies_with_500_ratings_or_more.orderBy(F.desc('average')).take(20)]
 
 Test.assertEquals(top_20_results,
@@ -467,7 +462,7 @@ Test.assertEquals(test_df.filter((ratings_df.userId == 1) & (ratings_df.movieId 
 # MAGIC 
 # MAGIC Using the ML Pipeline?s [CrossValidator](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) with ALS is thus problematic, because cross validation involves dividing the training data into a set of folds (e.g., three sets) and then using those folds for testing and evaluating the parameters during the parameter grid search process. It is likely that some of the folds will contain users that are not in the other folds?and, as a result, ALS produces NaN values for those new users. When the CrossValidator uses the Evaluator (RMSE) to compute an error metric, the RMSE algorithm will return NaN. This will make *all* of the parameters in the parameter grid appear to be equally good (or bad).
 # MAGIC 
-# MAGIC You can read the discussion on (Spark JIRA 14489)[https://issues.apache.org/jira/browse/SPARK-14489] about this issue. There are proposed workarounds of having ALS provide default values or having RMSE drop NaN values. Both introduce potential issues. We?ve chosen to have RMSE drop NaN values. While this does not solve the underlying issue of ALS not predicting a value for a new user, it does provide some evaluation value. We manually implement the parameter grid search process using a for loop (below) and remove the NaN values before using RMSE.
+# MAGIC You can read the discussion on [Spark JIRA 14489](https://issues.apache.org/jira/browse/SPARK-14489) about this issue. There are proposed workarounds of having ALS provide default values or having RMSE drop NaN values. Both introduce potential issues. We?ve chosen to have RMSE drop NaN values. While this does not solve the underlying issue of ALS not predicting a value for a new user, it does provide some evaluation value. We manually implement the parameter grid search process using a for loop (below) and remove the NaN values before using RMSE.
 # MAGIC 
 # MAGIC For a production application, you would want to consider the tradeoffs in how to handle new users.
 # MAGIC 
@@ -651,7 +646,7 @@ display(my_ratings_df.limit(10))
 # MAGIC %md
 # MAGIC ### (3b) Add Your Movies to Training Dataset
 # MAGIC 
-# MAGIC Now that you have ratings for yourself, you need to add your ratings to the `training` dataset so that the model you train will incorporate your preferences.  Spark's [union()](http://spark.apache.org/docs/latest/api/python/pyspark.rdd.RDD-class.html#union) transformation combines two RDDs; use `union()` to create a new training dataset that includes your ratings and the data in the original training dataset.
+# MAGIC Now that you have ratings for yourself, you need to add your ratings to the `training` dataset so that the model you train will incorporate your preferences.  Spark's [union()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.rdd.RDD-class.html#union) transformation combines two RDDs; use `union()` to create a new training dataset that includes your ratings and the data in the original training dataset.
 
 # COMMAND ----------
 
@@ -784,7 +779,3 @@ predicted_highest_rated_movies_df = predicted_with_counts_df.<FILL_IN>
 
 print ('My 25 highest rated movies as predicted (for movies with more than 75 reviews):')
 predicted_highest_rated_movies_df.<FILL_IN>
-
-# COMMAND ----------
-
-
