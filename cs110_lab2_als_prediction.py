@@ -434,7 +434,7 @@ Test.assertEquals(test_df.filter((ratings_df.userId == 1) & (ratings_df.movieId 
 # MAGIC %md
 # MAGIC ### (2b) Alternating Least Squares
 # MAGIC 
-# MAGIC In this part, we will use the Apache Spark ML Pipeline MLlib implementation of Alternating Least Squares, [ALS](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS). ALS takes a training dataset (RDD) and several parameters that control the model creation process. To determine the best values for the parameters, we will use ALS to train several models, and then we will select the best model and use the parameters from that model in the rest of this lab exercise.
+# MAGIC In this part, we will use the Apache Spark ML Pipeline implementation of Alternating Least Squares, [ALS](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS). ALS takes a training dataset (RDD) and several parameters that control the model creation process. To determine the best values for the parameters, we will use ALS to train several models, and then we will select the best model and use the parameters from that model in the rest of this lab exercise.
 # MAGIC 
 # MAGIC The process we will use for determining the best model is as follows:
 # MAGIC 1. Pick a set of model parameters. The most important parameter to model is the *rank*, which is the number of rows in the Users matrix (green in the diagram above) or the number of columns in the Movies matrix (blue in the diagram above). In general, a lower rank will mean higher error on the training dataset, but a high rank may lead to [overfitting](https://en.wikipedia.org/wiki/Overfitting).  We will train models with ranks of 4, 8, and 12 using the `training_df` dataset.
