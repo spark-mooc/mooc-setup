@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sat, 20 Aug 2016 00:22:26 UTC
+# Databricks notebook source exported at Sat, 20 Aug 2016 21:53:17 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -12,7 +12,7 @@
 # MAGIC 
 # MAGIC # Predicting Movie Ratings
 # MAGIC 
-# MAGIC One of the most common uses of big data is to predict what users want.  This allows Google to show you relevant ads, Amazon to recommend relevant products, and Netflix to recommend movies that you might like.  This lab will demonstrate how we can use Apache Spark to recommend movies to a user.  We will start with some basic techniques, and then use the [Spark MLlib][mllib] library's Alternating Least Squares method to make more sophisticated predictions.
+# MAGIC One of the most common uses of big data is to predict what users want.  This allows Google to show you relevant ads, Amazon to recommend relevant products, and Netflix to recommend movies that you might like.  This lab will demonstrate how we can use Apache Spark to recommend movies to a user.  We will start with some basic techniques, and then use the [Spark ML][sparkml] library's Alternating Least Squares method to make more sophisticated predictions.
 # MAGIC 
 # MAGIC For this lab, we will use a subset dataset of 20 million ratings. This dataset is pre-mounted on Databricks and is from the [MovieLens stable benchmark rating dataset](http://grouplens.org/datasets/movielens/). However, the same code you write will also work on the full dataset (though running with the full dataset on Community Edition is likely to take quite a long time).
 # MAGIC 
@@ -23,7 +23,7 @@
 # MAGIC * *Part 3*: Predictions for Yourself
 # MAGIC 
 # MAGIC As mentioned during the first Learning Spark lab, think carefully before calling `collect()` on any datasets.  When you are using a small dataset, calling `collect()` and then using Python to get a sense for the data locally (in the driver program) will work fine, but this will not work when you are using a large dataset that doesn't fit in memory on one machine.  Solutions that call `collect()` and do local analysis that could have been done with Spark will likely fail in the autograder and not receive full credit.
-# MAGIC [mllib]: https://spark.apache.org/mllib/
+# MAGIC [sparkml]: https://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html
 
 # COMMAND ----------
 
@@ -180,14 +180,14 @@ display(ratings_df)
 # MAGIC %md
 # MAGIC ## Part 1: Basic Recommendations
 # MAGIC 
-# MAGIC One way to recommend movies is to always recommend the movies with the highest average rating. In this part, we will use Spark to find the name, number of ratings, and the average rating of the 20 movies with the highest average rating and more than 500 reviews. We want to filter our movies with high ratings but fewer than or equal to 500 reviews because movies with few reviews may not have broad appeal to everyone.
+# MAGIC One way to recommend movies is to always recommend the movies with the highest average rating. In this part, we will use Spark to find the name, number of ratings, and the average rating of the 20 movies with the highest average rating and more than 500 reviews. We want to filter our movies with high ratings but greater than or equal to 500 reviews because movies with few reviews may not have broad appeal to everyone.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ### (1a) Movies with Highest Average Ratings
 # MAGIC 
-# MAGIC Now that we have a way to calculate the average ratings, we will use the `getCountsAndAverages()` helper function with Spark to determine movies with highest average ratings.
+# MAGIC Now that we have a way to calculate the average ratings, we will use the `getCountsAndAverages()` helper function with Spark to determine the movies with the highest average ratings.
 # MAGIC 
 # MAGIC The steps you should perform are:
 # MAGIC 
@@ -253,15 +253,15 @@ movie_names_with_avg_ratings_df.show(3, truncate=False)
 
 # COMMAND ----------
 
-# TEST
+# TEST Movies with Highest Average Ratings (1a)
 Test.assertEquals(movie_ids_with_avg_ratings_df.count(), 26744,
-                'incorrect movie_ids_with_avg_ratings_df.count() (expected 3706)')
+                'incorrect movie_ids_with_avg_ratings_df.count() (expected 26744)')
 movie_ids_with_ratings_take_ordered = movie_ids_with_avg_ratings_df.orderBy('MovieID').take(3)
 _take_0 = movie_ids_with_ratings_take_ordered[0]
 _take_1 = movie_ids_with_ratings_take_ordered[1]
 _take_2 = movie_ids_with_ratings_take_ordered[2]
 Test.assertTrue(_take_0[0] == 1 and _take_0[1] == 49695,
-                'incorrect count of ratings for movie with ID {0} (expected 993)'.format(_take_0[0]))
+                'incorrect count of ratings for movie with ID {0} (expected 49695)'.format(_take_0[0]))
 Test.assertEquals(round(_take_0[2], 2), 3.92, "Incorrect average for movie ID {0}. Expected 3.92".format(_take_0[0]))
 
 Test.assertTrue(_take_1[0] == 2 and _take_1[1] == 22243,
@@ -274,7 +274,7 @@ Test.assertEquals(round(_take_2[2], 2), 3.15, "Incorrect average for movie ID {0
 
 
 Test.assertEquals(movie_names_with_avg_ratings_df.count(), 26744,
-                  'incorrect movie_names_with_avg_ratings_df.count() (expected 3615)')
+                  'incorrect movie_names_with_avg_ratings_df.count() (expected 26744)')
 movie_names_with_ratings_take_ordered = movie_names_with_avg_ratings_df.orderBy(['average', 'title']).take(3)
 result = [(r['average'], r['title'], r['count'], r['movieId']) for r in movie_names_with_ratings_take_ordered]
 Test.assertEquals(result,
@@ -302,7 +302,7 @@ movies_with_500_ratings_or_more.show(20, truncate=False)
 
 # COMMAND ----------
 
-# TEST Movies with Highest Average Ratings and more than 500 Reviews (1c)
+# TEST Movies with Highest Average Ratings and more than 500 Reviews (1b)
 
 Test.assertEquals(movies_with_500_ratings_or_more.count(), 4489,
                   'incorrect movies_with_500_ratings_or_more.count(). Expected 4489.')
@@ -382,7 +382,7 @@ Test.assertEquals(top_20_results,
 # MAGIC * A validation set (DataFrame), which we will use to choose the best model
 # MAGIC * A test set (DataFrame), which we will use for our experiments
 # MAGIC 
-# MAGIC To randomly split the dataset into the multiple groups, we can use the pySpark [randomSplit()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) transformation. `randomSplit()` takes a set of splits and and seed and returns multiple DataFrames.
+# MAGIC To randomly split the dataset into the multiple groups, we can use the pySpark [randomSplit()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.randomSplit) transformation. `randomSplit()` takes a set of splits and a seed and returns multiple DataFrames.
 
 # COMMAND ----------
 
@@ -406,7 +406,7 @@ test_df.show(3)
 
 # COMMAND ----------
 
-# TEST
+# TEST Creating a Training Set (2a)
 Test.assertEquals(training_df.count(), 12001389, "Incorrect training_df count. Expected 12001389")
 Test.assertEquals(validation_df.count(), 4003694, "Incorrect validation_df count. Expected 4003694")
 Test.assertEquals(test_df.count(), 3995180, "Incorrect test_df count. Expected 3995180")
@@ -434,7 +434,7 @@ Test.assertEquals(test_df.filter((ratings_df.userId == 1) & (ratings_df.movieId 
 # MAGIC %md
 # MAGIC ### (2b) Alternating Least Squares
 # MAGIC 
-# MAGIC In this part, we will use the Apache Spark ML Pipeline implementation of Alternating Least Squares, [ALS](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS). ALS takes a training dataset (RDD) and several parameters that control the model creation process. To determine the best values for the parameters, we will use ALS to train several models, and then we will select the best model and use the parameters from that model in the rest of this lab exercise.
+# MAGIC In this part, we will use the Apache Spark ML Pipeline implementation of Alternating Least Squares, [ALS](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS). ALS takes a training dataset (DataFrame) and several parameters that control the model creation process. To determine the best values for the parameters, we will use ALS to train several models, and then we will select the best model and use the parameters from that model in the rest of this lab exercise.
 # MAGIC 
 # MAGIC The process we will use for determining the best model is as follows:
 # MAGIC 1. Pick a set of model parameters. The most important parameter to model is the *rank*, which is the number of rows in the Users matrix (green in the diagram above) or the number of columns in the Movies matrix (blue in the diagram above). In general, a lower rank will mean higher error on the training dataset, but a high rank may lead to [overfitting](https://en.wikipedia.org/wiki/Overfitting).  We will train models with ranks of 4, 8, and 12 using the `training_df` dataset.
@@ -550,7 +550,7 @@ print('The model had a RMSE on the test set of {0}'.format(test_RMSE))
 
 # COMMAND ----------
 
-# TEST
+# TEST Testing Your Model (2c)
 Test.assertTrue(abs(test_RMSE - 0.809624038485) < tolerance, 'incorrect test_RMSE: {0:.11f}'.format(test_RMSE))
 
 # COMMAND ----------
@@ -587,7 +587,7 @@ print("The RMSE on the average set is {0}".format(test_avg_RMSE))
 
 # COMMAND ----------
 
-# TEST Comparing Your Model (2e)
+# TEST Comparing Your Model (2d)
 Test.assertTrue(abs(training_avg_rating - 3.52547984237) < 0.000001,
                 'incorrect training_avg_rating (expected 3.52547984237): {0:.11f}'.format(training_avg_rating))
 Test.assertTrue(abs(test_avg_RMSE - 1.0519743756) < 0.000001,
@@ -602,7 +602,7 @@ Test.assertTrue(abs(test_avg_RMSE - 1.0519743756) < 0.000001,
 
 # MAGIC %md
 # MAGIC ## Part 3: Predictions for Yourself
-# MAGIC The ultimate goal of this lab exercise is to predict what movies to recommend to yourself.  In order to do that, you will first need to add ratings for yourself to the `ratingsRDD` dataset.
+# MAGIC The ultimate goal of this lab exercise is to predict what movies to recommend to yourself.  In order to do that, you will first need to add ratings for yourself to the `ratings_df` dataset.
 
 # COMMAND ----------
 
@@ -645,7 +645,7 @@ display(my_ratings_df.limit(10))
 # MAGIC %md
 # MAGIC ### (3b) Add Your Movies to Training Dataset
 # MAGIC 
-# MAGIC Now that you have ratings for yourself, you need to add your ratings to the `training` dataset so that the model you train will incorporate your preferences.  Spark's [union()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.rdd.RDD-class.html#union) transformation combines two RDDs; use `union()` to create a new training dataset that includes your ratings and the data in the original training dataset.
+# MAGIC Now that you have ratings for yourself, you need to add your ratings to the `training` dataset so that the model you train will incorporate your preferences.  Spark's [unionAll()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.unionAll) transformation combines two DataFrames; use `unionAll()` to create a new training dataset that includes your ratings and the data in the original training dataset.
 
 # COMMAND ----------
 
