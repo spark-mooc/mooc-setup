@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 19 Aug 2016 20:13:58 UTC
+# Databricks notebook source exported at Sat, 20 Aug 2016 00:22:26 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -112,7 +112,7 @@ movies_df_schema = StructType(
 # MAGIC The Databricks File System (DBFS) sits on top of S3. We're going to be accessing this data a lot. Rather than read it over and over again from S3, we'll cache both
 # MAGIC the movies DataFrame and the ratings DataFrame in memory.
 # MAGIC 
-# MAGIC **To Do**: Run the following cell to load and cache the data. Please be patient: The code about 30 seconds to run.
+# MAGIC **To Do**: Run the following cell to load and cache the data. Please be patient: The code takes about 30 seconds to run.
 
 # COMMAND ----------
 
@@ -364,9 +364,9 @@ Test.assertEquals(top_20_results,
 # MAGIC 
 # MAGIC This optimization is what's being shown on the right in the image above.  Given a fixed set of user factors (i.e., values in the users matrix), we use the known ratings to find the best values for the movie factors using the optimization written at the bottom of the figure.  Then we "alternate" and pick the best user factors given fixed movie factors.
 # MAGIC 
-# MAGIC For a simple example of what the users and movies matrices might look like, check out the [videos from Lecture 8][videos] or the [slides from Lecture 8][slides]
-# MAGIC [videos]: https://courses.edx.org/courses/BerkeleyX/CS100.1x/1T2015/courseware/00eb8b17939b4889a41a6d8d2f35db83/3bd3bba368be4102b40780550d3d8da6/
-# MAGIC [slides]: https://courses.edx.org/c4x/BerkeleyX/CS110x/asset/Lecture2.pdf
+# MAGIC For a simple example of what the users and movies matrices might look like, check out the [videos from Lecture 2][videos] or the [slides from Lecture 8][slides]
+# MAGIC [videos]: https://courses.edx.org/courses/course-v1:BerkeleyX+CS110x+2T2016/courseware/9d251397874d4f0b947b606c81ccf83c/3cf61a8718fe4ad5afcd8fb35ceabb6e/
+# MAGIC [slides]: https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/fb269ff9a53b669a46d59e154b876d78/asset-v1:BerkeleyX+CS110x+2T2016+type@asset+block/Lecture2s.pdf
 # MAGIC [als]: https://en.wikiversity.org/wiki/Least-Squares_Method
 # MAGIC [mllib]: http://spark.apache.org/docs/1.6.2/mllib-guide.html
 # MAGIC [collab]: https://en.wikipedia.org/?title=Collaborative_filtering
@@ -388,7 +388,7 @@ Test.assertEquals(top_20_results,
 
 # TODO: Replace <FILL_IN> with the appropriate code.
 
-# We'll hold out 80% for training, 20% of our data for validation, and leave 20% for testing
+# We'll hold out 60% for training, 20% of our data for validation, and leave 20% for testing
 seed = 1800009193L
 (split_60_df, split_a_20_df, split_b_20_df) = <FILL_IN>
 
@@ -519,7 +519,7 @@ for rank in ranks:
 
 als.setRank(ranks[best_rank])
 print 'The best model was trained with rank %s' % ranks[best_rank]
-myModel = models[best_rank]
+my_model = models[best_rank]
 
 # COMMAND ----------
 
@@ -541,7 +541,7 @@ myModel = models[best_rank]
 predict_df = my_model.<FILL_IN>
 
 # Remove NaN values from prediction (due to SPARK-14489)
-predicted_test_df = predict_df.filter(predictDF.prediction != float('nan'))
+predicted_test_df = predict_df.filter(predict_df.prediction != float('nan'))
 
 # Run the previously created RMSE evaluator, reg_eval, on the predicted_test_df DataFrame
 test_RMSE = <FILL_IN>
@@ -636,8 +636,7 @@ my_rated_movies = [
      #   (my_user_id, 260, 5),
 ]
 
-rows = [Row(userId=r[0], movieId=r[1], rating=float(r[2])) for r in my_rated_movies]
-my_ratings_df = sqlContext.createDataFrame(rows)
+my_ratings_df = sqlContext.createDataFrame(my_rated_movies, ['userId','movieId','rating'])
 print 'My movie ratings:'
 display(my_ratings_df.limit(10))
 
@@ -677,7 +676,7 @@ als.setPredictionCol("prediction")\
    .<FILL_IN>
 
 # Create the model with these parameters.
-my_model = als.<FILL_IN>
+my_ratings_model = als.<FILL_IN>
 
 # COMMAND ----------
 
@@ -756,7 +755,9 @@ not_rated_df = movies_df.<FILL_IN>
 my_unrated_movies_df = not_rated_df.<FILL_IN>
 
 # Use my_rating_model to predict ratings for the movies that I did not manually rate.
-predicted_ratings_df = <FILL_IN>
+raw_predicted_ratings_df = my_ratings_model.<FILL_IN>
+
+predicted_ratings_df = raw_predicted_ratings_df.filter(raw_predicted_ratings.df['prediction'] != float('nan'))
 
 # COMMAND ----------
 
