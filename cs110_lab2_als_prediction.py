@@ -437,7 +437,7 @@ Test.assertEquals(test_df.filter((ratings_df.userId == 1) & (ratings_df.movieId 
 # MAGIC In this part, we will use the Apache Spark ML Pipeline MLlib implementation of Alternating Least Squares, [ALS](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS). ALS takes a training dataset (RDD) and several parameters that control the model creation process. To determine the best values for the parameters, we will use ALS to train several models, and then we will select the best model and use the parameters from that model in the rest of this lab exercise.
 # MAGIC 
 # MAGIC The process we will use for determining the best model is as follows:
-# MAGIC 1. Pick a set of model parameters. The most important parameter to is the *rank*, which is the number of rows in the Users matrix (green in the diagram above) or the number of columns in the Movies matrix (blue in the diagram above). In general, a lower rank will mean higher error on the training dataset, but a high rank may lead to [overfitting](https://en.wikipedia.org/wiki/Overfitting).  We will train models with ranks of 4, 8, and 12 using the `training_df` dataset.
+# MAGIC 1. Pick a set of model parameters. The most important parameter to model is the *rank*, which is the number of rows in the Users matrix (green in the diagram above) or the number of columns in the Movies matrix (blue in the diagram above). In general, a lower rank will mean higher error on the training dataset, but a high rank may lead to [overfitting](https://en.wikipedia.org/wiki/Overfitting).  We will train models with ranks of 4, 8, and 12 using the `training_df` dataset.
 # MAGIC 
 # MAGIC 2. Set the appropriate parameters on the `ALS` object:
 # MAGIC     * The "User" column will be set to the values in our `userId` DataFrame column.
@@ -446,7 +446,7 @@ Test.assertEquals(test_df.filter((ratings_df.userId == 1) & (ratings_df.movieId 
 # MAGIC     * We'll using a regularization parameter of 0.1.
 # MAGIC 
 # MAGIC    **Note**: Read the documentation for the [ALS](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS) class **carefully**. It will help you accomplish this step.
-# MAGIC 3. Have the ALS output transformation?i.e., the result of [ALS.fit()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS.fit)?produce a _new_ column
+# MAGIC 3. Have the ALS output transformation (i.e., the result of [ALS.fit()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS.fit)) produce a _new_ column
 # MAGIC    called "prediction" that contains the predicted value.
 # MAGIC 
 # MAGIC 4. Create multiple models using [ALS.fit()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.recommendation.ALS.fit), one for each of our rank values. We'll fit
@@ -456,13 +456,13 @@ Test.assertEquals(test_df.filter((ratings_df.userId == 1) & (ratings_df.movieId 
 # MAGIC 
 # MAGIC 6. We'll keep the model with the best error rate.
 # MAGIC 
-# MAGIC #### Why are we doing are own cross-validation?
+# MAGIC #### Why are we doing our own cross-validation?
 # MAGIC 
-# MAGIC A challenge for collaborative filtering is how to provide ratings a new user?a user who has not provided *any* ratings at all. Some recommendation systems choose to provide new users with a default ratings (e.g., an average value across all ratings), while others choose to provide no ratings for new users. Spark?s ALS algorithm yields a NaN (?Not a Number?) value when asked to provide a rating for a new user.
+# MAGIC A challenge for collaborative filtering is how to provide ratings to a new user (a user who has not provided *any* ratings at all). Some recommendation systems choose to provide new users with a set of default ratings (e.g., an average value across all ratings), while others choose to provide no ratings for new users. Spark's ALS algorithm yields a NaN (`Not a Number`) value when asked to provide a rating for a new user.
 # MAGIC 
-# MAGIC Using the ML Pipeline?s [CrossValidator](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) with ALS is thus problematic, because cross validation involves dividing the training data into a set of folds (e.g., three sets) and then using those folds for testing and evaluating the parameters during the parameter grid search process. It is likely that some of the folds will contain users that are not in the other folds?and, as a result, ALS produces NaN values for those new users. When the CrossValidator uses the Evaluator (RMSE) to compute an error metric, the RMSE algorithm will return NaN. This will make *all* of the parameters in the parameter grid appear to be equally good (or bad).
+# MAGIC Using the ML Pipeline's [CrossValidator](http://spark.apache.org/docs/1.6.2/api/python/pyspark.ml.html#pyspark.ml.tuning.CrossValidator) with ALS is thus problematic, because cross validation involves dividing the training data into a set of folds (e.g., three sets) and then using those folds for testing and evaluating the parameters during the parameter grid search process. It is likely that some of the folds will contain users that are not in the other folds, and, as a result, ALS produces NaN values for those new users. When the CrossValidator uses the Evaluator (RMSE) to compute an error metric, the RMSE algorithm will return NaN. This will make *all* of the parameters in the parameter grid appear to be equally good (or bad).
 # MAGIC 
-# MAGIC You can read the discussion on [Spark JIRA 14489](https://issues.apache.org/jira/browse/SPARK-14489) about this issue. There are proposed workarounds of having ALS provide default values or having RMSE drop NaN values. Both introduce potential issues. We?ve chosen to have RMSE drop NaN values. While this does not solve the underlying issue of ALS not predicting a value for a new user, it does provide some evaluation value. We manually implement the parameter grid search process using a for loop (below) and remove the NaN values before using RMSE.
+# MAGIC You can read the discussion on [Spark JIRA 14489](https://issues.apache.org/jira/browse/SPARK-14489) about this issue. There are proposed workarounds of having ALS provide default values or having RMSE drop NaN values. Both introduce potential issues. We have chosen to have RMSE drop NaN values. While this does not solve the underlying issue of ALS not predicting a value for a new user, it does provide some evaluation value. We manually implement the parameter grid search process using a for loop (below) and remove the NaN values before using RMSE.
 # MAGIC 
 # MAGIC For a production application, you would want to consider the tradeoffs in how to handle new users.
 # MAGIC 
@@ -780,3 +780,82 @@ predicted_highest_rated_movies_df = predicted_with_counts_df.<FILL_IN>
 
 print ('My 25 highest rated movies as predicted (for movies with more than 75 reviews):')
 predicted_highest_rated_movies_df.<FILL_IN>
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Appendix A: Submitting Your Exercises to the Autograder
+# MAGIC 
+# MAGIC This section guides you through Step 2 of the grading process ("Submit to Autograder").
+# MAGIC 
+# MAGIC Once you confirm that your lab notebook is passing all tests, you can submit it first to the course autograder and then second to the edX website to receive a grade.
+# MAGIC 
+# MAGIC ** Note that you can only submit to the course autograder once every 1 minute. **
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(a): Restart your cluster by clicking on the dropdown next to your cluster name and selecting "Restart Cluster".
+# MAGIC 
+# MAGIC You can do this step in either notebook, since there is one cluster for your notebooks.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_restart.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(b): _IN THIS NOTEBOOK_, click on "Run All" to run all of the cells.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/submit_runall.png" alt="Drawing" style="height: 80px"/>
+# MAGIC 
+# MAGIC This step will take some time.
+# MAGIC 
+# MAGIC Wait for your cluster to finish running the cells in your lab notebook before proceeding.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(c): Publish this notebook
+# MAGIC 
+# MAGIC Publish _this_ notebook by clicking on the "Publish" button at the top.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish0.png" alt="Drawing" style="height: 150px"/>
+# MAGIC 
+# MAGIC When you click on the button, you will see the following popup.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish1.png" alt="Drawing" />
+# MAGIC 
+# MAGIC When you click on "Publish", you will see a popup with your notebook's public link. **Copy the link and set the `notebook_URL` variable in the AUTOGRADER notebook (not this notebook).**
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/Lab0_Publish2.png" alt="Drawing" />
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Step 2(d): Set the notebook URL and Lab ID in the Autograder notebook, and run it
+# MAGIC 
+# MAGIC Go to the Autograder notebook and paste the link you just copied into it, so that it is assigned to the `notebook_url` variable.
+# MAGIC 
+# MAGIC ```
+# MAGIC notebook_url = "..." # put your URL here
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, find the line that looks like this:
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = <FILL IN>
+# MAGIC ```
+# MAGIC and change `<FILL IN>` to "CS110x-lab2":
+# MAGIC 
+# MAGIC ```
+# MAGIC lab = "CS110x-lab2"
+# MAGIC ```
+# MAGIC 
+# MAGIC Then, run the Autograder notebook to submit your lab.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### <img src="http://spark-mooc.github.io/web-assets/images/oops.png" style="height: 200px"/> If things go wrong
+# MAGIC 
+# MAGIC It's possible that your notebook looks fine to you, but fails in the autograder. (This can happen when you run cells out of order, as you're working on your notebook.) If that happens, just try again, starting at the top of Appendix A.
