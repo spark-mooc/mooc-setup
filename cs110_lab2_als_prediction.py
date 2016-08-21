@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sat, 20 Aug 2016 21:53:17 UTC
+# Databricks notebook source exported at Sun, 21 Aug 2016 19:36:31 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -520,6 +520,15 @@ for rank in ranks:
 als.setRank(ranks[best_rank])
 print 'The best model was trained with rank %s' % ranks[best_rank]
 my_model = models[best_rank]
+
+# COMMAND ----------
+
+# TEST
+Test.assertEquals(round(min_error, 2), 0.81, "Unexpected value for best RMSE. Expected rounded value to be 0.81. Got {0}".format(round(min_error, 2)))
+Test.assertEquals(ranks[best_rank], 12, "Unexpected value for best rank. Expected 12. Got {0}".format(ranks[best_rank]))
+Test.assertEqualsHashed(als.getItemCol(), "18f0e2357f8829fe809b2d95bc1753000dd925a6", "Incorrect choice of {0} for ALS item column.".format(als.getItemCol()))
+Test.assertEqualsHashed(als.getUserCol(), "db36668fa9a19fde5c9676518f9e86c17cabf65a", "Incorrect choice of {0} for ALS user column.".format(als.getUserCol()))
+Test.assertEqualsHashed(als.getRatingCol(), "3c2d687ef032e625aa4a2b1cfca9751d2080322c", "Incorrect choice of {0} for ALS rating column.".format(als.getRatingCol()))
 
 # COMMAND ----------
 
