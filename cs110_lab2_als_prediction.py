@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 21 Aug 2016 19:36:31 UTC
+# Databricks notebook source exported at Sun, 21 Aug 2016 19:51:38 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -766,7 +766,7 @@ my_unrated_movies_df = not_rated_df.<FILL_IN>
 # Use my_rating_model to predict ratings for the movies that I did not manually rate.
 raw_predicted_ratings_df = my_ratings_model.<FILL_IN>
 
-predicted_ratings_df = raw_predicted_ratings_df.filter(raw_predicted_ratings.df['prediction'] != float('nan'))
+predicted_ratings_df = raw_predicted_ratings_df.filter(raw_predicted_ratings_df['prediction'] != float('nan'))
 
 # COMMAND ----------
 
@@ -776,7 +776,7 @@ predicted_ratings_df = raw_predicted_ratings_df.filter(raw_predicted_ratings.df[
 # MAGIC We have our predicted ratings. Now we can print out the 25 movies with the highest predicted ratings.
 # MAGIC 
 # MAGIC The steps you should perform are:
-# MAGIC * Join your `predicted_ratings_df` DataFrame with the `movie_names_with_avg_ratings_df` DataFrame to obtain the titles of the movies.
+# MAGIC * Join your `predicted_ratings_df` DataFrame with the `movie_names_with_avg_ratings_df` DataFrame to obtain the ratings counts for each movie.
 # MAGIC * Sort the resulting DataFrame (`predicted_with_counts_df`) by predicted rating (highest ratings first), and remove any ratings with a count of 75 or less.
 # MAGIC * Print the top 25 movies that remain.
 
