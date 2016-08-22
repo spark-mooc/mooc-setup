@@ -180,7 +180,7 @@ display(ratings_df)
 # MAGIC %md
 # MAGIC ## Part 1: Basic Recommendations
 # MAGIC 
-# MAGIC One way to recommend movies is to always recommend the movies with the highest average rating. In this part, we will use Spark to find the name, number of ratings, and the average rating of the 20 movies with the highest average rating and more than 500 reviews. We want to filter our movies with high ratings but greater than or equal to 500 reviews because movies with few reviews may not have broad appeal to everyone.
+# MAGIC One way to recommend movies is to always recommend the movies with the highest average rating. In this part, we will use Spark to find the name, number of ratings, and the average rating of the 20 movies with the highest average rating and at least 500 reviews. We want to filter our movies with high ratings but greater than or equal to 500 reviews because movies with few reviews may not have broad appeal to everyone.
 
 # COMMAND ----------
 
@@ -287,11 +287,11 @@ Test.assertEquals(result,
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### (1b) Movies with Highest Average Ratings and more than 500 reviews
+# MAGIC ### (1b) Movies with Highest Average Ratings and at least 500 reviews
 # MAGIC 
-# MAGIC Now that we have a DataFrame of the movies with highest average ratings, we can use Spark to determine the 20 movies with highest average ratings and more than 500 reviews.
+# MAGIC Now that we have a DataFrame of the movies with highest average ratings, we can use Spark to determine the 20 movies with highest average ratings and at least 500 reviews.
 # MAGIC 
-# MAGIC Add a single DataFrame transformation (in place of `<FILL_IN>`, below) to limit the results to movies with ratings from more than 500 people.
+# MAGIC Add a single DataFrame transformation (in place of `<FILL_IN>`, below) to limit the results to movies with ratings from at least 500 people.
 
 # COMMAND ----------
 
@@ -302,7 +302,7 @@ movies_with_500_ratings_or_more.show(20, truncate=False)
 
 # COMMAND ----------
 
-# TEST Movies with Highest Average Ratings and more than 500 Reviews (1b)
+# TEST Movies with Highest Average Ratings and at least 500 Reviews (1b)
 
 Test.assertEquals(movies_with_500_ratings_or_more.count(), 4489,
                   'incorrect movies_with_500_ratings_or_more.count(). Expected 4489.')
