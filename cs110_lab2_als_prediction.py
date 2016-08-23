@@ -187,7 +187,7 @@ display(ratings_df)
 # MAGIC %md
 # MAGIC ### (1a) Movies with Highest Average Ratings
 # MAGIC 
-# MAGIC Now that we have a way to calculate the average ratings, we will use the `getCountsAndAverages()` helper function with Spark to determine the movies with the highest average ratings.
+# MAGIC Let's determine the movies with the highest average ratings.
 # MAGIC 
 # MAGIC The steps you should perform are:
 # MAGIC 
