@@ -360,7 +360,7 @@ Test.assertEquals(top_20_results,
 # MAGIC <img alt="factorization" src="http://spark-mooc.github.io/web-assets/images/matrix_factorization.png" style="width: 885px"/>
 # MAGIC <br clear="all"/>
 # MAGIC 
-# MAGIC We want to select these two matrices such that the error for the users/movie pairs where we know the correct ratings is minimized.  The [Alternating Least Squares][als] algorithm does this by first randomly filling the users matrix with values and then optimizing the value of the movies such that the error is minimized.  Then, it holds the movies matrix constrant and optimizes the value of the user's matrix.  This alternation between which matrix to optimize is the reason for the "alternating" in the name.
+# MAGIC We want to select these two matrices such that the error for the users/movie pairs where we know the correct ratings is minimized.  The [Alternating Least Squares][als] algorithm does this by first randomly filling the users matrix with values and then optimizing the value of the movies such that the error is minimized.  Then, it holds the movies matrix constant and optimizes the value of the user's matrix.  This alternation between which matrix to optimize is the reason for the "alternating" in the name.
 # MAGIC 
 # MAGIC This optimization is what's being shown on the right in the image above.  Given a fixed set of user factors (i.e., values in the users matrix), we use the known ratings to find the best values for the movie factors using the optimization written at the bottom of the figure.  Then we "alternate" and pick the best user factors given fixed movie factors.
 # MAGIC 
@@ -587,7 +587,7 @@ training_avg_rating = avg_rating_df.collect()[0][0]
 print('The average rating for movies in the training set is {0}'.format(training_avg_rating))
 
 # Add a column with the average rating
-test_for_avg_df = training_df.withColumn('prediction', <FILL_IN>)
+test_for_avg_df = test_df.withColumn('prediction', <FILL_IN>)
 
 # Run the previously created RMSE evaluator, reg_eval, on the test_for_avg_df DataFrame
 test_avg_RMSE = <FILL_IN>
@@ -599,7 +599,7 @@ print("The RMSE on the average set is {0}".format(test_avg_RMSE))
 # TEST Comparing Your Model (2d)
 Test.assertTrue(abs(training_avg_rating - 3.52547984237) < 0.000001,
                 'incorrect training_avg_rating (expected 3.52547984237): {0:.11f}'.format(training_avg_rating))
-Test.assertTrue(abs(test_avg_RMSE - 1.0519743756) < 0.000001,
+Test.assertTrue(abs(test_avg_RMSE - 1.05190953037) < 0.000001,
                 'incorrect test_avg_RMSE (expected 1.0519743756): {0:.11f}'.format(test_avg_RMSE))
 
 # COMMAND ----------
