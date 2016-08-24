@@ -1,0 +1,1 @@
+java -Xmx2G -cp bin/:lib/* test.Test > scalability.txt
