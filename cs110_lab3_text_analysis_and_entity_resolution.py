@@ -30,7 +30,7 @@ labVersion = 'cs110.1x-lab3-1.0.4'
 # MAGIC This assignment can be completed using basic Python, pySpark Transformations and actions, and the plotting library matplotlib. Other libraries are not allowed.
 # MAGIC 
 # MAGIC ### Files
-# MAGIC Data files for this assignment are from the [metric-learning](https://github.com/spark-mooc/mooc-setup/metric-learning) project and can be found at:
+# MAGIC Data files for this assignment are from the [metric-learning](https://github.com/spark-mooc/mooc-setup/tree/master/metric-learning) project and can be found at:
 # MAGIC `dbfs/databricks-datasets/cs100/lab3/data-001`
 # MAGIC 
 # MAGIC The directory contains the following files:
@@ -103,7 +103,7 @@ display(dbutils.fs.ls('/databricks-datasets/cs100/lab3/data-001'))
 
 import sys
 import os
-from test_helper import Test
+from databricks_test_helper import Test
 
 data_dir = os.path.join('databricks-datasets', 'cs100', 'lab3', 'data-001')
 
@@ -837,7 +837,7 @@ assert (gsRaw.count() == (goldStandard.count() + 1))
 # COMMAND ----------
 
 # TODO: Replace <FILL IN> with appropriate code
-sims = similaritiesBroadcast.<FILL IN>)
+sims = similaritiesBroadcast.<FILL IN>
 
 trueDupsRDD = (sims
                .<FILL IN>)
@@ -964,12 +964,12 @@ Test.assertEquals(len(googleNormsBroadcast.value), 3226, 'incorrect googleNormsB
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### (4d) Create inverted indicies from the full datasets
+# MAGIC ### (4d) Create inverted indices from the full datasets
 # MAGIC 
 # MAGIC Build inverted indices of both data sources.
 # MAGIC The steps you should perform are:
 # MAGIC * Create an invert function that given a pair of (ID/URL, TF-IDF weighted token vector), returns a list of pairs of (token, ID/URL). Recall that the TF-IDF weighted token vector is a Python dictionary with keys that are tokens and values that are weights.
-# MAGIC * Use your invert function to convert the full Amazon and Google TF-IDF weighted token vector datasets into two RDDs where each element is a pair of a token and an ID/URL that contain that token. These are inverted indicies.
+# MAGIC * Use your invert function to convert the full Amazon and Google TF-IDF weighted token vector datasets into two RDDs where each element is a pair of a token and an ID/URL that contain that token. These are inverted indices.
 
 # COMMAND ----------
 
@@ -1009,7 +1009,7 @@ Test.assertEquals(googleInvPairsRDD.count(), 77678, 'incorrect googleInvPairsRDD
 # MAGIC ### (4e) Identify common tokens from the full dataset
 # MAGIC 
 # MAGIC We are now in position to efficiently perform ER on the full datasets. Implement the following algorithm to build an RDD that maps a pair of (ID, URL) to a list of tokens they share in common:
-# MAGIC * Using the two inverted indicies (RDDs where each element is a pair of a token and an ID or URL that contains that token), create a new RDD that contains only tokens that appear in both datasets. This will yield an RDD of pairs of (token, iterable(ID, URL)).
+# MAGIC * Using the two inverted indices (RDDs where each element is a pair of a token and an ID or URL that contains that token), create a new RDD that contains only tokens that appear in both datasets. This will yield an RDD of pairs of (token, iterable(ID, URL)).
 # MAGIC * We need a mapping from (ID, URL) to token, so create a function that will swap the elements of the RDD you just created to create this new RDD consisting of ((ID, URL), token) pairs.
 # MAGIC * Finally, create an RDD consisting of pairs mapping (ID, URL) to all the tokens the pair shares in common
 
@@ -1108,7 +1108,7 @@ Test.assertEquals(similaritiesFullRDD.count(), 2441100, 'incorrect similaritiesF
 # MAGIC We need functions that count True Positives (true duplicates above the threshold), and False Positives and False Negatives:
 # MAGIC * We start with creating the `simsFullRDD` from our `similaritiesFullRDD` that consists of a pair of ((Amazon ID, Google URL), simlarity score)
 # MAGIC * From this RDD, we create an RDD consisting of only the similarity scores
-# MAGIC * To look up the similarity scores for true duplicates, we perform a left outer join using the `goldStandard` RDD and `simsFullRDD` and extract the
+# MAGIC * To look up the similarity scores for true duplicates, we perform a left outer join using the `goldStandard` RDD and `simsFullRDD` and extract the similarities scores using the helper function
 
 # COMMAND ----------
 
