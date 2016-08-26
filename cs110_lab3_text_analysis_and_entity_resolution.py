@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Wed, 24 Aug 2016 15:35:39 UTC
+# Databricks notebook source exported at Fri, 26 Aug 2016 04:08:25 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -13,7 +13,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Entity Resolution, or "[Record linkage][wiki]" is the term used by statisticians, epidemiologists, and historians, among others, to describe the process of joining records from one data source with another that describe the same entity. Our terms with the same meaning include, "entity disambiguation/linking", duplicate detection", "deduplication", "record matching", "(reference) reconciliation", "object identification", "data/information integration", and "conflation".
+# MAGIC Entity Resolution, or "[Record linkage][wiki]" is the term used by statisticians, epidemiologists, and historians, among others, to describe the process of joining records from one data source with another that describe the same entity. Our terms with the same meaning include, "entity disambiguation/linking", "duplicate detection", "deduplication", "record matching", "(reference) reconciliation", "object identification", "data/information integration", and "conflation".
 # MAGIC 
 # MAGIC Entity Resolution (ER) refers to the task of finding records in a dataset that refer to the same entity across different data sources (e.g., data files, books, websites, databases). ER is necessary when joining datasets based on entities that may or may not share a common identifier (e.g., database key, URI, National identification number), as may be the case due to differences in record shape, storage location, and/or curator style or preference. A dataset that has undergone ER may be referred to as being cross-linked.
 # MAGIC [wiki]: https://en.wikipedia.org/wiki/Record_linkage
@@ -27,7 +27,7 @@ labVersion = 'cs110.1x-lab3-1.0.4'
 # MAGIC %md
 # MAGIC ## Code
 # MAGIC 
-# MAGIC This assignment can be completed using basic Python, pySpark Transformations and actions, and the plotting library matplotlib. Other libraries are not allowed.
+# MAGIC This assignment can be completed using basic Python, pySpark transformations and actions, and the plotting library matplotlib. Other libraries are not allowed.
 # MAGIC 
 # MAGIC ### Files
 # MAGIC Data files for this assignment are from the [metric-learning](https://github.com/spark-mooc/mooc-setup/tree/master/metric-learning) project and can be found at:
@@ -41,7 +41,7 @@ labVersion = 'cs110.1x-lab3-1.0.4'
 # MAGIC * **Amazon_Google_perfectMapping.csv**, the "gold standard" mapping
 # MAGIC * **stopwords.txt**, a list of common English words
 # MAGIC 
-# MAGIC Besides the complete data files, there are "sample" data files for each dataset - we will use these for **Part 1**. In addition, there is a "gold standard" file that contains all of the true mappings between entities in the two datasets. Every row in the gold standard file has a pair of record IDs (one Google, one Amazon) that belong to two record that describe the same thing in the real world. We will use the gold standard to evaluate our algorithms.
+# MAGIC Besides the complete data files, there are "sample" data files for each dataset - we will use these for **Part 1**. In addition, there is a "gold standard" file that contains all of the true mappings between entities in the two datasets. Every row in the gold standard file has a pair of record IDs (one Google, one Amazon) that belong to two records that describe the same thing in the real world. We will use the gold standard to evaluate our algorithms.
 
 # COMMAND ----------
 
@@ -348,7 +348,7 @@ Test.assertEquals(len(biggestRecordAmazon[0][1]), 1547, 'incorrect len for bigge
 # MAGIC 
 # MAGIC The steps your function should perform are:
 # MAGIC * Create an empty Python dictionary
-# MAGIC * For each of the tokens in the input `tokens` list, count 1 for each occurance and add the token to the dictionary
+# MAGIC * For each of the tokens in the input `tokens` list, count 1 for each occurrence and add the token to the dictionary
 # MAGIC * For each of the tokens in the dictionary, divide the token's count by the total number of tokens in the input `tokens` list
 
 # COMMAND ----------
@@ -654,6 +654,8 @@ Test.assertTrue(abs(cossimAdobe - 0.0577243382163) < 0.0000001, 'incorrect cossi
 # MAGIC * Apply the worker function to every element in the RDD
 # MAGIC 
 # MAGIC Now, compute the similarity between Amazon record `b000o24l3q` and Google record `http://www.google.com/base/feeds/snippets/17242822440574356561`.
+# MAGIC 
+# MAGIC Hint: Use Spark's [cartesian](https://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.cartesian) method.
 
 # COMMAND ----------
 
@@ -952,6 +954,7 @@ amazonNorms = amazonWeightsRDD.<FILL IN>
 amazonNormsBroadcast = <FILL IN>
 googleNorms = googleWeightsRDD.<FILL IN>
 googleNormsBroadcast = <FILL IN>
+print 'There are %s Amazon norms and %s Google norms.' % (len(amazonNorms), len(googleNorms))
 
 # COMMAND ----------
 
@@ -1087,7 +1090,7 @@ Test.assertEquals(similaritiesFullRDD.count(), 2441100, 'incorrect similaritiesF
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### **Part 5: Analsis**
+# MAGIC #### **Part 5: Analysis**
 # MAGIC 
 # MAGIC Now we have an authoritative list of record-pair similarities, but we need a way to use those similarities to decide if two records are duplicates or not. The simplest approach is to pick a **threshold**. Pairs whose similarity is above the threshold are declared duplicates, and pairs below the threshold are declared distinct.
 # MAGIC 
@@ -1098,7 +1101,7 @@ Test.assertEquals(similaritiesFullRDD.count(), 2441100, 'incorrect similaritiesF
 # MAGIC 
 # MAGIC > **Note**: In this part, we use the "gold standard" mapping from the included file to look up true duplicates, and the results of Part 4.
 # MAGIC 
-# MAGIC > **Note**: In this part, you will not be writing any code. We've written all of the code for you. Run each cell and then answer the quiz questions on Studio.
+# MAGIC > **Note**: In this part, you will not be writing any code. We've written all of the code for you. Run each cell and then answer the quiz questions on edX Studio.
 
 # COMMAND ----------
 
