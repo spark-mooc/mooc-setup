@@ -11,7 +11,8 @@
 
 mooc/Notebooks/cs110x/Power-Plant-ML-Pipeline.py|cs110_lab1_power_plant_ml_pipeline.py
 mooc/Notebooks/cs110x/ALS-Prediction.py|cs110_lab2_als_prediction.py
-mooc/Notebooks/cs110x/Text-Analysis-and-Entity-Resolution.py|cs110_lab3_text_analysis_and_entity_resolution.py
+mooc/Notebooks/cs110x/Word_Count_RDD.py|cs110_lab3a_word_count_rdd.py
+mooc/Notebooks/cs110x/Text-Analysis-and-Entity-Resolution.py|cs110_lab3b_text_analysis_and_entity_resolution.py
 mooc/Notebooks/Autograder_register.py|cs110_autograder_register.py
 mooc/Notebooks/Autograder_simple.py|cs110_autograder.py
 mooc/Notebooks/Autograder_complete.py|cs110_autograder_complete.py
