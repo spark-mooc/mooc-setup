@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 26 Aug 2016 04:08:25 UTC
+# Databricks notebook source exported at Mon, 29 Aug 2016 13:49:16 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -27,18 +27,18 @@ labVersion = 'cs110.1x-lab3-1.0.4'
 # MAGIC %md
 # MAGIC ## Code
 # MAGIC 
-# MAGIC This assignment can be completed using basic Python, pySpark transformations and actions, and the plotting library matplotlib. Other libraries are not allowed.
+# MAGIC This assignment can be completed using basic Python, PySpark transformations and actions, and the plotting library matplotlib. Other libraries are not allowed.
 # MAGIC 
 # MAGIC ### Files
-# MAGIC Data files for this assignment are from the [metric-learning](https://github.com/spark-mooc/mooc-setup/tree/master/metric-learning) project and can be found at:
+# MAGIC [Data files](https://github.com/spark-mooc/mooc-setup/tree/master/metric-learning/data/3-amazon-googleproducts) for this assignment are from the [metric-learning](https://github.com/spark-mooc/mooc-setup/tree/master/metric-learning) project and can be found at:
 # MAGIC `dbfs/databricks-datasets/cs100/lab3/data-001`
 # MAGIC 
 # MAGIC The directory contains the following files:
-# MAGIC * **Google.csv**, the Google Products dataset
-# MAGIC * **Amazon.csv**, the Amazon dataset
-# MAGIC * **Google_small.csv**, 200 records sampled from the Google data
-# MAGIC * **Amazon_small.csv**, 200 records sampled from the Amazon data
-# MAGIC * **Amazon_Google_perfectMapping.csv**, the "gold standard" mapping
+# MAGIC * **Google.csv**, the Google Products dataset, named as targets.csv in the repository
+# MAGIC * **Amazon.csv**, the Amazon dataset, named as sources.csv in the repository
+# MAGIC * **Google_small.csv**, 200 records sampled from the Google data, subset of targets.csv
+# MAGIC * **Amazon_small.csv**, 200 records sampled from the Amazon data, subset of sources.csv
+# MAGIC * **Amazon_Google_perfectMapping.csv**, the "gold standard" mapping, named as mapping.csv in the repository
 # MAGIC * **stopwords.txt**, a list of common English words
 # MAGIC 
 # MAGIC Besides the complete data files, there are "sample" data files for each dataset - we will use these for **Part 1**. In addition, there is a "gold standard" file that contains all of the true mappings between entities in the two datasets. Every row in the gold standard file has a pair of record IDs (one Google, one Amazon) that belong to two records that describe the same thing in the real world. We will use the gold standard to evaluate our algorithms.
@@ -98,6 +98,11 @@ def parseDatafileLine(datafileLine):
 # COMMAND ----------
 
 display(dbutils.fs.ls('/databricks-datasets/cs100/lab3/data-001'))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Run the following cell to load the data files.
 
 # COMMAND ----------
 
@@ -189,7 +194,14 @@ for line in amazonSmall.take(3):
 # MAGIC %md
 # MAGIC ### (1a) Tokenize a String
 # MAGIC Implement the function `simpleTokenize(string)` that takes a string and returns a list of non-empty tokens in the string. `simpleTokenize` should split strings using the provided regular expression. Since we want to make token-matching case insensitive, make sure all tokens are turned lower-case. Give an interpretation, in natural language, of what the regular expression, `split_regex`, matches.
-# MAGIC If you need help with Regular Expressions, try the site [regex101](https://regex101.com/) where you can interactively explore the results of applying different regular expressions to strings. *Note that \W includes the "_" character*.  You should use [re.split()](https://docs.python.org/2/library/re.html#re.split) to perform the string split. Also, make sure you remove any empty tokens.
+# MAGIC If you need help with Regular Expressions, try the site [regex101](https://regex101.com/) where you can interactively explore the results of applying different regular expressions to strings.
+# MAGIC 
+# MAGIC *Note that `\W` includes the "_" character*.
+# MAGIC 
+# MAGIC You should use [re.split()](https://docs.python.org/2/library/re.html#re.split) to perform the string split. Also:
+# MAGIC 
+# MAGIC * make sure you remove any empty tokens
+# MAGIC * make sure you convert the string to lower case.
 
 # COMMAND ----------
 
@@ -227,6 +239,21 @@ Test.assertEquals(simpleTokenize('fox fox'), ['fox', 'fox'],
 # MAGIC *[Stopwords][stopwords]* are common (English) words that do not contribute much to the content or meaning of a document (e.g., "the", "a", "is", "to", etc.). Stopwords add noise to bag-of-words comparisons, so they are usually excluded.
 # MAGIC Using the included file "stopwords.txt", implement `tokenize`, an improved tokenizer that does not emit stopwords.
 # MAGIC [stopwords]: https://en.wikipedia.org/wiki/Stop_words
+# MAGIC 
+# MAGIC **Hint 1**:
+# MAGIC 
+# MAGIC In Python, you can test membership in a set as follows:
+# MAGIC 
+# MAGIC ```
+# MAGIC my_set = set(['a', 'b', 'c'])
+# MAGIC 'a' in my_set     # returns True
+# MAGIC 'd' in my_set     # returns False
+# MAGIC 'a' not in my_set # returns False
+# MAGIC ```
+# MAGIC 
+# MAGIC **Hint 2**:
+# MAGIC 
+# MAGIC Within `tokenize()`, first tokenize the string using `simpleTokenize()`. Then, remove stopwords. To remove stop words, consider using a loop, a Python [list comprehension](https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions), or the built-in Python [filter()](https://docs.python.org/2/library/functions.html?highlight=filter#filter) function.
 
 # COMMAND ----------
 
@@ -259,6 +286,13 @@ Test.assertEquals(tokenize(quickbrownfox), ['quick','brown','fox','jumps','lazy'
 # MAGIC %md
 # MAGIC ### (1c) Tokenizing the small datasets
 # MAGIC Now let's tokenize the two *small* datasets. For each ID in a dataset, `tokenize` the values, and then count the total number of tokens.
+# MAGIC 
+# MAGIC The resulting RDDs, `amazonRecToToken` and `googleRecToToken` should be collections of `(recordID, [token_list])` pairs. For instance, here's a record that should be found in the resulting `amazonRecToToken` RDD:
+# MAGIC 
+# MAGIC ```
+# MAGIC ('b00004tkvy', ['noah', 'ark', 'activity', 'center', 'jewel', 'case', 'ages', '3', '8', 'victory', 'multimedia'])
+# MAGIC ```
+# MAGIC 
 # MAGIC How many tokens, total, are there in the two datasets?
 
 # COMMAND ----------
@@ -281,6 +315,10 @@ print 'There are %s tokens in the combined datasets' % totalTokens
 
 # COMMAND ----------
 
+amazonRecToToken.take(20)
+
+# COMMAND ----------
+
 # TEST Tokenizing the small datasets (1c)
 Test.assertEquals(totalTokens, 22520, 'incorrect totalTokens')
 
@@ -290,6 +328,8 @@ Test.assertEquals(totalTokens, 22520, 'incorrect totalTokens')
 # MAGIC ### (1d) Amazon record with the most tokens
 # MAGIC Which Amazon record has the biggest number of tokens?
 # MAGIC In other words, you want to sort the records and get the one with the largest count of tokens.
+# MAGIC 
+# MAGIC **Hint**: The RDD [takeOrdered()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.takeOrdered) transformation may be of some help here.
 
 # COMMAND ----------
 
@@ -310,7 +350,7 @@ print 'The Amazon record with ID "%s" has the most tokens (%s)' % (biggestRecord
 # COMMAND ----------
 
 # TEST Amazon record with the most tokens (1d)
-Test.assertEquals(biggestRecordAmazon[0][0], 'b000o24l3q', 'incorrect biggestRecordAmazon')
+Test.assertEqualsHashed(biggestRecordAmazon[0][0], '2336aec29f04e72c0862d413ed8d24604e5efd2a', 'incorrect biggestRecordAmazon')
 Test.assertEquals(len(biggestRecordAmazon[0][1]), 1547, 'incorrect len for biggestRecordAmazon')
 
 # COMMAND ----------
@@ -377,7 +417,10 @@ Test.assertEquals(tf_test, {'brown': 0.16666666666666666, 'lazy': 0.166666666666
                     'incorrect result for tf on sample text')
 tf_test2 = tf(tokenize('one_ one_ two!'))
 Test.assertEquals(tf_test2, {'one_': 0.6666666666666666, 'two': 0.3333333333333333},
-                    'incorrect result for tf test')
+                    'incorrect result for tf test #2')
+tf_test3 = tf(tokenize("hello hello hello world world world foo"))
+Test.assertEquals(tf_test3, {'world': 0.42857142857142855, 'foo': 0.14285714285714285, 'hello': 0.42857142857142855},
+                  'incorrect results for tf test #3')
 
 # COMMAND ----------
 
@@ -392,8 +435,16 @@ corpusRDD = <FILL IN>
 
 # COMMAND ----------
 
+for i in corpusRDD.take(50):
+  print(i)
+
+# COMMAND ----------
+
 # TEST Create a corpus (2b)
 Test.assertEquals(corpusRDD.count(), 400, 'incorrect corpusRDD.count()')
+_data = corpusRDD.filter(lambda t: t[0] == 'b000jz4hqo').collect()
+_words = sorted(_data[0][1])
+Test.assertEquals(_words[3], 'clickart', "incorrect corpusRDD contents")
 
 # COMMAND ----------
 
@@ -424,10 +475,10 @@ def idfs(corpus):
     Returns:
         RDD: a RDD of (token, IDF value)
     """
-    N = <FILL IN>
     uniqueTokens = corpus.<FILL IN>
     tokenCountPairTuple = uniqueTokens.<FILL IN>
     tokenSumPairTuple = tokenCountPairTuple.<FILL IN>
+    N = <FILL IN>
     return (tokenSumPairTuple.<FILL IN>)
 
 idfsSmall = idfs(amazonRecToToken.union(googleRecToToken))
@@ -458,10 +509,21 @@ print smallIDFTokens
 
 # COMMAND ----------
 
+# TEST
+_data = sorted(smallIDFTokens)
+Test.assertEquals(_data[0][0], '1', 'Incorrect first element for smallIDFTokens')
+Test.assertEquals(_data[2][0], 'complete', 'Incorrect third element for smallIDFTokens')
+_expected = ['1', 'cd', 'complete', 'create', 'easy', 'features', 'new', 'software', 'system', 'use', 'windows']
+_got = [t[0] for t in _data]
+Test.assertEquals(_got, _expected, "Incorrect tokens. Got {0}. Expected {1}".format(_got, _expected))
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### (2e) IDF Histogram
 # MAGIC Plot a histogram of IDF values.  Be sure to use appropriate scaling and bucketing for the data.
-# MAGIC First plot the histogram using `matplotlib`
+# MAGIC 
+# MAGIC First plot the histogram using `matplotlib`.
 
 # COMMAND ----------
 
@@ -472,6 +534,11 @@ small_idf_values = <FILL_IN>
 fig = <FILL_IN>
 plt.<FILL_IN>
 display(fig)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Next, plot the histogram using the Databricks `display()` function. After the cell runs, click on Plot Options and select Histogram.
 
 # COMMAND ----------
 
@@ -516,7 +583,11 @@ recb000hkgj8k = amazonRecToToken.filter(lambda x: x[0] == 'b000hkgj8k').collect(
 idfsSmallWeights = idfsSmall.collectAsMap()
 rec_b000hkgj8k_weights = tfidf(recb000hkgj8k, idfsSmallWeights)
 
+recb000jz4hqo = amazonRecToToken.filter(lambda x: x[0] == 'b000jz4hqo').collect()[0][1]
+rec_b000jz4hqo_weights = tfidf(recb000jz4hqo, idfsSmallWeights)
+
 print 'Amazon record "b000hkgj8k" has tokens and weights:\n%s' % rec_b000hkgj8k_weights
+print 'Amazon record "b000jz4hqo" has tokens and weights: \n%s' % rec_b000jz4hqo_weights
 
 # COMMAND ----------
 
@@ -526,6 +597,13 @@ Test.assertEquals(rec_b000hkgj8k_weights,
                     'courseware': 66.66666666666666, 'psg': 33.33333333333333,
                     '2007': 3.5087719298245617, 'customizing': 16.666666666666664,
                     'interface': 3.0303030303030303}, 'incorrect rec_b000hkgj8k_weights')
+Test.assertEquals(rec_b000jz4hqo_weights,
+                  {'rom': 1.8518518518518519, 'clickart': 22.22222222222222,
+                   '950': 44.44444444444444, 'image': 4.040404040404041,
+                   'premier': 11.11111111111111, '000': 4.444444444444445,
+                   'dvd': 1.7777777777777777, 'broderbund': 22.22222222222222,
+                   'pack': 3.4188034188034186},
+                  'incorrect rec_b000jz4hqo_weights')
 
 # COMMAND ----------
 
@@ -595,13 +673,15 @@ testVec1 = {'foo': 2, 'bar': 3, 'baz': 5 }
 testVec2 = {'foo': 1, 'bar': 0, 'baz': 20 }
 dp = dotprod(testVec1, testVec2)
 nm = norm(testVec1)
-print dp, nm
+cs = cossim(testVec1, testVec2)
+print dp, nm, cs
 
 # COMMAND ----------
 
 # TEST Implement the components of a cosineSimilarity function (3a)
 Test.assertEquals(dp, 102, 'incorrect dp')
 Test.assertTrue(abs(nm - 6.16441400297) < 0.0000001, 'incorrrect nm')
+Test.assertTrue(abs(cs - 0.826297021229) < 0.0000001, 'incorrect cs')
 
 # COMMAND ----------
 
@@ -655,7 +735,7 @@ Test.assertTrue(abs(cossimAdobe - 0.0577243382163) < 0.0000001, 'incorrect cossi
 # MAGIC 
 # MAGIC Now, compute the similarity between Amazon record `b000o24l3q` and Google record `http://www.google.com/base/feeds/snippets/17242822440574356561`.
 # MAGIC 
-# MAGIC Hint: Use Spark's [cartesian](https://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.cartesian) method.
+# MAGIC **Hint**: Use Spark's [cartesian](https://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.cartesian) method.
 
 # COMMAND ----------
 
@@ -709,7 +789,7 @@ Test.assertTrue(abs(similarityAmazonGoogle - 0.000303171940451) < 0.0000001,
 
 # MAGIC %md
 # MAGIC ### (3d) Perform Entity Resolution with Broadcast Variables
-# MAGIC The solution in (3c) works well for small datasets, but it requires Spark to (automatically) send the `idfsSmallWeights` variable to all the workers. If we didn't `cache()` similarities, then it might have to be recreated if we run `similar()` multiple times. This would cause Spark to send `idfsSmallWeights` every time.
+# MAGIC The solution in (3c) works well for small datasets, but it requires Spark to (automatically) send the `idfsSmallWeights` variable to all the workers _for each record_. For example, if we only have one worker, and we have 1,000 records, we would be sending `idfSmallWeights` to the same worker 1,000 times. Further, if we didn't `cache()` similarities, then it might have to be recreated if we run `similar()` multiple times. While this approach works fine for small datasets, it becomes a bottleneck for larger datasets.
 # MAGIC 
 # MAGIC Instead, we can use a broadcast variable - we define the broadcast variable in the driver and then we can refer to it in each worker. Spark saves the broadcast variable at each worker, so it is only sent once.
 # MAGIC 
@@ -772,7 +852,13 @@ Test.assertTrue(abs(similarityAmazonGoogleBroadcast - 0.000303171940451) < 0.000
 # MAGIC %md
 # MAGIC ### (3e) Perform a Gold Standard evaluation
 # MAGIC 
-# MAGIC First, we'll load the "gold standard" data and use it to answer several questions. We read and parse the Gold Standard data, where the format of each line is "Amazon Product ID","Google URL". The resulting RDD has elements of the form ("AmazonID GoogleURL", 'gold')
+# MAGIC First, we'll load the "gold standard" data and use it to answer several questions. We read and parse the Gold Standard data, where the format of each line is "Amazon Product ID","Google URL". The resulting RDD has elements of the form:
+# MAGIC 
+# MAGIC ```
+# MAGIC ("AmazonID GoogleURL", 'gold')
+# MAGIC ```
+# MAGIC 
+# MAGIC Run the following cell to create the `parse_goldfile_line()` function that we'll use to parse the data.
 
 # COMMAND ----------
 
@@ -829,11 +915,11 @@ assert (gsRaw.count() == (goldStandard.count() + 1))
 # MAGIC * What is the average similarity score for true duplicates?
 # MAGIC * What about for non-duplicates?
 # MAGIC The steps you should perform are:
-# MAGIC * Create a new `sims` RDD from the `similaritiesBroadcast` RDD, where each element consists of a pair of the form ("AmazonID GoogleURL", cosineSimilarityScore). An example entry from `sims` is: ('b000bi7uqs http://www.google.com/base/feeds/snippets/18403148885652932189', 0.40202896125621296)
-# MAGIC * Combine the `sims` RDD with the `goldStandard` RDD by creating a new `trueDupsRDD` RDD that has the just the cosine similarity scores for those "AmazonID GoogleURL" pairs that appear in both the `sims` RDD and `goldStandard` RDD. Hint: you can do this using the join() transformation.
+# MAGIC * Create a new `sims` RDD from the `similaritiesBroadcast` RDD, where each element consists of a pair of the form ("AmazonID GoogleURL", cosineSimilarityScore). An example entry from `sims` is: `('b000bi7uqs http://www.google.com/base/feeds/snippets/18403148885652932189', 0.40202896125621296)`
+# MAGIC * Combine the `sims` RDD with the `goldStandard` RDD by creating a new `trueDupsRDD` RDD that has just the cosine similarity scores for those "AmazonID GoogleURL" pairs that appear in both the `sims` RDD and `goldStandard` RDD. Hint: you can do this using the [join()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.join) transformation.
 # MAGIC * Count the number of true duplicate pairs in the `trueDupsRDD` dataset
 # MAGIC * Compute the average similarity score for true duplicates in the `trueDupsRDD` datasets. Remember to use `float` for calculation
-# MAGIC * Create a new `nonDupsRDD` RDD that has the just the cosine similarity scores for those "AmazonID GoogleURL" pairs from the `similaritiesBroadcast` RDD that **do not** appear in both the *sims* RDD and gold standard RDD.
+# MAGIC * Create a new `nonDupsRDD` RDD that has just the cosine similarity scores for those "AmazonID GoogleURL" pairs from the `similaritiesBroadcast` RDD that **do not** appear in both the *sims* RDD and gold standard RDD.
 # MAGIC * Compute the average similarity score for non-duplicates in the last datasets. Remember to use `float` for calculation
 
 # COMMAND ----------
@@ -884,7 +970,7 @@ Test.assertTrue(abs(avgSimNon - 0.00123476304656) < 0.0000001, 'incorrect avgSim
 
 # MAGIC %md
 # MAGIC ### (4a) Tokenize the full dataset
-# MAGIC Tokenize each of the two full datasets for Google and Amazon.
+# MAGIC Tokenize each of the two full datasets for Google and Amazon. Use the `tokenize()` function we defined in (1b).
 
 # COMMAND ----------
 
@@ -892,7 +978,7 @@ Test.assertTrue(abs(avgSimNon - 0.00123476304656) < 0.0000001, 'incorrect avgSim
 amazonFullRecToToken = amazon.<FILL IN>
 googleFullRecToToken = google.<FILL IN>
 print 'Amazon full dataset is %s products, Google full dataset is %s products' % (amazonFullRecToToken.count(),
-                                                                                    googleFullRecToToken.count())
+                                                                                  googleFullRecToToken.count())
 
 # COMMAND ----------
 
@@ -1061,7 +1147,7 @@ googleWeightsBroadcast = <FILL IN>
 def fastCosineSimilarity(record):
     """ Compute Cosine Similarity using Broadcast variables
     Args:
-        record: ((ID, URL), token)
+        record: ((ID, URL), iterable(token))
     Returns:
         pair: ((ID, URL), cosine similarity value)
     """
@@ -1096,7 +1182,7 @@ Test.assertEquals(similaritiesFullRDD.count(), 2441100, 'incorrect similaritiesF
 # MAGIC 
 # MAGIC To decide where to set the threshold we need to understand what kind of errors result at different levels. If we set the threshold too low, we get more **false positives**, that is, record-pairs we say are duplicates that in reality are not. If we set the threshold too high, we get more **false negatives**, that is, record-pairs that really are duplicates but that we miss.
 # MAGIC 
-# MAGIC ER algorithms are evaluated by the common metrics of information retrieval and search called **precision** and **recall**. Precision asks of all the record-pairs marked duplicates, what fraction are true duplicates? Recall asks of all the true duplicates in the data, what fraction did we successfully find? As with false positives and false negatives, there is a trade-off between precision and recall. A third metric, called **F-measure**, takes the harmonic mean of precision and recall to measure overall goodness in a single value:
+# MAGIC ER algorithms are evaluated by the common metrics of information retrieval and search called **precision** and **recall**. Precision asks, of all the record-pairs marked duplicates, what fraction are true duplicates? Recall asks, of all the true duplicates in the data, what fraction did we successfully find? As with false positives and false negatives, there is a trade-off between precision and recall. A third metric, called **F-measure**, takes the harmonic mean of precision and recall to measure overall goodness in a single value:
 # MAGIC \\[ Fmeasure = 2 \frac{precision * recall}{precision + recall} \\]
 # MAGIC 
 # MAGIC > **Note**: In this part, we use the "gold standard" mapping from the included file to look up true duplicates, and the results of Part 4.
@@ -1270,6 +1356,17 @@ plt.plot(thresholds, recalls)
 plt.plot(thresholds, fmeasures)
 plt.legend(['Precision', 'Recall', 'F-measure'])
 display(fig)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC You can also create a similar plot using the Databricks `display()` function.
+# MAGIC 
+# MAGIC * Run the following cell.
+# MAGIC * Then, select **Line** from the drop-down.
+# MAGIC * Then, click on **Plot Options**, and configure the plot as shown below.
+# MAGIC 
+# MAGIC <img src="http://spark-mooc.github.io/web-assets/images/cs110x/lab3-change-plot-5c.png" alt="plot options" style="height: 500px"/>
 
 # COMMAND ----------
 
