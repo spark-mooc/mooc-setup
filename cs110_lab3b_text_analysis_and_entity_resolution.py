@@ -20,7 +20,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs110.1x-lab3-1.0.4'
+labVersion = 'cs110.1x-lab3a-1.0.4'
 
 # COMMAND ----------
 
@@ -1454,10 +1454,10 @@ display(graphDF)
 # MAGIC ```
 # MAGIC lab = <FILL IN>
 # MAGIC ```
-# MAGIC and change `<FILL IN>` to "CS110x-lab3":
+# MAGIC and change `<FILL IN>` to "CS110x-lab3b":
 # MAGIC 
 # MAGIC ```
-# MAGIC lab = "CS110x-lab3"
+# MAGIC lab = "CS110x-lab3b"
 # MAGIC ```
 # MAGIC 
 # MAGIC Then, run the Autograder notebook to submit your lab.
