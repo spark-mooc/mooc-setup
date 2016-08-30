@@ -450,7 +450,7 @@ Test.assertEquals(_words[3], 'clickart', "incorrect corpusRDD contents")
 
 # MAGIC %md
 # MAGIC ### (2c) Implement an IDFs function
-# MAGIC Implement `idfs` that assigns an IDF weight to every unique token in an RDD called `corpus`. The function should return an pair RDD where the `key` is the unique token and value is the IDF weight for the token.
+# MAGIC Implement `idfs` that assigns an IDF weight to every unique token in an RDD called `corpus`. The function should return a pair RDD where the `key` is the unique token and value is the IDF weight for the token.
 # MAGIC 
 # MAGIC Recall that the IDF weight for a token, *t*, in a set of documents, *U*, is computed as follows:
 # MAGIC * Let *N* be the total number of documents in *U*.
@@ -919,7 +919,7 @@ assert (gsRaw.count() == (goldStandard.count() + 1))
 # MAGIC * Combine the `sims` RDD with the `goldStandard` RDD by creating a new `trueDupsRDD` RDD that has just the cosine similarity scores for those "AmazonID GoogleURL" pairs that appear in both the `sims` RDD and `goldStandard` RDD. Hint: you can do this using the [join()](http://spark.apache.org/docs/1.6.2/api/python/pyspark.html#pyspark.RDD.join) transformation.
 # MAGIC * Count the number of true duplicate pairs in the `trueDupsRDD` dataset
 # MAGIC * Compute the average similarity score for true duplicates in the `trueDupsRDD` datasets. Remember to use `float` for calculation
-# MAGIC * Create a new `nonDupsRDD` RDD that has just the cosine similarity scores for those "AmazonID GoogleURL" pairs from the `similaritiesBroadcast` RDD that **do not** appear in both the *sims* RDD and gold standard RDD.
+# MAGIC * Create a new `nonDupsRDD` RDD that has just the cosine similarity scores for those "AmazonID GoogleURL" pairs from the `similaritiesBroadcast` RDD that **do not** appear in both the `sims` RDD and `goldStandard` RDD.
 # MAGIC * Compute the average similarity score for non-duplicates in the last datasets. Remember to use `float` for calculation
 
 # COMMAND ----------
@@ -991,7 +991,7 @@ Test.assertEquals(googleFullRecToToken.count(), 3226, 'incorrect googleFullRecTo
 # MAGIC %md
 # MAGIC ### (4b) Compute IDFs and TF-IDFs for the full datasets
 # MAGIC 
-# MAGIC We will reuse your code from above to compute IDF weights for the complete combined datasets.
+# MAGIC We will reuse your code from above to compute TF-IDF weights for the complete combined datasets.
 # MAGIC The steps you should perform are:
 # MAGIC * Create a new `fullCorpusRDD` that contains the tokens from the full Amazon and Google datasets.
 # MAGIC * Apply your `idfs` function to the `fullCorpusRDD`
@@ -1006,7 +1006,7 @@ idfsFull = idfs(fullCorpusRDD)
 idfsFullCount = idfsFull.count()
 print 'There are %s unique tokens in the full datasets.' % idfsFullCount
 
-# Recompute IDFs for full dataset
+# Convert to dict and then broadcast
 idfsFullWeights = <FILL IN>
 idfsFullBroadcast = <FILL IN>
 
@@ -1098,7 +1098,7 @@ Test.assertEquals(googleInvPairsRDD.count(), 77678, 'incorrect googleInvPairsRDD
 # MAGIC ### (4e) Identify common tokens from the full dataset
 # MAGIC 
 # MAGIC We are now in position to efficiently perform ER on the full datasets. Implement the following algorithm to build an RDD that maps a pair of (ID, URL) to a list of tokens they share in common:
-# MAGIC * Using the two inverted indices (RDDs where each element is a pair of a token and an ID or URL that contains that token), create a new RDD that contains only tokens that appear in both datasets. This will yield an RDD of pairs of (token, iterable(ID, URL)).
+# MAGIC * Using the two inverted indices (RDDs where each element is a pair of a token and an ID or URL that contains that token), create a new RDD that contains only tokens that appear in both datasets. This will yield an RDD of pairs of (token, (ID, URL)).
 # MAGIC * We need a mapping from (ID, URL) to token, so create a function that will swap the elements of the RDD you just created to create this new RDD consisting of ((ID, URL), token) pairs.
 # MAGIC * Finally, create an RDD consisting of pairs mapping (ID, URL) to all the tokens the pair shares in common
 
