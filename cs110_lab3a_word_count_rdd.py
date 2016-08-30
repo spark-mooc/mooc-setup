@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Fri, 8 Jul 2016 18:23:19 UTC
+# Databricks notebook source exported at Tue, 30 Aug 2016 22:04:48 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -377,8 +377,14 @@ Test.assertEquals(sorted(wordCount(wordsRDD).collect()),
 # MAGIC   + All punctuation should be removed.
 # MAGIC   + Any leading or trailing spaces on a line should be removed.
 # MAGIC 
-# MAGIC Define the function `removePunctuation` that converts all text to lower case, removes any punctuation, and removes leading and trailing spaces.  Use the Python [re](https://docs.python.org/2/library/re.html) module to remove any text that is not a letter, number, or space. Reading `help(re.sub)` might be useful.
+# MAGIC Define the function `removePunctuation` that converts all text to lower case, removes any punctuation, and removes leading and trailing spaces.  Use the Python [re](https://docs.python.org/2/library/re.html) module to remove any text that is not a letter, number, or space.
 # MAGIC If you are unfamiliar with regular expressions, you may want to review [this tutorial](https://developers.google.com/edu/python/regular-expressions) from Google.  Also, [this website](https://regex101.com/#python) is  a great resource for debugging your regular expression.
+# MAGIC 
+# MAGIC **Hints**
+# MAGIC 
+# MAGIC 1. Use the [re.sub()](https://docs.python.org/2.7/library/re.html#re.sub) function.
+# MAGIC 2. For our purposes, "punctuation" means "not an alphabetic, numeric, or whitespace character." A convenient regular expression for matching a character that is not alpabetic, numeric, or whitespace is: `[^A-Za-z\s\d]`
+# MAGIC 3. Do _not_ use `\W`, as it retains underscores.
 
 # COMMAND ----------
 
@@ -388,7 +394,7 @@ def removePunctuation(text):
     """Removes punctuation, changes to lower case, and strips leading and trailing spaces.
 
     Note:
-        Only spaces, letters, and numbers should be retained.  Other characters should should be
+        Only whitespace, letters, and numbers should be retained.  Other characters should should be
         eliminated (e.g. it's becomes its).  Leading and trailing spaces should be removed after
         punctuation is removed.
 
@@ -469,7 +475,7 @@ Test.assertEquals(shakespeareWordsRDD.top(5),
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ** (4e) Remove empty elements **
+# MAGIC ### (4e) Remove empty elements
 # MAGIC 
 # MAGIC The next step is to filter out the empty elements.  Remove all entries where the word is `''`.
 

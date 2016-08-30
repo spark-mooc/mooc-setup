@@ -20,7 +20,7 @@
 
 # COMMAND ----------
 
-labVersion = 'cs110.1x-lab3a-1.0.4'
+labVersion = 'cs110.1x-lab3b-1.0.4'
 
 # COMMAND ----------
 
