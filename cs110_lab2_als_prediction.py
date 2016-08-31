@@ -1,4 +1,4 @@
-# Databricks notebook source exported at Sun, 21 Aug 2016 19:51:38 UTC
+# Databricks notebook source exported at Wed, 31 Aug 2016 17:43:08 UTC
 
 # MAGIC %md
 # MAGIC <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"/> </a> <br/> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. </a>
@@ -733,14 +733,14 @@ print('The model had a RMSE on the test set of {0}'.format(test_RMSE_my_ratings)
 # MAGIC     |Mireille| 19|
 # MAGIC     +--------+---+
 # MAGIC 
-# MAGIC     > names_to_delete = ("Julie", "Abdul") # this is just a Python tuple
+# MAGIC     > names_to_delete = ["Julie", "Abdul"] # this is just a Python list
 # MAGIC     > df2 = df1.filter(~ df1["name"].isin(names_to_delete)) # "NOT IN"
 # MAGIC     > df2.show()
 # MAGIC     +--------+---+
 # MAGIC     |    name|age|
 # MAGIC     +--------+---+
 # MAGIC     |     Jim| 10|
-# MAGIC     |   Julie|  9|
+# MAGIC     |Mireille| 19|
 # MAGIC     +--------+---+
 # MAGIC ```
 # MAGIC 
