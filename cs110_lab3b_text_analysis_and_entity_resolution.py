@@ -460,7 +460,7 @@ Test.assertEquals(_words[3], 'clickart', "incorrect corpusRDD contents")
 # MAGIC The steps your function should perform are:
 # MAGIC * Calculate *N*. Think about how you can calculate *N* from the input RDD.
 # MAGIC * Create an RDD (*not a pair RDD*) containing the unique tokens from each document in the input `corpus`. For each document, you should only include a token once, *even if it appears multiple times in that document.*
-# MAGIC * For each of the unique tokens, count how many times it appears in the document and then compute the IDF for that token: *N/n(t)*
+# MAGIC * For each of the unique tokens, count how many documents it appears in and then compute the IDF for that token: *N/n(t)*
 # MAGIC 
 # MAGIC Use your `idfs` to compute the IDF weights for all tokens in `corpusRDD` (the combined small datasets).
 # MAGIC How many unique tokens are there?
