@@ -670,7 +670,7 @@ assert (training_with_my_ratings_df.count() - training_df.count()) == my_ratings
 # MAGIC %md
 # MAGIC ### (3c) Train a Model with Your Ratings
 # MAGIC 
-# MAGIC Now, train a model with your ratings added and the parameters you used in in part (2b) and (2c). Mke sure you include **all** of the parameters.
+# MAGIC Now, train a model with your ratings added and the parameters you used in in part (2b) and (2c). Make sure you include **all** of the parameters.
 # MAGIC 
 # MAGIC **Note**: This cell will take about 30 seconds to run.
 
