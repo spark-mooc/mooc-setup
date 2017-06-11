@@ -539,7 +539,7 @@ paths_df = (logs_df
 
 paths_counts = (paths_df
                 .select('path', 'count')
-                .map(lambda r: (r[0], r[1]))
+                .rdd.map(lambda r: (r[0], r[1]))
                 .collect())
 
 paths, counts = zip(*paths_counts)
@@ -726,7 +726,7 @@ daily_hosts_df.show(30, False)
 
 # TEST Number of unique daily hosts (4c)
 daily_hosts_list = (daily_hosts_df
-                    .map(lambda r: (r[0], r[1]))
+                    .rdd.map(lambda r: (r[0], r[1]))
                     .take(30))
 
 Test.assertEquals(day_to_host_pair_df.count(), total_log_entries, 'incorrect row count for day_to_host_pair_df')
